@@ -211,9 +211,9 @@ main (int argc, char *argv[])
   c_apps.Stop (Seconds (15.0));
 
 
-  AsciiTraceHelper ascii;
-  csma.EnableAsciiAll (ascii.CreateFileStream ("am-ohSam.tr"));
-  csma.EnablePcapAll ("am-ohSam", false);
+  //AsciiTraceHelper ascii;
+  //csma.EnableAsciiAll (ascii.CreateFileStream ("am-ohSam.tr"));
+  //csma.EnablePcapAll ("am-ohSam", false);
 
   Ipv4GlobalRoutingHelper::PopulateRoutingTables ();
 

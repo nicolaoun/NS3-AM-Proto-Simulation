@@ -193,9 +193,9 @@ main (int argc, char *argv[])
   c_apps.Stop (Seconds (10.0));
 
 
-  AsciiTraceHelper ascii;
-  csma.EnableAsciiAll (ascii.CreateFileStream ("am-abd-mwmr.tr"));
-  csma.EnablePcapAll ("am-abd-mwmr", false);
+  // AsciiTraceHelper ascii;
+  // csma.EnableAsciiAll (ascii.CreateFileStream ("am-abd-mwmr.tr"));
+  // csma.EnablePcapAll ("am-abd-mwmr", false);
 
   Ipv4GlobalRoutingHelper::PopulateRoutingTables ();
 
