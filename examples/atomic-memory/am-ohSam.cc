@@ -36,7 +36,7 @@
 
 using namespace ns3;
 
-NS_LOG_COMPONENT_DEFINE ("OhMamExample");
+NS_LOG_COMPONENT_DEFINE ("ohSamExample");
 
 int 
 main (int argc, char *argv[])
@@ -54,9 +54,9 @@ main (int argc, char *argv[])
 // for selected modules; the below lines suggest how to do this
 //
 #if 1
-  LogComponentEnable ("OhMamExample", LOG_LEVEL_INFO);
-  LogComponentEnable ("OhMamClientApplication", LOG_LEVEL_INFO);
-  LogComponentEnable ("OhMamServerApplication", LOG_LEVEL_INFO);
+  LogComponentEnable ("ohSamExample", LOG_LEVEL_INFO);
+  LogComponentEnable ("ohSamClientApplication", LOG_LEVEL_INFO);
+  LogComponentEnable ("ohSamServerApplication", LOG_LEVEL_INFO);
 #endif
 //
 // Allow the user to override any of the defaults and the above Bind() at
@@ -131,7 +131,7 @@ main (int argc, char *argv[])
 // NS_LOG_INFO ("Assigned "<< ipIn.GetN() << " IP Addresses.");
 
 //
-// Create a OhMamServer application on node one.
+// Create a ohSamServer application on node one.
 //
   NS_LOG_INFO ("Create Servers.");
 
@@ -140,7 +140,7 @@ main (int argc, char *argv[])
 
   for (int i=0; i<numServers; i++)
   {
-	  OhMamServerHelper server (port);
+	  ohSamServerHelper server (port);
 	  server.SetAttribute("PacketSize", UintegerValue (1024) );
     server.SetAttribute ("ID", UintegerValue (i));
 	  //server.SetAttribute("LocalAddress", AddressValue (serverAddress[i-1]) );
@@ -158,7 +158,7 @@ main (int argc, char *argv[])
 
 
 //
-// Create a OhMamClient application to send UDP datagrams from node zero to
+// Create a ohSamClient application to send UDP datagrams from node zero to
 // node one.
 //
   Time interPacketInterval;
@@ -173,7 +173,7 @@ main (int argc, char *argv[])
   for (int i=numServers; i<numServers+numWriters; i++)
   {
     interPacketInterval = Seconds (writeInterval);
-    OhMamClientHelper client (Address(ipIn.GetAddress (i)), port);
+    ohSamClientHelper client (Address(ipIn.GetAddress (i)), port);
     client.SetAttribute ("MaxOperations", UintegerValue (maxPacketCount));
     client.SetAttribute ("Port", UintegerValue (port));               //
     client.SetAttribute ("ID", UintegerValue (i-numServers));         // We want them to start from Zero
@@ -194,7 +194,7 @@ main (int argc, char *argv[])
   for (int i=numServers+numWriters; i<numServers+numWriters+numReaders; i++)
   {
 	  interPacketInterval = Seconds (readInterval);
-	  OhMamClientHelper client (Address(ipIn.GetAddress (i)), port);
+	  ohSamClientHelper client (Address(ipIn.GetAddress (i)), port);
 	  client.SetAttribute ("MaxOperations", UintegerValue (maxPacketCount));
     client.SetAttribute ("Port", UintegerValue (port));               // Incoming packets port
     client.SetAttribute ("ID", UintegerValue (i-numServers));    //we want them to start from Writers
@@ -212,8 +212,8 @@ main (int argc, char *argv[])
 
 
   AsciiTraceHelper ascii;
-  csma.EnableAsciiAll (ascii.CreateFileStream ("am-ohMam.tr"));
-  csma.EnablePcapAll ("am-ohMam", false);
+  csma.EnableAsciiAll (ascii.CreateFileStream ("am-ohSam.tr"));
+  csma.EnablePcapAll ("am-ohSam", false);
 
   Ipv4GlobalRoutingHelper::PopulateRoutingTables ();
 

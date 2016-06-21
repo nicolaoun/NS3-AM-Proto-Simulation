@@ -16,8 +16,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef AM_OHMAM_SERVER_H
-#define AM_OHMAM_SERVER_H
+#ifndef AM_OHSAM_SERVER_H
+#define AM_OHSAM_SERVER_H
 
 #include "ns3/application.h"
 #include "ns3/event-id.h"
@@ -32,16 +32,16 @@ class Packet;
 
 /**
  * \ingroup applications 
- * \defgroup OhMam
+ * \defgroup ohSam ohSam
  */
 
 /**
- * \ingroup OhMam
+ * \ingroup ohSam
  * \brief A Udp Echo server
  *
  * Every packet received is sent back.
  */
-class OhMamServer : public Application
+class ohSamServer : public Application
 {
 public:
   /**
@@ -49,8 +49,8 @@ public:
    * \return the object TypeId
    */
   static TypeId GetTypeId (void);
-  OhMamServer ();
-  virtual ~OhMamServer ();
+  ohSamServer ();
+  virtual ~ohSamServer ();
 
   void SetServers (std::vector<Address> ip);
 
@@ -132,18 +132,18 @@ private:
 
   uint32_t m_fail;      //!< max number of failures supported
 
-  // OhMam variables
+  // ohSam variables
   // Together <m_ts,m_id> = tag
   uint32_t m_id;        //!< id of latest value
   uint32_t m_ts; 				//!< latest timestamp
   uint32_t m_value;			//!< value associated with m_ts
-  uint32_t m_sent;     //!< sent messages counter
-  std::vector<uint32_t> m_writeop;     //!< value associated with m_ts
+  uint32_t m_sent;    //!< Counter for sent msgs
+  //std::vector<uint32_t> m_writeop;     // Now its a single writer! just check ts
   std::vector<uint32_t> m_operations;
   std::vector<uint32_t> m_relays;
 };
 
 } // namespace ns3
 
-#endif /* AM_OHMAM_SERVER_H */
+#endif /* AM_OHSAM_SERVER_H */
 

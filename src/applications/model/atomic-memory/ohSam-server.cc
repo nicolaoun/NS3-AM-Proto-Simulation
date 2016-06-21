@@ -30,82 +30,77 @@
 #include "ns3/socket-factory.h"
 #include "ns3/packet.h"
 #include "ns3/uinteger.h"
-#include "ohMam-server.h"
+#include "ohSam-server.h"
 
 namespace ns3 {
 
-NS_LOG_COMPONENT_DEFINE ("OhMamServerApplication");
+NS_LOG_COMPONENT_DEFINE ("ohSamServerApplication");
 
-NS_OBJECT_ENSURE_REGISTERED (OhMamServer);
+NS_OBJECT_ENSURE_REGISTERED (ohSamServer);
 
 void
-OhMamServer::LogInfo( std::stringstream& s)
+ohSamServer::LogInfo( std::stringstream& s)
 {
 	NS_LOG_INFO("[SERVER "<< m_personalID << " - " << Ipv4Address::ConvertFrom(m_myAddress) << "] (" << Simulator::Now ().GetSeconds () << "s):" << s.str());
 }
 
 
 TypeId
-OhMamServer::GetTypeId (void)
+ohSamServer::GetTypeId (void)
 {
-	static TypeId tid = TypeId ("ns3::OhMamServer")
+	static TypeId tid = TypeId ("ns3::ohSamServer")
     				.SetParent<Application> ()
 					.SetGroupName("Applications")
-					.AddConstructor<OhMamServer> ()
+					.AddConstructor<ohSamServer> ()
 					.AddAttribute ("Port", "Port on which we listen for incoming packets.",
 							UintegerValue (9),
-							MakeUintegerAccessor (&OhMamServer::m_port),
+							MakeUintegerAccessor (&ohSamServer::m_port),
 							MakeUintegerChecker<uint16_t> ())
 					.AddAttribute ("PacketSize", "Size of echo data in outbound packets",
 							UintegerValue (100),
-							MakeUintegerAccessor (&OhMamServer::m_size),
+							MakeUintegerAccessor (&ohSamServer::m_size),
 							MakeUintegerChecker<uint32_t> ())
 					.AddAttribute ("LocalAddress",
 							"The local Address of the current node",
 							AddressValue (),
-							MakeAddressAccessor (&OhMamServer::m_myAddress),
+							MakeAddressAccessor (&ohSamServer::m_myAddress),
 							MakeAddressChecker ())
 					.AddAttribute ("ID", 
                      		"Client ID",
                    	 		UintegerValue (100),
-                  	 		MakeUintegerAccessor (&OhMamServer::m_personalID),
+                  	 		MakeUintegerAccessor (&ohSamServer::m_personalID),
                   	 		MakeUintegerChecker<uint32_t> ())
 					.AddAttribute ("MaxFailures",
 					  		"The maximum number of server failures",
 					  		UintegerValue (100),
-					  		MakeUintegerAccessor (&OhMamServer::m_fail),
+					  		MakeUintegerAccessor (&ohSamServer::m_fail),
 					  		MakeUintegerChecker<uint32_t> ())
 	;
 	return tid;
 }
 
-OhMamServer::OhMamServer ()
+ohSamServer::ohSamServer ()
 {
 	NS_LOG_FUNCTION (this);
-	m_sent = 0;
 	m_id = 0;
 	m_ts = 0;
 	m_value = 0;
 	m_serversConnected =0;
-	//we have to put the number of servers + writers + readers there
-	m_writeop.resize(100);
-	//has to be readers size
+	m_sent=0;
 	m_operations.resize(100);
 	m_relays.resize(100);
 
 }
 
-OhMamServer::~OhMamServer()
+ohSamServer::~ohSamServer()
 {
 	NS_LOG_FUNCTION (this);
-	m_sent = 0;
+	//m_socket = 0;
 	m_id = 0;
 	m_ts = 0;
 	m_value = 0;
+	m_sent=0;
 	m_serversConnected =0;
-	//we have to put the number of clients there
-	m_writeop.resize(100);
-	//has to be readers size
 	m_operations.resize(100);
 	m_relays.resize(100);
 }
@@ -115,7 +110,7 @@ OhMamServer::~OhMamServer()
  **************************************************************************************/
 
 void
-OhMamServer::SetServers (std::vector<Address> ip)
+ohSamServer::SetServers (std::vector<Address> ip)
 {
 	m_serverAddress = ip;
 	m_numServers = m_serverAddress.size();
@@ -127,7 +122,7 @@ OhMamServer::SetServers (std::vector<Address> ip)
 }
 
 void
-OhMamServer::SetClients (std::vector<Address> ip)
+ohSamServer::SetClients (std::vector<Address> ip)
 {
 	m_clntAddress = ip;
 	m_numClients = m_clntAddress.size();
@@ -140,15 +135,12 @@ OhMamServer::SetClients (std::vector<Address> ip)
 
 
 void 
-OhMamServer::StartApplication (void)
+ohSamServer::StartApplication (void)
 {
 	NS_LOG_FUNCTION (this);
 	
 	std::stringstream sstm;
-	// AsmCommon::Reset(sstm);
-	// sstm << "Check0";
-	// LogInfo(sstm);
-
+	
 	if (m_socket == 0)
 	{
 		TypeId tid = TypeId::LookupByName ("ns3::TcpSocketFactory");
@@ -171,16 +163,16 @@ OhMamServer::StartApplication (void)
 			}
 		}
 
-		m_socket->SetRecvCallback (MakeCallback (&OhMamServer::HandleRead, this));
+		m_socket->SetRecvCallback (MakeCallback (&ohSamServer::HandleRead, this));
 
 			// Accept new connection
 			m_socket->SetAcceptCallback (
 					MakeNullCallback<bool, Ptr<Socket>, const Address &> (),
-					MakeCallback (&OhMamServer::HandleAccept, this));
+					MakeCallback (&ohSamServer::HandleAccept, this));
 			// Peer socket close handles
 			m_socket->SetCloseCallbacks (
-					MakeCallback (&OhMamServer::HandlePeerClose, this),
-					MakeCallback (&OhMamServer::HandlePeerError, this));
+					MakeCallback (&ohSamServer::HandlePeerClose, this),
+					MakeCallback (&ohSamServer::HandlePeerError, this));
 
 	}
 
@@ -204,12 +196,12 @@ OhMamServer::StartApplication (void)
 			m_srvSocket[i]->Listen ();
 			m_srvSocket[i]->Connect (InetSocketAddress (Ipv4Address::ConvertFrom(m_serverAddress[i]), m_port));
 
-			m_srvSocket[i]->SetRecvCallback (MakeCallback (&OhMamServer::HandleRead, this));
+			m_srvSocket[i]->SetRecvCallback (MakeCallback (&ohSamServer::HandleRead, this));
 			m_srvSocket[i]->SetAllowBroadcast (false);
 
 			m_srvSocket[i]->SetConnectCallback (
-					MakeCallback (&OhMamServer::ConnectionSucceeded, this),
-					MakeCallback (&OhMamServer::ConnectionFailed, this));
+					MakeCallback (&ohSamServer::ConnectionSucceeded, this),
+					MakeCallback (&ohSamServer::ConnectionFailed, this));
 
 		}
 	}
@@ -233,19 +225,19 @@ OhMamServer::StartApplication (void)
 			m_clntSocket[i]->Listen();
 			m_clntSocket[i]->Connect (InetSocketAddress (Ipv4Address::ConvertFrom(m_clntAddress[i]), m_port));
 
-			m_clntSocket[i]->SetRecvCallback (MakeCallback (&OhMamServer::HandleRead, this));
+			m_clntSocket[i]->SetRecvCallback (MakeCallback (&ohSamServer::HandleRead, this));
 			m_clntSocket[i]->SetAllowBroadcast (false);
 
 			m_clntSocket[i]->SetConnectCallback (
-					MakeCallback (&OhMamServer::ConnectionSucceeded, this),
-					MakeCallback (&OhMamServer::ConnectionFailed, this));
+					MakeCallback (&ohSamServer::ConnectionSucceeded, this),
+					MakeCallback (&ohSamServer::ConnectionFailed, this));
 		}
 	}
 }
 
 
 void 
-OhMamServer::StopApplication ()
+ohSamServer::StopApplication ()
 {
 	NS_LOG_FUNCTION (this);
 
@@ -277,7 +269,7 @@ OhMamServer::StopApplication ()
 }
 
 void
-OhMamServer::DoDispose (void)
+ohSamServer::DoDispose (void)
 {
 	NS_LOG_FUNCTION (this);
 	Application::DoDispose ();
@@ -287,25 +279,25 @@ OhMamServer::DoDispose (void)
 /**************************************************************************************
  * Connection handlers
  **************************************************************************************/
-void OhMamServer::HandlePeerClose (Ptr<Socket> socket)
+void ohSamServer::HandlePeerClose (Ptr<Socket> socket)
 {
 	NS_LOG_FUNCTION (this << socket);
 }
 
-void OhMamServer::HandlePeerError (Ptr<Socket> socket)
+void ohSamServer::HandlePeerError (Ptr<Socket> socket)
 {
 	NS_LOG_FUNCTION (this << socket);
 }
 
 
-void OhMamServer::HandleAccept (Ptr<Socket> s, const Address& from)
+void ohSamServer::HandleAccept (Ptr<Socket> s, const Address& from)
 {
 	NS_LOG_FUNCTION (this << s << from);
-	s->SetRecvCallback (MakeCallback (&OhMamServer::HandleRead, this));
+	s->SetRecvCallback (MakeCallback (&ohSamServer::HandleRead, this));
 	m_socketList.push_back (s);
 }
 
- void OhMamServer::ConnectionSucceeded (Ptr<Socket> socket)
+ void ohSamServer::ConnectionSucceeded (Ptr<Socket> socket)
  {
    NS_LOG_FUNCTION (this << socket);
    Address from;
@@ -327,7 +319,7 @@ void OhMamServer::HandleAccept (Ptr<Socket> s, const Address& from)
    }
  }
 
- void OhMamServer::ConnectionFailed (Ptr<Socket> socket)
+ void ohSamServer::ConnectionFailed (Ptr<Socket> socket)
  {
    NS_LOG_FUNCTION (this << socket);
  }
@@ -336,7 +328,7 @@ void OhMamServer::HandleAccept (Ptr<Socket> s, const Address& from)
  * PACKET DATA Handler
  **************************************************************************************/
 void
-OhMamServer::SetFill (std::string fill)
+ohSamServer::SetFill (std::string fill)
 {
   NS_LOG_FUNCTION (this << fill);
 
@@ -344,25 +336,19 @@ OhMamServer::SetFill (std::string fill)
 
   if (dataSize != m_dataSize) 
     {
-      //if (m_data)
-      //	delete [] m_data;
       m_data = new uint8_t [dataSize];
       m_dataSize = dataSize;
     }
 
   memcpy (m_data, fill.c_str (), dataSize);
-
-  //
-  // Overwrite packet size attribute.
-  //
   m_size = dataSize;
 }
 
 /**************************************************************************************
- * OhMam Rcv Handler
+ * ohSam Rcv Handler
  **************************************************************************************/
 void 
-OhMamServer::HandleRead (Ptr<Socket> socket)
+ohSamServer::HandleRead (Ptr<Socket> socket)
 {
 	NS_LOG_FUNCTION (this << socket);
 
@@ -370,9 +356,8 @@ OhMamServer::HandleRead (Ptr<Socket> socket)
 	Address from;
 
 
-	// Added the msgId, msgWriteOp
 	Address msgAddr;
-	uint32_t msgT, msgTs, msgId, msgV, msgOp, msgSenderID, reply_type;
+	uint32_t msgT, msgTs, msgV, msgOp, msgSenderID, reply_type;
 	std::stringstream sstm;
 	std::string message_type = "";
 	std::string message_response_type = "";
@@ -396,20 +381,17 @@ OhMamServer::HandleRead (Ptr<Socket> socket)
 
 		if (msgT==WRITE){
 			message_type = "write";
-			istm >> msgTs >> msgId >> msgV >> msgOp;
-		}else if (msgT==DISCOVER){
-			message_type = "discover";
-			istm >> msgOp;
+			istm >> msgTs >> msgV;
 		}else if (msgT==READ){
 			message_type = "read";
-			istm >> msgId >> msgOp;
+			istm >> msgSenderID >> msgOp;
 		}else{
 			message_type = "readRelay";
-			istm >> msgTs >> msgId >> msgV >> msgSenderID >> msgOp;
+			istm >> msgTs >> msgV >> msgSenderID >> msgOp;
 		}
-				
+		
 		//// CASE WRITE
-		if ((msgT==WRITE) || (msgT==DISCOVER)){
+		if (msgT==WRITE){
 			
 			AsmCommon::Reset(sstm);
 					sstm << "Received " << message_type <<" "<< packet->GetSize () << " bytes from " <<
@@ -417,30 +399,26 @@ OhMamServer::HandleRead (Ptr<Socket> socket)
 							InetSocketAddress::ConvertFrom (from).GetPort () << " data " << buf;
 					LogInfo(sstm);
 
-			message_response_type = "discoverAck";
-			reply_type = DISCOVERACK;
 			NS_LOG_LOGIC ("Updating Local Info");
 
-			if (((m_ts < msgTs) || ((m_ts == msgTs)&&(m_id<msgId))) && (m_writeop[msgId] < msgOp) && (msgT==WRITE))
+			if (m_ts < msgTs)
 			{
 				m_ts = msgTs;
 				m_value = msgV;
-				m_id = msgId;
 				message_response_type = "writeAck";
 				reply_type = WRITEACK;
 			}
 			NS_LOG_LOGIC ("Echoing packet");
-			// Prepare packet content
-			// serialize <msgType, ts, id, value, msgOp ,counter>
+
 			AsmCommon::Reset(pkts);
-			pkts << reply_type << " " << m_ts << " " << m_id << " " << m_value << " " << msgOp;
+			pkts << reply_type << " " << m_ts << " " << m_value;
 			SetFill(pkts.str());
 
 			Ptr<Packet> p;
 		  		if (m_dataSize)
 		    	{
-		      		NS_ASSERT_MSG (m_dataSize == m_size, "OhMamServer::HandleSend(): m_size and m_dataSize inconsistent");
-		      		NS_ASSERT_MSG (m_data, "OhMamServer::HandleSend(): m_dataSize but no m_data");
+		      		NS_ASSERT_MSG (m_dataSize == m_size, "ohSamServer::HandleSend(): m_size and m_dataSize inconsistent");
+		      		NS_ASSERT_MSG (m_data, "ohSamServer::HandleSend(): m_dataSize but no m_data");
 		      		p = Create<Packet> (m_data, m_dataSize);
 		    	}
 		  		else
@@ -448,9 +426,9 @@ OhMamServer::HandleRead (Ptr<Socket> socket)
 		    		p = Create<Packet> (m_size);
 		    	}
 
-			//socket->SendTo (p, 0, from);
+			
 		  	socket->Send (p);
-		  	m_sent++;
+		  	m_sent++; //count the sent messages
 			AsmCommon::Reset(sstm);
 			sstm << "Sent "<< message_response_type <<" " << p->GetSize () << " bytes to " <<
 				InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
@@ -462,33 +440,24 @@ OhMamServer::HandleRead (Ptr<Socket> socket)
 		else if (msgT == READ)
 		{
 			
-			//istm >> msgTs >> msgId >> msgV >> msgOp >> msgC;
-			//istm >> msgOp >> msgC >> msgSenderID;
-
 			AsmCommon::Reset(sstm);
 					sstm << "Received " << message_type <<" "<< packet->GetSize () << " bytes from " <<
 							InetSocketAddress::ConvertFrom (from).GetIpv4 () << "port " <<
 							InetSocketAddress::ConvertFrom (from).GetPort () << " data " << buf;
 					LogInfo(sstm);
 
-			//Broadcast a ReadRelay to all the servers! 
-			//will need the readerId here -> msgId
-			// from is the address that we will eventually reply back the ReadAck
-
+			
 			message_response_type = "readRelay";
 			msgT = READRELAY;
 			AsmCommon::Reset(pkts);
-
-			pkts << msgT << " " << m_ts << " " << m_id << " " << m_value << " " << msgId  << " " << msgOp;	//Test4
-
-
+			pkts << msgT << " " << m_ts << " " << m_value << " " << msgSenderID << " " << msgOp;
 			SetFill(pkts.str());
 
 			Ptr<Packet> pc;
 		  		if (m_dataSize)
 		    	{
-		      		NS_ASSERT_MSG (m_dataSize == m_size, "OhMamServer::HandleSend(): m_size and m_dataSize inconsistent");
-		      		NS_ASSERT_MSG (m_data, "OhMamServer::HandleSend(): m_dataSize but no m_data");
+		      		NS_ASSERT_MSG (m_dataSize == m_size, "ohSamServer::HandleSend(): m_size and m_dataSize inconsistent");
+		      		NS_ASSERT_MSG (m_data, "ohSamServer::HandleSend(): m_dataSize but no m_data");
 		      		pc = Create<Packet> (m_data, m_dataSize);
 		    	}
 		  		else
@@ -499,7 +468,7 @@ OhMamServer::HandleRead (Ptr<Socket> socket)
 			//Send a single packet to each server
   			for (int i=0; i<m_serverAddress.size(); i++)
   			{
-	  			m_sent++;
+	  			m_sent++; //increase here to count also "our" never sent to ourselves message :) 
   				if (m_serverAddress[i] != m_myAddress)
   				{
   					m_srvSocket[i]->Send(pc);
@@ -517,16 +486,11 @@ OhMamServer::HandleRead (Ptr<Socket> socket)
 			////////// READ RELAY ///////////
 			/////////////////////////////////
 
-		
 			AsmCommon::Reset(sstm);
 			sstm << "Received " << message_type <<" "<< packet->GetSize () << " bytes from " <<
 					InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
 					InetSocketAddress::ConvertFrom (from).GetPort () << " data " << buf;
 			LogInfo(sstm);
-
-			//AsmCommon::Reset(sstm);
-			//sstm << "Received RR - msgTs: " << msgTs << " msgID: "<< msgId<<" msgV: "<<msgV<<" Invoker: "<<msgSenderID;
-			//LogInfo(sstm);
 
 			NS_LOG_LOGIC ("Updating Local Info");
 
@@ -535,7 +499,6 @@ OhMamServer::HandleRead (Ptr<Socket> socket)
 			{
 				m_ts = msgTs;
 				m_value = msgV;
-				m_id = msgId;
 			}
 
 			if (m_operations[msgSenderID] < msgOp)
@@ -549,21 +512,20 @@ OhMamServer::HandleRead (Ptr<Socket> socket)
 				m_relays[msgSenderID] ++;
 			}
 
-
 			if (m_relays[msgSenderID] >= (m_numServers - m_fail))
 			{
 				// REPLY back to the reader
 				message_response_type = "readAck";
 				msgT = READACK;
 				AsmCommon::Reset(pkts);
-				pkts << msgT << " " << m_ts << " " << m_id << " " << m_value << " " << msgOp;
+				pkts << msgT << " " << m_ts << " " << m_value << " " << msgOp;
 				SetFill(pkts.str());
 
 				Ptr<Packet> pk;
 				if (m_dataSize)
 				{
-					NS_ASSERT_MSG (m_dataSize == m_size, "OhMamServer::HandleSend(): m_size and m_dataSize inconsistent");
-					NS_ASSERT_MSG (m_data, "OhMamServer::HandleSend(): m_dataSize but no m_data");
+					NS_ASSERT_MSG (m_dataSize == m_size, "ohSamServer::HandleSend(): m_size and m_dataSize inconsistent");
+					NS_ASSERT_MSG (m_data, "ohSamServer::HandleSend(): m_dataSize but no m_data");
 					pk = Create<Packet> (m_data, m_dataSize);
 				}
 				else
@@ -580,7 +542,7 @@ OhMamServer::HandleRead (Ptr<Socket> socket)
 				pk->RemoveAllPacketTags ();
 				pk->RemoveAllByteTags ();
 
-				//zero the replies for that reader
+				//reset the replies for that reader to one (to count ours)
 				m_relays[msgSenderID] =1;
 			}
 		}

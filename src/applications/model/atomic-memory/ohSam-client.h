@@ -16,8 +16,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef AM_OHMAM_CLIENT_H
-#define AM_OHMAM_CLIENT_H
+#ifndef AM_OHSAM_CLIENT_H
+#define AM_OHSAM_CLIENT_H
 
 #include "ns3/application.h"
 #include "ns3/event-id.h"
@@ -32,12 +32,12 @@ class Socket;
 class Packet;
 
 /**
- * \ingroup OhMam
- * \brief A OhMam client
+ * \ingroup ohSam
+ * \brief A ohSam client
  *
  * Every packet sent should be returned by the server and received here.
  */
-class OhMamClient : public Application
+class ohSamClient : public Application
 {
 public:
 	/**
@@ -46,9 +46,9 @@ public:
 	 */
 	static TypeId GetTypeId (void);
 
-	OhMamClient ();
+	ohSamClient ();
 
-	virtual ~OhMamClient ();
+	virtual ~ohSamClient ();
 
 	/**
 	 * \brief set the remote address and port
@@ -166,7 +166,7 @@ private:
 	 * \param ts the received timestamp
 	 * \param val the value associate with ts
 	 */
-	void ProcessReply(uint32_t type, uint32_t ts, uint32_t id, uint32_t val, uint32_t op);
+	void ProcessReply(uint32_t type, uint32_t ts, uint32_t val);
 	
 	/**
    	 * \brief Handle an incoming connection
@@ -216,7 +216,7 @@ private:
 
 	uint16_t m_serversConnected;
 
-	// OhMam variables
+	// ohSam variables
 	// Together <m_ts,m_id> is the tag
 	uint32_t m_ts; 				//!< latest timestamp
 	uint32_t m_MINts; 			//!< min timestamp
@@ -225,7 +225,7 @@ private:
 	uint32_t m_id; 				//!< latest id 
 	
 	uint32_t m_readop;			//!< read operation counter
-	uint32_t m_writeop;			//!< write operation counter
+	
 
 	uint32_t m_numServers;		//!< number of servers
 	uint32_t m_fail;			//!< max number of failures supported
@@ -245,7 +245,7 @@ private:
 	uint32_t m_slowOpCount;
 	uint32_t m_fastOpCount;
 	uint32_t m_replies;
-	uint32_t m_sent; 		//!< Counter for sent packets
+	uint32_t m_sent; 		//!< Counter for sent msgs
 	uint32_t m_count; 		//!< Maximum number of packets the application will send
 
 
@@ -256,4 +256,4 @@ private:
 
 } // namespace ns3
 
-#endif /* AM_OHMAM_CLIENT_H */
+#endif /* AM_OHSAM_CLIENT_H */
