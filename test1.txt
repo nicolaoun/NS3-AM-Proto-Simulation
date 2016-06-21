@@ -1,0 +1,1 @@
+Tip: Use sublime to open .conf files…
