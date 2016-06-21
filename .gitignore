@@ -3,4 +3,6 @@
 build/*
 doc/*
 .waf*
+.lock-waf_darwin_build
 waf-tools/*
+utils.pyc

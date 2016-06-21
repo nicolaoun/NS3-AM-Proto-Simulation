@@ -100,6 +100,7 @@ private:
   std::list<Ptr<Socket> > m_socketList; //!< the accepted sockets
   Address m_local; //!< local multicast address
   Address m_myAddress; //!< ip address
+  uint32_t m_personalID;        //My Personal ID
 
   // ccHybrid variables
   uint32_t m_ts; 				//!< latest timestamp
@@ -108,6 +109,10 @@ private:
   std::set< Address > m_seen;	//!< set of IDs storing the IDs of the processes seen our latest ts/value
   bool m_propagated;			//!< optimization flag indicating whether a ts has been propagated by a read
   uint16_t m_optimize;			//!< switch on/off prop optimization
+
+  //uint32_t m_opCount;
+  //uint32_t m_completeOps;
+  uint32_t m_sent;    //!< Counter for sent packets
 };
 
 } // namespace ns3

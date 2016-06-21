@@ -191,6 +191,7 @@ private:
 	Address m_myAddress; //!< Remote peer address
 	uint16_t m_peerPort; //!< Remote peer port
 	EventId m_sendEvent;
+	uint32_t m_personalID; 				//My Personal ID
 
 	uint16_t m_serversConnected;
 

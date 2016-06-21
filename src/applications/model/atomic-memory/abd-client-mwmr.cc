@@ -39,7 +39,7 @@ NS_OBJECT_ENSURE_REGISTERED (AbdClientMWMR);
 void
 AbdClientMWMR::LogInfo( std::stringstream& s)
 {
-	NS_LOG_INFO("[CLIENT " << Ipv4Address::ConvertFrom(m_myAddress) << "] (" << Simulator::Now ().GetSeconds () << "s):" << s.str());
+	NS_LOG_INFO("[CLIENT " << m_personalID << " - "<< Ipv4Address::ConvertFrom(m_myAddress) << "] (" << Simulator::Now ().GetSeconds () << "s):" << s.str());
 }
 
 
@@ -208,11 +208,11 @@ AbdClientMWMR::StopApplication ()
   switch(m_prType)
   {
   case WRITER:
-	  sstm << "** WRITER TERMINATED: #writes=" << m_opCount << ", AveOpTime="<< ( (m_opAve.GetSeconds()) /m_opCount) <<"s **";
+	  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_completeOps<< ", AveOpTime="<< ( (m_opAve.GetSeconds()) /m_opCount) <<"s **";
 	  LogInfo(sstm);
 	  break;
   case READER:
-	  sstm << "** READER TERMINATED: #reads=" << m_opCount << ", AveOpTime="<< ((m_opAve.GetSeconds())/m_opCount) <<"s **";
+	  sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads="<<m_opCount<<", #CompletedReads=" << m_completeOps << ", #4EXCH_reads="<< m_completeOps <<", AveOpTime="<< ((m_opAve.GetSeconds())/m_opCount) <<"s **";
 	  LogInfo(sstm);
 	  break;
   }
@@ -310,7 +310,7 @@ AbdClientMWMR::SetFill (std::string fill)
 
   if (dataSize != m_dataSize)
     {
-      delete [] m_data;
+      //delete [] m_data;
       m_data = new uint8_t [dataSize];
       m_dataSize = dataSize;
     }
@@ -548,8 +548,8 @@ AbdClientMWMR::ProcessReply(uint32_t type, uint32_t ts, uint32_t id, uint32_t va
 			if (m_replies >= (m_numServers - m_fail))
 			{
 				m_opStatus = IDLE;
+				m_completeOps++;
 				ScheduleOperation (m_interval);
-
 				m_opEnd = Now();
 				AsmCommon::Reset(sstm);
 				sstm << "** WRITE COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, [<tag>,value]: [<" << m_ts << "," << m_personalID << ">," << m_value << "] - @ 4 EXCH **";
@@ -600,7 +600,7 @@ AbdClientMWMR::ProcessReply(uint32_t type, uint32_t ts, uint32_t id, uint32_t va
 			{
 				m_opStatus = IDLE;
 				ScheduleOperation (m_interval);
-
+				m_completeOps++;
 				m_opEnd = Now();
 				AsmCommon::Reset(sstm);
 				sstm << "** READ COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, [<tag>,value]: [<" << m_ts << "," << m_id << ">," << m_value << "] - @ 4 EXCH **";

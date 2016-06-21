@@ -211,17 +211,19 @@ main (int argc, char *argv[])
   c_apps.Stop (Seconds (15.0));
 
 
-  AsciiTraceHelper ascii;
-  csma.EnableAsciiAll (ascii.CreateFileStream ("am-ohMam.tr"));
-  csma.EnablePcapAll ("am-ohMam", false);
+  //AsciiTraceHelper ascii;
+  //csma.EnableAsciiAll (ascii.CreateFileStream ("am-ohMam.tr"));
+  //csma.EnablePcapAll ("am-ohMam", false);
 
   Ipv4GlobalRoutingHelper::PopulateRoutingTables ();
 
 //
 // Now, do the actual simulation.
 //
-  NS_LOG_INFO ("Run Simulation.");
+  NS_LOG_INFO ("Run Simulation: oh-Mam.");
   Simulator::Run ();
   Simulator::Destroy ();
-  NS_LOG_INFO ("Done.");
+  NS_LOG_INFO (">>>> oh-Mam Scenario - Servers:"<<numServers<<", Readers:"<<numReaders<<", Writers:"<<numWriters<<", Failures:"<<numFail<<", ReadInterval:"<<readInterval<<", WriteInterval:"<<writeInterval<<", <<<<");
+  NS_LOG_INFO ("Scenario Succesfully completed.");
+  NS_LOG_INFO ("Exiting...");
 }

@@ -189,6 +189,7 @@ private:
 	EventId m_sendEvent;
 
 	uint16_t m_serversConnected;
+	uint32_t m_personalID; 				//My Personal ID
 
 	// ABD variables
 	uint32_t m_ts; 				//!< latest timestamp
@@ -209,6 +210,7 @@ private:
 
 	//counters
 	uint32_t m_opCount;
+	uint32_t m_completeOps;
 	uint32_t m_replies;
 	uint32_t m_sent; 		//!< Counter for sent packets
 	uint32_t m_count; 		//!< Maximum number of packets the application will send

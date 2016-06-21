@@ -39,7 +39,7 @@ NS_OBJECT_ENSURE_REGISTERED (AbdClient);
 void
 AbdClient::LogInfo( std::stringstream& s)
 {
-	NS_LOG_INFO("[CLIENT " << Ipv4Address::ConvertFrom(m_myAddress) << "] (" << Simulator::Now ().GetSeconds () << "s):" << s.str());
+	NS_LOG_INFO("[CLIENT " << m_personalID << " - "<< Ipv4Address::ConvertFrom(m_myAddress) << "] (" << Simulator::Now ().GetSeconds () << "s):" << s.str());
 }
 
 
@@ -95,6 +95,11 @@ AbdClient::GetTypeId (void)
     .AddTraceSource ("Tx", "A new packet is created and is sent",
                      MakeTraceSourceAccessor (&AbdClient::m_txTrace),
                      "ns3::Packet::TracedCallback")
+    .AddAttribute ("ID", 
+                     "Client ID",
+                   	 UintegerValue (100),
+                  	 MakeUintegerAccessor (&AbdClient::m_personalID),
+                  	 MakeUintegerChecker<uint32_t> ())
   ;
   return tid;
 }
@@ -195,19 +200,20 @@ AbdClient::StopApplication ()
 	  }
     }
 
-  Simulator::Cancel (m_sendEvent);
-
   switch(m_prType)
   {
   case WRITER:
-	  sstm << "** WRITER TERMINATED: #writes=" << m_opCount << ", AveOpTime="<< ( (m_opAve.GetSeconds()) /m_opCount) <<"s **";
+	  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_completeOps<< ", AveOpTime="<< ( (m_opAve.GetSeconds()) /m_opCount) <<"s **";
 	  LogInfo(sstm);
 	  break;
   case READER:
-	  sstm << "** READER TERMINATED: #reads=" << m_opCount << ", AveOpTime="<< ((m_opAve.GetSeconds())/m_opCount) <<"s **";
+	  sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads="<<m_opCount<<", #CompletedReads=" << m_completeOps << ", #4EXCH_reads="<< m_completeOps <<", AveOpTime="<< ((m_opAve.GetSeconds())/m_opCount) <<"s **";
 	  LogInfo(sstm);
 	  break;
   }
+
+  Simulator::Cancel (m_sendEvent);
+
 }
 
 void
@@ -302,7 +308,7 @@ AbdClient::SetFill (std::string fill)
 
   if (dataSize != m_dataSize)
     {
-      delete [] m_data;
+      //delete [] m_data;
       m_data = new uint8_t [dataSize];
       m_dataSize = dataSize;
     }
@@ -353,11 +359,10 @@ AbdClient::InvokeRead (void)
 
 		//Send msg to all
 		m_replies = 0;		//reset replies
-		HandleSend();
-
 		AsmCommon::Reset(sstm);
 		sstm << "** READ INVOKED: " << m_opCount << " at "<< m_opStart.GetSeconds() <<"s";
 		LogInfo(sstm);
+		HandleSend();
 	}
 }
 
@@ -383,11 +388,10 @@ AbdClient::InvokeWrite (void)
 
 		//Send msg to all
 		m_replies = 0;		//reset replies
-		HandleSend();
-
 		AsmCommon::Reset(sstm);
 		sstm << "** WRITE INVOKED: " << m_opCount << " at "<< m_opStart.GetSeconds() <<"s";
 		LogInfo(sstm);
+		HandleSend();
 	}
 }
 
@@ -484,6 +488,7 @@ AbdClient::ProcessReply(uint32_t type, uint32_t ts, uint32_t val)
 		if (m_replies >= (m_numServers - m_fail))
 		{
 			m_opStatus = IDLE;
+			m_completeOps++;
 			ScheduleOperation (m_interval);
 
 			m_opEnd = Now();
@@ -530,8 +535,8 @@ AbdClient::ProcessReply(uint32_t type, uint32_t ts, uint32_t val)
 			if (m_replies >= (m_numServers - m_fail))
 			{
 				m_opStatus = IDLE;
+				m_completeOps++;
 				ScheduleOperation (m_interval);
-
 				m_opEnd = Now();
 				AsmCommon::Reset(sstm);
 				sstm << "** READ COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, <ts, value>: [" << m_ts << "," << m_value << "], TWO COMM **";

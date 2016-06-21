@@ -108,6 +108,7 @@ private:
   uint32_t m_ts; 				//!< latest timestamp
   uint32_t m_value;			//!< value associated with m_ts
   uint32_t *m_writeop;     //!< value associated with m_ts
+  uint32_t m_sent;     //!< sent messages counter
 };
 
 } // namespace ns3
