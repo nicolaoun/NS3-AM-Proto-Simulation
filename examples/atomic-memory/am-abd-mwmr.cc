@@ -160,7 +160,7 @@ main (int argc, char *argv[])
     interPacketInterval = Seconds (writeInterval);
     AbdClientHelperMWMR client (Address(ipIn.GetAddress (i)), port);
     client.SetAttribute ("MaxOperations", UintegerValue (maxPacketCount));
-    client.SetAttribute ("ID", UintegerValue (i));
+    client.SetAttribute ("ID", UintegerValue (i-numServers));
     client.SetAttribute ("MaxFailures", UintegerValue (numFail));
     client.SetAttribute ("Interval", TimeValue (interPacketInterval));
     client.SetAttribute ("PacketSize", UintegerValue (packetSize));
@@ -180,6 +180,7 @@ main (int argc, char *argv[])
 	  interPacketInterval = Seconds (readInterval);
 	  AbdClientHelperMWMR client (Address(ipIn.GetAddress (i)), port);
 	  client.SetAttribute ("MaxOperations", UintegerValue (maxPacketCount));
+    client.SetAttribute ("ID", UintegerValue (i-numServers));
 	  client.SetAttribute ("MaxFailures", UintegerValue (numFail));
 	  client.SetAttribute ("Interval", TimeValue (interPacketInterval));
 	  client.SetAttribute ("PacketSize", UintegerValue (packetSize));
@@ -202,8 +203,10 @@ main (int argc, char *argv[])
 //
 // Now, do the actual simulation.
 //
-  NS_LOG_INFO ("Run Simulation.");
+  NS_LOG_INFO ("Run Simulation: ABD MWMR");
   Simulator::Run ();
   Simulator::Destroy ();
-  NS_LOG_INFO ("Done.");
+  NS_LOG_INFO (">>>> ABD MWMR Scenario - Servers:"<<numServers<<", Readers:"<<numReaders<<", Writers:"<<numWriters<<", Failures:"<<numFail<<", ReadInterval:"<<readInterval<<", WriteInterval:"<<writeInterval<<", <<<<");
+  NS_LOG_INFO ("Scenario Succesfully completed.");
+  NS_LOG_INFO ("Exiting...");
 }

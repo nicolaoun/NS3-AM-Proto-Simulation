@@ -128,6 +128,7 @@ main (int argc, char *argv[])
   {
 	  AbdServerHelper server (port);
 	  server.SetAttribute("PacketSize", UintegerValue (1024) );
+    server.SetAttribute ("ID", UintegerValue (i-1));
 	  server.SetAttribute("LocalAddress", AddressValue (serverAddress[i-1]) );
 	  s_apps.Add ((server.Install(nodes.Get (i))).Get(0));
   }
@@ -152,6 +153,7 @@ main (int argc, char *argv[])
   AbdClientHelper client (Address(ipIn.GetAddress (0)), port);
   client.SetAttribute ("MaxOperations", UintegerValue (maxPacketCount));
   client.SetAttribute ("MaxFailures", UintegerValue (numFail));
+  client.SetAttribute ("ID", UintegerValue (0));
   client.SetAttribute ("Interval", TimeValue (interPacketInterval));
   client.SetAttribute ("PacketSize", UintegerValue (packetSize));
   client.SetAttribute ("SetRole", UintegerValue(WRITER));				//set writer role
@@ -167,6 +169,7 @@ main (int argc, char *argv[])
 	  interPacketInterval = Seconds (readInterval);
 	  AbdClientHelper client (Address(ipIn.GetAddress (i)), port);
 	  client.SetAttribute ("MaxOperations", UintegerValue (maxPacketCount));
+    client.SetAttribute ("ID", UintegerValue (i-numServers));
 	  client.SetAttribute ("MaxFailures", UintegerValue (numFail));
 	  client.SetAttribute ("Interval", TimeValue (interPacketInterval));
 	  client.SetAttribute ("PacketSize", UintegerValue (packetSize));
@@ -189,8 +192,10 @@ main (int argc, char *argv[])
 //
 // Now, do the actual simulation.
 //
-  NS_LOG_INFO ("Run Simulation.");
+  NS_LOG_INFO ("Run Simulation: ABD SWMR");
   Simulator::Run ();
   Simulator::Destroy ();
-  NS_LOG_INFO ("Done.");
+  NS_LOG_INFO (">>>> ABD SWMR Scenario - Servers:"<<numServers<<", Readers:"<<numReaders<<", Writers:1, Failures:"<<numFail<<", ReadInterval:"<<readInterval<<", WriteInterval:"<<writeInterval<<", <<<<");
+  NS_LOG_INFO ("Scenario Succesfully completed.");
+  NS_LOG_INFO ("Exiting...");
 }

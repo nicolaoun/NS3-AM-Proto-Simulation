@@ -42,7 +42,7 @@ NS_OBJECT_ENSURE_REGISTERED (CCHybridServer);
 void
 CCHybridServer::LogInfo( std::stringstream& s)
 {
-	NS_LOG_INFO("[SERVER " << Ipv4Address::ConvertFrom(m_myAddress) << "] (" << Simulator::Now ().GetSeconds () << "s):" << s.str());
+	NS_LOG_INFO("[SERVER " << m_personalID << " - "<< Ipv4Address::ConvertFrom(m_myAddress) << "] (" << Simulator::Now ().GetSeconds () << "s):" << s.str());
 }
 
 
@@ -71,6 +71,11 @@ CCHybridServer::GetTypeId (void)
 							UintegerValue (1),
 							MakeUintegerAccessor (&CCHybridServer::m_optimize),
 							MakeUintegerChecker<uint16_t> ())
+					.AddAttribute ("ID", 
+                     "Client ID",
+                   	 UintegerValue (100),
+                  	 MakeUintegerAccessor (&CCHybridServer::m_personalID),
+                  	 MakeUintegerChecker<uint32_t> ())
 					;
 	return tid;
 }
@@ -82,6 +87,7 @@ CCHybridServer::CCHybridServer ()
 	m_ts = 0;
 	m_value = 0;
 	m_propagated = false;
+	m_sent=0;
 	//m_optimize = 1;
 }
 
@@ -92,6 +98,7 @@ CCHybridServer::~CCHybridServer()
 	m_ts = 0;
 	m_value = 0;
 	m_propagated = false;
+	m_sent=0;
 	//m_optimize = 1;
 }
 
@@ -149,6 +156,9 @@ CCHybridServer::StopApplication ()
 		m_socket->Close ();
 		m_socket->SetRecvCallback (MakeNullCallback<void, Ptr<Socket> > ());
 	}
+	std::stringstream sstm;
+	sstm << "** SERVER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent<<" **";
+	LogInfo(sstm);
 }
 
 void
@@ -284,6 +294,7 @@ CCHybridServer::HandleRead (Ptr<Socket> socket)
 
 		//socket->SendTo (p, 0, from);
 		socket->Send (p);
+		m_sent++;
 
 		AsmCommon::Reset(sstm);
 		sstm << "Sent " << packet->GetSize () << " bytes to " <<

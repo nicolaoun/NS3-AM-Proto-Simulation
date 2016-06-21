@@ -113,7 +113,6 @@ public:
 	void SetFill (uint8_t *fill, uint32_t fillSize, uint32_t dataSize);
 
 	void SetServers (std::vector<Address> ip);
-	uint32_t m_value;			//!< value associated with m_ts
 
 protected:
 	virtual void DoDispose (void);
@@ -219,6 +218,7 @@ private:
 	// OhMam variables
 	// Together <m_ts,m_id> is the tag
 	uint32_t m_ts; 				//!< latest timestamp
+	uint32_t m_value;			//!< value associated with m_ts
 	uint32_t m_MINts; 			//!< min timestamp
 	uint32_t m_MINId; 			//!< min id
 	uint32_t m_MINvalue; 		//!< min value
@@ -242,6 +242,7 @@ private:
 
 	//counters
 	uint32_t m_opCount;
+	uint32_t m_completeOps;
 	uint32_t m_slowOpCount;
 	uint32_t m_fastOpCount;
 	uint32_t m_replies;

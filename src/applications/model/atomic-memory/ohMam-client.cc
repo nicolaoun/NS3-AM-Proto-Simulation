@@ -135,6 +135,7 @@ OhMamClient::OhMamClient ()
 	m_MINId = 10000000;
 	m_fail = 0;
 	m_opCount=0;
+	m_completeOps=0;
 	m_slowOpCount=0;
 	m_fastOpCount=0;
 }
@@ -156,6 +157,7 @@ OhMamClient::~OhMamClient()
 	m_MINId = 10000000;
 	m_fail = 0;
 	m_opCount=0;
+	m_completeOps=0;
 	m_slowOpCount=0;
 	m_fastOpCount=0;
 }
@@ -267,11 +269,11 @@ OhMamClient::StopApplication ()
   switch(m_prType)
   {
   case WRITER:
-	  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #writes=" << m_opCount << ", AveOpTime="<< ( (m_opAve.GetSeconds()) /m_opCount) <<"s **";
+	  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_completeOps <<", AveOpTime="<< ( (m_opAve.GetSeconds()) /m_opCount) <<"s **";
 	  LogInfo(sstm);
 	  break;
   case READER:
-	  sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #reads=" << m_opCount << ", #3EXCH_reads="<< m_slowOpCount << ", #2EXCH_reads="<<m_fastOpCount<<", AveOpTime="<< ((m_opAve.GetSeconds())/m_opCount) <<"s, 3EXC_AveOpTime="<< ((m_opAve.GetSeconds())/m_slowOpCount) <<"s, 2EXC_AveOpTime=0.0s **";
+	  sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads=" << m_opCount <<", #CompletedReads="<<m_completeOps <<", #3EXCH_reads="<< m_completeOps << ", #2EXCH_reads=0, AveOpTime="<< ((m_opAve.GetSeconds())/m_opCount) <<"s **";
 	  LogInfo(sstm);
 	  break;
   }
@@ -441,17 +443,18 @@ OhMamClient::InvokeRead (void)
 		m_opStatus = PHASE1;
 		m_msgType = READ;
 		m_readop ++;
+		m_opCount++;
 
 		m_MINts = 10000000;
 		m_MINId = 10000000;
 
 		//Send msg to all
 		m_replies = 0;		//reset replies
-		HandleSend();
-
+		
 		AsmCommon::Reset(sstm);
 		sstm << "** READ INVOKED: " << m_personalID << " at "<< m_opStart.GetSeconds() <<"s";
 		LogInfo(sstm);
+		HandleSend();
 	}
 }
 
@@ -473,11 +476,11 @@ OhMamClient::InvokeWrite (void)
 		m_msgType = DISCOVER;
 		m_writeop ++;
 		m_replies = 0;		//reset replies
-		HandleSend();
-
+		
 		AsmCommon::Reset(sstm);
 		sstm << "** WRITE INVOKED: " << m_opCount << " at "<< m_opStart.GetSeconds() <<"s";
 		LogInfo(sstm);
+		HandleSend();
 	}
 }
 
@@ -651,7 +654,8 @@ OhMamClient::ProcessReply(uint32_t type, uint32_t ts, uint32_t id, uint32_t val,
 
 			if (m_replies >= (m_numServers - m_fail))
 			{
-				m_opCount++;
+				
+				m_completeOps++;
 				m_opStatus = IDLE;
 				ScheduleOperation (m_interval);
 
@@ -681,7 +685,7 @@ OhMamClient::ProcessReply(uint32_t type, uint32_t ts, uint32_t id, uint32_t val,
       	{
       		// HERE WE WILL NEED AN IF STATEMENT TO COUNT THE SLOW 
 			// ONES IN THE NEXT ALGORITHM
-			m_opCount++;
+			m_completeOps++;
 			m_slowOpCount++;
 
       		m_opEnd = Now();

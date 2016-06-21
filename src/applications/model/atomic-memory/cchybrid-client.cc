@@ -39,7 +39,7 @@ NS_OBJECT_ENSURE_REGISTERED (CCHybridClient);
 void
 CCHybridClient::LogInfo( std::stringstream& s)
 {
-	NS_LOG_INFO("[CLIENT " << Ipv4Address::ConvertFrom(m_myAddress) << "] (" << Simulator::Now ().GetSeconds () << "s):" << s.str());
+	NS_LOG_INFO("[CLIENT " << m_personalID << " - "<< Ipv4Address::ConvertFrom(m_myAddress) << "] (" << Simulator::Now ().GetSeconds () << "s):" << s.str());
 }
 
 
@@ -95,6 +95,11 @@ CCHybridClient::GetTypeId (void)
     .AddTraceSource ("Tx", "A new packet is created and is sent",
                      MakeTraceSourceAccessor (&CCHybridClient::m_txTrace),
                      "ns3::Packet::TracedCallback")
+    .AddAttribute ("ID", 
+                     "Client ID",
+                   	 UintegerValue (100),
+                  	 MakeUintegerAccessor (&CCHybridClient::m_personalID),
+                  	 MakeUintegerChecker<uint32_t> ())
   ;
   return tid;
 }
@@ -206,14 +211,26 @@ CCHybridClient::StopApplication ()
   switch(m_prType)
   {
   case WRITER:
-	  sstm << "** WRITER TERMINATED: #writes=" << m_opCount << ", #2ExOps=" << m_twoExOps << ", #4ExOps=" << m_fourExOps << ", AveOpTime="<< ( (m_opAve.GetSeconds()) /m_opCount) <<"s **";
+	  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_twoExOps+m_fourExOps <<", AveOpTime="<< ( (m_opAve.GetSeconds()) /m_opCount) <<"s **";
 	  LogInfo(sstm);
 	  break;
   case READER:
-	  sstm << "** READER TERMINATED: #reads=" << m_opCount << ", #2ExOps=" << m_twoExOps << ", #4ExOps=" << m_fourExOps << ", AveOpTime="<< ((m_opAve.GetSeconds())/m_opCount) <<"s **";
+	  sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads=" << m_opCount <<", #CompletedReads="<<m_twoExOps+m_fourExOps <<", #4EXCH_reads="<< m_fourExOps << ", #2EXCH_reads="<<m_twoExOps<<", AveOpTime="<< ((m_opAve.GetSeconds())/m_opCount) <<"s **";
 	  LogInfo(sstm);
 	  break;
   }
+
+  // switch(m_prType)
+  // {
+  // case WRITER:
+	 //  sstm << "** WRITER TERMINATED: #writes=" << m_opCount << ", #2ExOps=" << m_twoExOps << ", #4ExOps=" << m_fourExOps << ", AveOpTime="<< ( (m_opAve.GetSeconds()) /m_opCount) <<"s **";
+	 //  LogInfo(sstm);
+	 //  break;
+  // case READER:
+	 //  sstm << "** READER TERMINATED: #reads=" << m_opCount << ", #2ExOps=" << m_twoExOps << ", #4ExOps=" << m_fourExOps << ", AveOpTime="<< ((m_opAve.GetSeconds())/m_opCount) <<"s **";
+	 //  LogInfo(sstm);
+	 //  break;
+  // }
 }
 
 void

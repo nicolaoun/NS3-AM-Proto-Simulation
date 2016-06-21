@@ -130,6 +130,7 @@ main (int argc, char *argv[])
   {
 	  CCHybridServerHelper server (port);
 	  server.SetAttribute("PacketSize", UintegerValue (1024) );
+    server.SetAttribute ("ID", UintegerValue (i-1));
 	  server.SetAttribute("LocalAddress", AddressValue (serverAddress[i-1]) );
 	  server.SetAttribute("Optimize", UintegerValue (usePropagation));
 	  s_apps.Add ((server.Install(nodes.Get (i))).Get(0));
@@ -154,6 +155,7 @@ main (int argc, char *argv[])
   interPacketInterval = Seconds (writeInterval);
   CCHybridClientHelper client (Address(ipIn.GetAddress (0)), port);
   client.SetAttribute ("MaxOperations", UintegerValue (maxPacketCount));
+  client.SetAttribute ("ID", UintegerValue (0));
   client.SetAttribute ("MaxFailures", UintegerValue (numFail));
   client.SetAttribute ("Interval", TimeValue (interPacketInterval));
   client.SetAttribute ("PacketSize", UintegerValue (packetSize));
@@ -170,6 +172,7 @@ main (int argc, char *argv[])
 	  interPacketInterval = Seconds (readInterval);
 	  CCHybridClientHelper client (Address(ipIn.GetAddress (i)), port);
 	  client.SetAttribute ("MaxOperations", UintegerValue (maxPacketCount));
+    client.SetAttribute ("ID", UintegerValue (i-numServers));
 	  client.SetAttribute ("MaxFailures", UintegerValue (numFail));
 	  client.SetAttribute ("Interval", TimeValue (interPacketInterval));
 	  client.SetAttribute ("PacketSize", UintegerValue (packetSize));
@@ -192,8 +195,10 @@ main (int argc, char *argv[])
 //
 // Now, do the actual simulation.
 //
-  NS_LOG_INFO ("Run Simulation.");
+  NS_LOG_INFO ("Run Simulation: ccHybrid.");
   Simulator::Run ();
   Simulator::Destroy ();
-  NS_LOG_INFO ("Done.");
+  NS_LOG_INFO (">>>> ccHybrid Scenario - Servers:"<<numServers<<", Readers:"<<numReaders<<", Writers:1, Failures:"<<numFail<<", ReadInterval:"<<readInterval<<", WriteInterval:"<<writeInterval<<", <<<<");
+  NS_LOG_INFO ("Scenario Succesfully completed.");
+  NS_LOG_INFO ("Exiting...");
 }
