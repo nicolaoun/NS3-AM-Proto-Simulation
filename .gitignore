@@ -3,3 +3,4 @@
 build/*
 doc/*
 .waf*
+waf-tools/*
