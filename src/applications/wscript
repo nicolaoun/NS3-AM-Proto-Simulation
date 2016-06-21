@@ -74,6 +74,7 @@ def build(bld):
         'helper/atomic-memory/abd-helper.h',
         'helper/atomic-memory/abd-helper-mwmr.h',
         'helper/atomic-memory/ohMam-helper.h',
+        'helper/atomic-memory/ohSam-helper.h',
         'helper/atomic-memory/cchybrid-helper.h',
         ]
 
