@@ -1,0 +1,11 @@
+## -*- Mode: python; py-indent-offset: 4; indent-tabs-mode: nil; coding: utf-8; -*-
+
+def build(bld):
+    obj = bld.create_ns3_program('am-abd', ['csma', 'point-to-point', 'internet', 'applications'])
+    obj.source = 'am-abd.cc'
+    obj = bld.create_ns3_program('am-abd-mwmr', ['csma', 'point-to-point', 'internet', 'applications'])
+    obj.source = 'am-abd-mwmr.cc'
+    obj = bld.create_ns3_program('am-ohMam', ['csma', 'point-to-point', 'internet', 'applications'])
+    obj.source = 'am-ohMam.cc'
+    obj = bld.create_ns3_program('am-cchybrid', ['csma', 'point-to-point', 'internet', 'applications'])
+    obj.source = 'am-cchybrid.cc'
