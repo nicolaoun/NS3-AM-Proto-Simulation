@@ -430,6 +430,11 @@ OhFastClient::InvokeRead (void)
 		m_opStatus = PHASE1;
 		m_msgType = READ;
 		
+		// Reset ts security and 3 phase initiation
+		m_initiator = false;
+		m_isTsSecured = false;
+
+
 		//Send msg to all
 		m_replies = 0;		//reset replies
 		HandleSend();
@@ -478,13 +483,13 @@ OhFastClient::HandleSend (void)
 	if (m_prType == WRITER)
 	{
 		// serialize <msgType, ts, value, pvalue, counter>
-		pkts << m_msgType << " " << m_ts << " " << m_value << " " << m_pvalue << " " << m_sent;
+		pkts << m_msgType << " " << m_ts << " " << m_value << " " << m_pvalue << " " << m_opCount;
 		message_type = "write";
 	}
 	else
 	{
 		// serialize <counter, msgType, ts, value, pvalue, readerID>
-		pkts << m_msgType << " " << m_ts << " " << m_value << " " << m_pvalue << " "<< m_personalID << m_sent;
+		pkts << m_msgType << " " << m_ts << " " << m_value << " " << m_pvalue << " "<< m_personalID << " "<< m_opCount;
 		message_type = "read";
 	}
 
@@ -589,7 +594,6 @@ OhFastClient::ProcessReply(std::istream& istm, Address sender)
 
 		if (m_replies >= (m_numServers - m_fail))
 		{
-			m_opCount++;
 			m_opStatus = IDLE;
 			ScheduleOperation (m_interval);
 
