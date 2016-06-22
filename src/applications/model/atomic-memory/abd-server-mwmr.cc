@@ -41,7 +41,7 @@ NS_OBJECT_ENSURE_REGISTERED (AbdServerMWMR);
 void
 AbdServerMWMR::LogInfo( std::stringstream& s)
 {
-	NS_LOG_INFO("[SERVER " << Ipv4Address::ConvertFrom(m_myAddress) << "] (" << Simulator::Now ().GetSeconds () << "s):" << s.str());
+	NS_LOG_INFO("[SERVER "<< m_personalID << " - " << Ipv4Address::ConvertFrom(m_myAddress) << "] (" << Simulator::Now ().GetSeconds () << "s):" << s.str());
 }
 
 
@@ -157,6 +157,9 @@ AbdServerMWMR::StopApplication ()
 		m_socket->Close ();
 		m_socket->SetRecvCallback (MakeNullCallback<void, Ptr<Socket> > ());
 	}
+	std::stringstream sstm;
+	sstm << "** SERVER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent<<" **";
+	LogInfo(sstm);
 }
 
 void
@@ -200,7 +203,7 @@ AbdServerMWMR::SetFill (std::string fill)
 
   if (dataSize != m_dataSize)
     {
-      delete [] m_data;
+      //delete [] m_data;
       m_data = new uint8_t [dataSize];
       m_dataSize = dataSize;
     }
@@ -286,6 +289,7 @@ AbdServerMWMR::HandleRead (Ptr<Socket> socket)
 
 		//socket->SendTo (p, 0, from);
 		  socket->Send (p);
+		  m_sent++;
 
 		AsmCommon::Reset(sstm);
 		sstm << "Sent " << packet->GetSize () << " bytes to " <<

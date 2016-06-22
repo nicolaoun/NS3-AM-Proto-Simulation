@@ -42,7 +42,7 @@ NS_OBJECT_ENSURE_REGISTERED (AbdServer);
 void
 AbdServer::LogInfo( std::stringstream& s)
 {
-	NS_LOG_INFO("[SERVER " << Ipv4Address::ConvertFrom(m_myAddress) << "] (" << Simulator::Now ().GetSeconds () << "s):" << s.str());
+	NS_LOG_INFO("[CLIENT " << m_personalID << " - "<< Ipv4Address::ConvertFrom(m_myAddress) << "] (" << Simulator::Now ().GetSeconds () << "s):" << s.str());
 }
 
 
@@ -66,7 +66,12 @@ AbdServer::GetTypeId (void)
 							AddressValue (),
 							MakeAddressAccessor (&AbdServer::m_myAddress),
 							MakeAddressChecker ())
-							;
+					.AddAttribute ("ID", 
+                     "Client ID",
+                   	 UintegerValue (100),
+                  	 MakeUintegerAccessor (&AbdServer::m_personalID),
+                  	 MakeUintegerChecker<uint32_t> ())
+		;
 	return tid;
 }
 
@@ -76,6 +81,7 @@ AbdServer::AbdServer ()
 	m_socket = 0;
 	m_ts = 0;
 	m_value = 0;
+	m_sent=0;     //!< sent messages counter
 }
 
 AbdServer::~AbdServer()
@@ -84,6 +90,8 @@ AbdServer::~AbdServer()
 	m_socket = 0;
 	m_ts = 0;
 	m_value = 0;
+	m_sent=0;     //!< sent messages counter
+
 }
 
 /**************************************************************************************
@@ -140,6 +148,9 @@ AbdServer::StopApplication ()
 		m_socket->Close ();
 		m_socket->SetRecvCallback (MakeNullCallback<void, Ptr<Socket> > ());
 	}
+	std::stringstream sstm;
+	sstm << "** SERVER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent<<" **";
+	LogInfo(sstm);
 }
 
 void
@@ -183,7 +194,7 @@ AbdServer::SetFill (std::string fill)
 
   if (dataSize != m_dataSize)
     {
-      delete [] m_data;
+      //delete [] m_data;
       m_data = new uint8_t [dataSize];
       m_dataSize = dataSize;
     }
@@ -259,8 +270,8 @@ AbdServer::HandleRead (Ptr<Socket> socket)
 		    }
 
 		//socket->SendTo (p, 0, from);
-		  socket->Send (p);
-
+		socket->Send (p);
+		m_sent++;     //!< sent messages counter
 		AsmCommon::Reset(sstm);
 		sstm << "Sent " << packet->GetSize () << " bytes to " <<
 				InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<

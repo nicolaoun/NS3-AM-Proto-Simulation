@@ -16,8 +16,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef AM_ABD_SERVER_MWMR_H
-#define AM_ABD_SERVER_MWMR_H
+#ifndef AM_OHFAST_SERVER_H
+#define AM_OHFAST_SERVER_H
 
 #include "ns3/application.h"
 #include "ns3/event-id.h"
@@ -32,16 +32,16 @@ class Packet;
 
 /**
  * \ingroup applications 
- * \defgroup Abd Abd
+ * \defgroup OhFast OhFast
  */
 
 /**
- * \ingroup Abd
+ * \ingroup OhFast
  * \brief A Udp Echo server
  *
  * Every packet received is sent back.
  */
-class AbdServerMWMR : public Application
+class OhFastServer : public Application
 {
 public:
   /**
@@ -49,8 +49,12 @@ public:
    * \return the object TypeId
    */
   static TypeId GetTypeId (void);
-  AbdServerMWMR ();
-  virtual ~AbdServerMWMR ();
+  OhFastServer ();
+  virtual ~OhFastServer ();
+
+  void SetServers (std::vector<Address> ip);
+
+  void SetClients (std::vector<Address> ip);
 
 protected:
   virtual void DoDispose (void);
@@ -75,6 +79,16 @@ private:
    */
   void HandleRead (Ptr<Socket> socket);
   /**
+   * \brief handle read/write messages
+   */
+  void HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType T);
+  /**
+   * \brief handle relay messages
+   */
+  void HandleRelay(std::istream& istm, Ptr<Socket> socket);
+
+  
+    /**
    * \brief Handle an incoming connection
    * \param socket the incoming connection socket
    * \param from the address the connection is from
@@ -90,6 +104,18 @@ private:
    * \param socket the connected socket
    */
   void HandlePeerError (Ptr<Socket> socket);
+  /**
+   * \brief Handle a Connection Succeed event
+   * \param socket the connected socket
+   */
+  void ConnectionSucceeded (Ptr<Socket> socket);
+  /**
+   * \brief Handle a Connection Failed event
+   * \param socket the not connected socket
+   */
+  void ConnectionFailed (Ptr<Socket> socket);
+
+  
 
   uint32_t m_dataSize; 	//!< packet payload size (must be equal to m_size)
   uint8_t *m_data; 		//!< packet payload data
@@ -97,21 +123,38 @@ private:
   uint16_t m_port; //!< Port on which we listen for incoming packets.
   uint32_t m_size; //!< The size of the packet
   Ptr<Socket> m_socket; //!< IPv4 Socket
+  //std::vector< Ptr<Socket> > m_socket; //!< Socket
   std::list<Ptr<Socket> > m_socketList; //!< the accepted sockets
   Address m_local; //!< local multicast address
   Address m_myAddress; //!< ip address
   uint32_t m_personalID;  //My Personal ID
 
-  // ABD variables
-  // Together <m_ts,m_id> = tag
-  uint32_t m_id;        //!< id of latest value
+  uint16_t m_serversConnected;
+
+  std::vector<Address> m_serverAddress; //!< Remote server adresses
+  std::vector< Ptr<Socket> > m_srvSocket;
+
+  std::vector<Address> m_clntAddress; //!< Remote client adresses
+  std::vector< Ptr<Socket> > m_clntSocket;
+  uint32_t m_numServers;    //!< number of servers
+  uint32_t m_numClients;    //!< number of clients
+
+  uint32_t m_fail;      //!< max number of failures supported
+
+  // OhFast variables
   uint32_t m_ts; 				//!< latest timestamp
-  uint32_t m_value;			//!< value associated with m_ts
-  uint32_t *m_writeop;     //!< value associated with m_ts
-  uint32_t m_sent;     //!< sent messages counter
+  uint32_t m_value;				//!< value associated with m_ts
+  uint32_t m_pvalue;			//!< value associated with m_ts - 1 (previous value)
+  std::set< Address > m_seen;	//!< set of IDs storing the IDs of the processes seen our latest ts/value
+  bool m_tsSecured;
+
+  uint32_t m_sent;    //!< Counter for sent msgs
+  //std::vector<uint32_t> m_writeop;     // Now its a single writer! just check ts
+  std::vector<uint32_t> m_relayTs;
+  std::vector<uint32_t> m_relays;
 };
 
 } // namespace ns3
 
-#endif /* AM_ABD_SERVER_MWMR_H */
+#endif /* AM_OHFAST_SERVER_H */
 

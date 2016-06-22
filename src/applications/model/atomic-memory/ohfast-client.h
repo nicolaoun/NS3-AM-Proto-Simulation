@@ -16,8 +16,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef AM_OHMAM_CLIENT_H
-#define AM_OHMAM_CLIENT_H
+#ifndef AM_OHFAST_CLIENT_H
+#define AM_OHFAST_CLIENT_H
 
 #include "ns3/application.h"
 #include "ns3/event-id.h"
@@ -32,12 +32,12 @@ class Socket;
 class Packet;
 
 /**
- * \ingroup OhMam
- * \brief A OhMam client
+ * \ingroup OhFast
+ * \brief A OhFast client
  *
  * Every packet sent should be returned by the server and received here.
  */
-class OhMamClient : public Application
+class OhFastClient : public Application
 {
 public:
 	/**
@@ -46,9 +46,9 @@ public:
 	 */
 	static TypeId GetTypeId (void);
 
-	OhMamClient ();
+	OhFastClient ();
 
-	virtual ~OhMamClient ();
+	virtual ~OhFastClient ();
 
 	/**
 	 * \brief set the remote address and port
@@ -114,6 +114,7 @@ public:
 
 	void SetServers (std::vector<Address> ip);
 
+
 protected:
 	virtual void DoDispose (void);
 
@@ -161,12 +162,15 @@ private:
 	void HandleRecv (Ptr<Socket> socket);
 	/**
 	 * \brief process the received replies
-	 * \param type the type of the received message
-	 * \param ts the received timestamp
-	 * \param val the value associate with ts
+	 * \param istm the packet contents in an input string
+	 * \param address of the sender
 	 */
-	void ProcessReply(uint32_t type, uint32_t ts, uint32_t id, uint32_t val, uint32_t op);
-	
+	void ProcessReply(std::istream& istm, Address s);
+	/**
+	 * \brief check if the predicate is valid on the collected replies
+	 */
+	bool IsPredicateValid();
+
 	/**
    	 * \brief Handle an incoming connection
      * \param socket the incoming connection socket
@@ -215,17 +219,20 @@ private:
 
 	uint16_t m_serversConnected;
 
-	// OhMam variables
+	// OhFast variables
 	// Together <m_ts,m_id> is the tag
 	uint32_t m_ts; 				//!< latest timestamp
 	uint32_t m_value;			//!< value associated with m_ts
-	uint32_t m_MINts; 			//!< min timestamp
-	uint32_t m_MINId; 			//!< min id
-	uint32_t m_MINvalue; 		//!< min value
+	uint32_t m_pvalue;			//!< value associated with m_ts - 1 (previous value)
+	bool m_isTsSecured;			//!< raised if m_ts is secured by a server
+	bool m_initiator;			//!< raised if current process initiated the 3rd msg exch
+
+	std::vector< std::pair<Address, uint32_t> > m_repliesSet; //!< set of server replies
+
 	uint32_t m_id; 				//!< latest id 
 	
 	uint32_t m_readop;			//!< read operation counter
-	uint32_t m_writeop;			//!< write operation counter
+	
 
 	uint32_t m_numServers;		//!< number of servers
 	uint32_t m_fail;			//!< max number of failures supported
@@ -242,11 +249,10 @@ private:
 
 	//counters
 	uint32_t m_opCount;
-	uint32_t m_completeOps;
 	uint32_t m_slowOpCount;
 	uint32_t m_fastOpCount;
 	uint32_t m_replies;
-	uint32_t m_sent; 		//!< Counter for sent packets
+	uint32_t m_sent; 		//!< Counter for sent msgs
 	uint32_t m_count; 		//!< Maximum number of packets the application will send
 
 
@@ -257,4 +263,4 @@ private:
 
 } // namespace ns3
 
-#endif /* AM_OHMAM_CLIENT_H */
+#endif /* AM_OHFAST_CLIENT_H */

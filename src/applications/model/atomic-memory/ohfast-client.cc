@@ -30,7 +30,7 @@
 #include "ns3/packet.h"
 #include "ns3/uinteger.h"
 #include "ns3/trace-source-accessor.h"
-#include "ohMam-client.h"
+#include "ohfast-client.h"
 #include <string>
 #include <cstdlib>
 #include <iostream>
@@ -38,13 +38,13 @@
 
 namespace ns3 {
 
-NS_LOG_COMPONENT_DEFINE ("OhMamClientApplication");
+NS_LOG_COMPONENT_DEFINE ("OhFastClientApplication");
 
-NS_OBJECT_ENSURE_REGISTERED (OhMamClient);
+NS_OBJECT_ENSURE_REGISTERED (OhFastClient);
 
 
 void
-OhMamClient::LogInfo( std::stringstream& s)
+OhFastClient::LogInfo( std::stringstream& s)
 {
 	NS_LOG_INFO("[CLIENT " << m_personalID << " - "<< Ipv4Address::ConvertFrom(m_myAddress) << "] (" << Simulator::Now ().GetSeconds () << "s):" << s.str());
 }
@@ -52,64 +52,63 @@ OhMamClient::LogInfo( std::stringstream& s)
 
 
 TypeId
-OhMamClient::GetTypeId (void)
+OhFastClient::GetTypeId (void)
 {
-  //static vector<Address> tmp_address;
-  static TypeId tid = TypeId ("ns3::OhMamClient")
+  static TypeId tid = TypeId ("ns3::OhFastClient")
     .SetParent<Application> ()
     .SetGroupName("Applications")
-    .AddConstructor<OhMamClient> ()
+    .AddConstructor<OhFastClient> ()
     .AddAttribute ("MaxOperations",
                    "The maximum number of operations to be invoked",
                    UintegerValue (100),
-                   MakeUintegerAccessor (&OhMamClient::m_count),
+                   MakeUintegerAccessor (&OhFastClient::m_count),
                    MakeUintegerChecker<uint32_t> ())
 	.AddAttribute ("MaxFailures",
 					  "The maximum number of server failures",
 					  UintegerValue (100),
-					  MakeUintegerAccessor (&OhMamClient::m_fail),
+					  MakeUintegerAccessor (&OhFastClient::m_fail),
 					  MakeUintegerChecker<uint32_t> ())
     .AddAttribute ("Interval", 
                    "The time to wait between packets",
                    TimeValue (Seconds (1.0)),
-                   MakeTimeAccessor (&OhMamClient::m_interval),
+                   MakeTimeAccessor (&OhFastClient::m_interval),
                    MakeTimeChecker ())
    .AddAttribute ("SetRole",
 					  "The role of the client (reader/writer)",
 					  UintegerValue (0),
-					  MakeUintegerAccessor (&OhMamClient::m_prType),
+					  MakeUintegerAccessor (&OhFastClient::m_prType),
 					  MakeUintegerChecker<uint16_t> ())
    .AddAttribute ("LocalAddress",
 					  "The local Address of the current node",
 					  AddressValue (),
-					  MakeAddressAccessor (&OhMamClient::m_myAddress),
+					  MakeAddressAccessor (&OhFastClient::m_myAddress),
 					  MakeAddressChecker ())
 	.AddAttribute ("RemoteAddress",
                    "The destination Address of the outbound packets",
                    AddressValue (),
-                   MakeAddressAccessor (&OhMamClient::m_peerAddress),
+                   MakeAddressAccessor (&OhFastClient::m_peerAddress),
                    MakeAddressChecker ())
     .AddAttribute ("RemotePort", 
                    "The destination port of the outbound packets",
                    UintegerValue (0),
-                   MakeUintegerAccessor (&OhMamClient::m_peerPort),
+                   MakeUintegerAccessor (&OhFastClient::m_peerPort),
                    MakeUintegerChecker<uint16_t> ())
     .AddAttribute ("Port", "Port on which we listen for incoming packets.",
 					UintegerValue (9),
-					MakeUintegerAccessor (&OhMamClient::m_port),
+					MakeUintegerAccessor (&OhFastClient::m_port),
 					MakeUintegerChecker<uint16_t> ())
     .AddAttribute ("PacketSize", "Size of echo data in outbound packets",
                    UintegerValue (100),
-                   MakeUintegerAccessor (&OhMamClient::SetDataSize,
-                                         &OhMamClient::GetDataSize),
+                   MakeUintegerAccessor (&OhFastClient::SetDataSize,
+                                         &OhFastClient::GetDataSize),
                    MakeUintegerChecker<uint32_t> ())
     .AddTraceSource ("Tx", "A new packet is created and is sent",
-                     MakeTraceSourceAccessor (&OhMamClient::m_txTrace),
+                     MakeTraceSourceAccessor (&OhFastClient::m_txTrace),
                      "ns3::Packet::TracedCallback")
     .AddAttribute ("ID", 
                      "Client ID",
                    	 UintegerValue (100),
-                  	 MakeUintegerAccessor (&OhMamClient::m_personalID),
+                  	 MakeUintegerAccessor (&OhFastClient::m_personalID),
                   	 MakeUintegerChecker<uint32_t> ())
   ;
   return tid;
@@ -118,11 +117,10 @@ OhMamClient::GetTypeId (void)
 /**************************************************************************************
  * Constructors
  **************************************************************************************/
-OhMamClient::OhMamClient ()
+OhFastClient::OhFastClient ()
 {
 	NS_LOG_FUNCTION (this);
 	m_sent = 0;
-	//m_socket = 0;
 	m_sendEvent = EventId ();
 	m_data = 0;
 	m_dataSize = 0;
@@ -131,20 +129,15 @@ OhMamClient::OhMamClient ()
 	m_id = 0;					//initialize the id of the tag
 	m_value = 0;				//initialize local value
 	m_opStatus = PHASE1; 		//initialize status
-	m_MINts = 10000000;
-	m_MINId = 10000000;
 	m_fail = 0;
 	m_opCount=0;
-	m_completeOps=0;
 	m_slowOpCount=0;
 	m_fastOpCount=0;
 }
 
-OhMamClient::~OhMamClient()
+OhFastClient::~OhFastClient()
 {
 	NS_LOG_FUNCTION (this);
-	//m_socket = 0;
-
 	delete [] m_data;
 	m_data = 0;
 	m_dataSize = 0;
@@ -153,11 +146,8 @@ OhMamClient::~OhMamClient()
 	m_value = 0;				//initialize local value
 	m_id = 0;					//initialize the id of the tag
 	m_opStatus = PHASE1; 		//initialize status
-	m_MINts = 10000000;
-	m_MINId = 10000000;
 	m_fail = 0;
 	m_opCount=0;
-	m_completeOps=0;
 	m_slowOpCount=0;
 	m_fastOpCount=0;
 }
@@ -166,13 +156,12 @@ OhMamClient::~OhMamClient()
  * APPLICATION START/STOP FUNCTIONS
  **************************************************************************************/
 void 
-OhMamClient::StartApplication (void)
+OhFastClient::StartApplication (void)
 {
 
 	NS_LOG_FUNCTION (this);
 	std::stringstream sstm;
 
-	//////////////////////////////////////////////////////////////////////////////
 	if (m_insocket == 0)
 	{
 		TypeId tid = TypeId::LookupByName ("ns3::TcpSocketFactory");
@@ -196,17 +185,16 @@ OhMamClient::StartApplication (void)
 		}
 
 	}
-	m_insocket->SetRecvCallback (MakeCallback (&OhMamClient::HandleRecv, this));
+	m_insocket->SetRecvCallback (MakeCallback (&OhFastClient::HandleRecv, this));
 
 	// Accept new connection
 	m_insocket->SetAcceptCallback (
 			MakeNullCallback<bool, Ptr<Socket>, const Address &> (),
-			MakeCallback (&OhMamClient::HandleAccept, this));
+			MakeCallback (&OhFastClient::HandleAccept, this));
 	// Peer socket close handles
 	m_insocket->SetCloseCallbacks (
-			MakeCallback (&OhMamClient::HandlePeerClose, this),
-			MakeCallback (&OhMamClient::HandlePeerError, this));
-	//////////////////////////////////////////////////////////////////////////////
+			MakeCallback (&OhFastClient::HandlePeerClose, this),
+			MakeCallback (&OhFastClient::HandlePeerError, this));
 
 	if ( m_socket.empty() )
 	{
@@ -226,12 +214,12 @@ OhMamClient::StartApplication (void)
 			//m_socket[i]->Listen ();
 			m_socket[i]->Connect (InetSocketAddress (Ipv4Address::ConvertFrom(m_serverAddress[i]), m_peerPort));
 
-			m_socket[i]->SetRecvCallback (MakeCallback (&OhMamClient::HandleRecv, this));
+			m_socket[i]->SetRecvCallback (MakeCallback (&OhFastClient::HandleRecv, this));
 			m_socket[i]->SetAllowBroadcast (false);
 
 			m_socket[i]->SetConnectCallback (
-				        MakeCallback (&OhMamClient::ConnectionSucceeded, this),
-				        MakeCallback (&OhMamClient::ConnectionFailed, this));
+				        MakeCallback (&OhFastClient::ConnectionSucceeded, this),
+				        MakeCallback (&OhFastClient::ConnectionFailed, this));
 		}
 	}
 
@@ -243,7 +231,7 @@ OhMamClient::StartApplication (void)
 }
 
 void 
-OhMamClient::StopApplication ()
+OhFastClient::StopApplication ()
 {
   NS_LOG_FUNCTION (this);
 
@@ -269,18 +257,18 @@ OhMamClient::StopApplication ()
   switch(m_prType)
   {
   case WRITER:
-	  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_completeOps <<", AveOpTime="<< ( (m_opAve.GetSeconds()) /m_opCount) <<"s **";
+	  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #writes=" << m_opCount << ", AveOpTime="<< ( (m_opAve.GetSeconds()) /m_opCount) <<"s **";
 	  LogInfo(sstm);
 	  break;
   case READER:
-	  sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads=" << m_opCount <<", #CompletedReads="<<m_completeOps <<", #3EXCH_reads="<< m_completeOps << ", #2EXCH_reads=0, AveOpTime="<< ((m_opAve.GetSeconds())/m_opCount) <<"s **";
+	  sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #reads=" << m_opCount << ", #3EXCH_reads="<< m_slowOpCount << ", #2EXCH_reads="<<m_fastOpCount<<", AveOpTime="<< ((m_opAve.GetSeconds())/m_opCount) <<"s, 3EXC_AveOpTime="<< ((m_opAve.GetSeconds())/m_slowOpCount) <<"s, 2EXC_AveOpTime=0.0s **";
 	  LogInfo(sstm);
 	  break;
   }
 }
 
 void
-OhMamClient::DoDispose (void)
+OhFastClient::DoDispose (void)
 {
   NS_LOG_FUNCTION (this);
   Application::DoDispose ();
@@ -289,27 +277,27 @@ OhMamClient::DoDispose (void)
 /**************************************************************************************
  * Connection handlers
  **************************************************************************************/
-void OhMamClient::HandlePeerClose (Ptr<Socket> socket)
+void OhFastClient::HandlePeerClose (Ptr<Socket> socket)
 {
 	NS_LOG_FUNCTION (this << socket);
 }
 
-void OhMamClient::HandlePeerError (Ptr<Socket> socket)
+void OhFastClient::HandlePeerError (Ptr<Socket> socket)
 {
 	NS_LOG_FUNCTION (this << socket);
 }
 
 
-void OhMamClient::HandleAccept (Ptr<Socket> s, const Address& from)
+void OhFastClient::HandleAccept (Ptr<Socket> s, const Address& from)
 {
 	NS_LOG_FUNCTION (this << s << from);
-	s->SetRecvCallback (MakeCallback (&OhMamClient::HandleRecv, this));
+	s->SetRecvCallback (MakeCallback (&OhFastClient::HandleRecv, this));
 	m_socketList.push_back (s);
 }
 
 
 
-void OhMamClient::ConnectionSucceeded (Ptr<Socket> socket)
+void OhFastClient::ConnectionSucceeded (Ptr<Socket> socket)
 {
   NS_LOG_FUNCTION (this << socket);
   Address from;
@@ -328,7 +316,7 @@ void OhMamClient::ConnectionSucceeded (Ptr<Socket> socket)
   }
 }
 
-void OhMamClient::ConnectionFailed (Ptr<Socket> socket)
+void OhFastClient::ConnectionFailed (Ptr<Socket> socket)
 {
   NS_LOG_FUNCTION (this << socket);
   std::stringstream sstm;
@@ -340,7 +328,7 @@ void OhMamClient::ConnectionFailed (Ptr<Socket> socket)
  * Functions to Set Variables
  **************************************************************************************/
 void
-OhMamClient::SetServers (std::vector<Address> ip)
+OhFastClient::SetServers (std::vector<Address> ip)
 {
 	m_serverAddress = ip;
 	m_numServers = m_serverAddress.size();
@@ -352,7 +340,7 @@ OhMamClient::SetServers (std::vector<Address> ip)
 }
 
 void
-OhMamClient::SetRemote (Address ip, uint16_t port)
+OhFastClient::SetRemote (Address ip, uint16_t port)
 {
   NS_LOG_FUNCTION (this << ip << port);
   m_peerAddress = ip;
@@ -363,7 +351,7 @@ OhMamClient::SetRemote (Address ip, uint16_t port)
  * PACKET Handlers
  **************************************************************************************/
 void 
-OhMamClient::SetDataSize (uint32_t dataSize)
+OhFastClient::SetDataSize (uint32_t dataSize)
 {
   NS_LOG_FUNCTION (this << dataSize);
 
@@ -379,14 +367,14 @@ OhMamClient::SetDataSize (uint32_t dataSize)
 }
 
 uint32_t 
-OhMamClient::GetDataSize (void) const
+OhFastClient::GetDataSize (void) const
 {
   NS_LOG_FUNCTION (this);
   return m_size;
 }
 
 void 
-OhMamClient::SetFill (std::string fill)
+OhFastClient::SetFill (std::string fill)
 {
   NS_LOG_FUNCTION (this << fill);
 
@@ -394,16 +382,11 @@ OhMamClient::SetFill (std::string fill)
 
   if (dataSize != m_dataSize)
     {
-      delete [] m_data;
       m_data = new uint8_t [dataSize];
       m_dataSize = dataSize;
     }
 
   memcpy (m_data, fill.c_str (), dataSize);
-
-  //
-  // Overwrite packet size attribute.
-  //
   m_size = dataSize;
 }
 
@@ -411,30 +394,34 @@ OhMamClient::SetFill (std::string fill)
  * OPERATION SCHEDULER
  */
 void 
-OhMamClient::ScheduleOperation (Time dt)
+OhFastClient::ScheduleOperation (Time dt)
 {
   NS_LOG_FUNCTION (this << dt);
   if (m_prType == READER )
   {
-	  m_sendEvent = Simulator::Schedule (dt, &OhMamClient::InvokeRead, this);
+	  m_sendEvent = Simulator::Schedule (dt, &OhFastClient::InvokeRead, this);
   }
   else
   {
-	  m_sendEvent = Simulator::Schedule (dt, &OhMamClient::InvokeWrite, this);
+	  m_sendEvent = Simulator::Schedule (dt, &OhFastClient::InvokeWrite, this);
   }
 }
 
 /**************************************************************************************
- * OhMam Read/Write Handlers
+ * OhFast Read/Write Handlers
  **************************************************************************************/
 void
-OhMamClient::InvokeRead (void)
+OhFastClient::InvokeRead (void)
 {
 	NS_LOG_FUNCTION (this);
 	std::stringstream sstm;
 
-
+	m_opCount ++;
 	m_opStart = Now();
+
+	AsmCommon::Reset(sstm);
+	sstm << "** READ INVOKED: " << m_opCount << " at "<< m_opStart.GetSeconds() <<"s";
+	LogInfo(sstm);
 
 	//check if we still have operations to perfrom
 	if ( m_opCount <  m_count )
@@ -442,24 +429,20 @@ OhMamClient::InvokeRead (void)
 		//Phase 1
 		m_opStatus = PHASE1;
 		m_msgType = READ;
-		m_readop ++;
-		m_opCount++;
+		
+		// Reset ts security and 3 phase initiation
+		m_initiator = false;
+		m_isTsSecured = false;
 
-		m_MINts = 10000000;
-		m_MINId = 10000000;
 
 		//Send msg to all
 		m_replies = 0;		//reset replies
-		
-		AsmCommon::Reset(sstm);
-		sstm << "** READ INVOKED: " << m_personalID << " at "<< m_opStart.GetSeconds() <<"s";
-		LogInfo(sstm);
 		HandleSend();
 	}
 }
 
 void
-OhMamClient::InvokeWrite (void)
+OhFastClient::InvokeWrite (void)
 {
 	NS_LOG_FUNCTION (this);
 	std::stringstream sstm;
@@ -467,95 +450,89 @@ OhMamClient::InvokeWrite (void)
 	m_opCount ++;
 	m_opStart = Now();
 	
+	AsmCommon::Reset(sstm);
+	sstm << "** WRITE INVOKED: " << m_opCount << " at "<< m_opStart.GetSeconds() <<"s";
+	LogInfo(sstm);
 
 	//check if we still have operations to perfrom
 	if ( m_opCount <=  m_count )
 	{
-		//Phase 1
 		m_opStatus = PHASE1;
-		m_msgType = DISCOVER;
-		m_writeop ++;
-		m_replies = 0;		//reset replies
-		
-		AsmCommon::Reset(sstm);
-		sstm << "** WRITE INVOKED: " << m_opCount << " at "<< m_opStart.GetSeconds() <<"s";
-		LogInfo(sstm);
+		m_msgType = WRITE;
+		m_ts ++;
+
+		m_value = m_opCount + 900;
+		m_replies = 0;
 		HandleSend();
 	}
 }
 
 void 
-OhMamClient::HandleSend (void)
+OhFastClient::HandleSend (void)
 {
-  NS_LOG_FUNCTION (this);
+	NS_LOG_FUNCTION (this);
 
-  NS_ASSERT (m_sendEvent.IsExpired ());
-  ++m_sent;
+	NS_ASSERT (m_sendEvent.IsExpired ());
 
-  // Prepare packet content
-  std::stringstream pkts;
-  std::string message_type;
-  
-  // Serialize the appropriate message for READ or WRITE
-  // serialize <msgType, ts, id, value, writeop ,counter>
-  // serialize <msgType, ts, id, value, readop ,counter>
-  if ((m_msgType == DISCOVER) && (m_opStatus == PHASE1))
-  	{
-  		pkts << m_msgType << " " << m_writeop;
-  		message_type = "discover";
+
+	// Prepare packet content
+	std::stringstream pkts;
+	std::string message_type;
+
+	// Serialize the appropriate message for READ or WRITE
+	if (m_prType == WRITER)
+	{
+		// serialize <msgType, ts, value, pvalue, counter>
+		pkts << m_msgType << " " << m_ts << " " << m_value << " " << m_pvalue << " " << m_opCount;
+		message_type = "write";
 	}
-  else if ((m_msgType == WRITE) && (m_opStatus == PHASE2))
-  	{
-  		pkts << m_msgType << " " << m_ts << " " << m_personalID << " " << m_value << " " << m_writeop;
-  		message_type = "write";
-	}
-  else if (m_msgType == READ)
-    {
-		pkts << m_msgType <<" "<< m_personalID <<" "<< m_readop;
+	else
+	{
+		// serialize <counter, msgType, ts, value, pvalue, readerID>
+		pkts << m_msgType << " " << m_ts << " " << m_value << " " << m_pvalue << " "<< m_personalID << " "<< m_opCount;
 		message_type = "read";
-    }else
-    	message_type = "asd";
+	}
 
-  SetFill(pkts.str());
+	SetFill(pkts.str());
 
-  // Create packet
-  Ptr<Packet> p;
-  if (m_dataSize)
-    {
-      NS_ASSERT_MSG (m_dataSize == m_size, "OhMamClient::HandleSend(): m_size and m_dataSize inconsistent");
-      NS_ASSERT_MSG (m_data, "OhMamClient::HandleSend(): m_dataSize but no m_data");
-      p = Create<Packet> (m_data, m_dataSize);
-    }
-  else
-    {
-      p = Create<Packet> (m_size);
-    }
+	// Create packet
+	Ptr<Packet> p;
+	if (m_dataSize)
+	{
+		NS_ASSERT_MSG (m_dataSize == m_size, "OhFastClient::HandleSend(): m_size and m_dataSize inconsistent");
+		NS_ASSERT_MSG (m_data, "OhFastClient::HandleSend(): m_dataSize but no m_data");
+		p = Create<Packet> (m_data, m_dataSize);
+	}
+	else
+	{
+		p = Create<Packet> (m_size);
+	}
 
-
-  //Send a single packet to each server
-  for (int i=0; i<m_serverAddress.size(); i++)
-  {
-	  // call to the trace sinks before the packet is actually sent
-	  m_txTrace (p);
-	  m_socket[i]->Send (p);
-
-	  std::stringstream sstm;
-	  sstm << "Sent " << message_type <<" "<< p->GetSize() << " bytes to " << Ipv4Address::ConvertFrom (m_serverAddress[i])
-	  	   << " port " << m_peerPort << " data " << pkts.str();
-	  LogInfo ( sstm );
-  }
-  	p->RemoveAllPacketTags ();
+	p->RemoveAllPacketTags ();
 	p->RemoveAllByteTags ();
+
+	//Send a single packet to each server
+	for (int i=0; i<m_serverAddress.size(); i++)
+	{
+		m_sent++; //count the messages sent
+		m_txTrace (p);
+		m_socket[i]->Send (p);
+
+		std::stringstream sstm;
+		sstm << "Sent " << message_type <<" "<< p->GetSize() << " bytes to " << Ipv4Address::ConvertFrom (m_serverAddress[i])
+		<< " port " << m_peerPort << " data " << pkts.str();
+		LogInfo ( sstm );
+	}
 }
 
 void
-OhMamClient::HandleRecv (Ptr<Socket> socket)
+OhFastClient::HandleRecv (Ptr<Socket> socket)
 {
   NS_LOG_FUNCTION (this << socket);
 
   Ptr<Packet> packet;
   Address from;
-  uint32_t msgT, msgTs, msgId, msgV, msgOp;
+  uint32_t msgT, msgC;
 
   while ((packet = socket->RecvFrom (from)))
     {
@@ -565,107 +542,67 @@ OhMamClient::HandleRecv (Ptr<Socket> socket)
 	  std::stringbuf sb;
 	  sb.str(std::string((char*) buf));
 	  std::istream istm(&sb);
-	  istm >> msgT; 
+	  istm >> msgC >> msgT;
+
 	  std::stringstream sstm;
 	  std::string message_type;
 
-	  if (msgT==READACK){
+	  if (msgT==READACK)
+	  {
 			message_type = "readAck";
-			istm >> msgTs >> msgId >> msgV >> msgOp;
-	  }else if (msgT==DISCOVERACK){
-			message_type = "discoverAck";
-			istm >> msgTs >> msgId >> msgV >> msgOp;
-	  }else{
+			//istm >> msgTs >> msgV >> msgOp;
+	  }
+	  else
+	  {
 			message_type = "writeAck";
-			istm >> msgTs >> msgId >> msgV >> msgOp;
+			//istm >> msgTs >> msgV;
 	  }
 	 
 
-	  if((msgOp==m_readop)||(msgOp==m_writeop))
-	  {
-	  	sstm << "Received " << message_type <<" "<< packet->GetSize () << " bytes from " <<
-	                        InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
-	                        InetSocketAddress::ConvertFrom (from).GetPort () << " data " << buf;
-   		LogInfo (sstm);
-   		packet->RemoveAllPacketTags ();
-		packet->RemoveAllByteTags ();
-	  }
+	  sstm << "Received " << message_type <<" "<< packet->GetSize () << " bytes from " <<
+			  InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
+			  InetSocketAddress::ConvertFrom (from).GetPort () << " data " << buf;
+	  LogInfo (sstm);
 
       // check message freshness and if client is waiting
-      if ((((msgOp == m_readop) && (msgT==READACK)) || ((msgOp == m_writeop) && (msgT==WRITEACK)) || ((msgOp == m_writeop) && (msgT==DISCOVERACK))) && m_opStatus != IDLE)
+      if ((msgC == m_opCount) && (m_opStatus != IDLE))
        {
-    	  ProcessReply(msgT, msgTs, msgId, msgV, msgOp);
+    		ProcessReply(istm, from);
        }
     
     }
 }
 
 void
-OhMamClient::ProcessReply(uint32_t type, uint32_t ts, uint32_t id, uint32_t val, uint32_t op)
+OhFastClient::ProcessReply(std::istream& istm, Address sender)
 {
 	NS_LOG_FUNCTION (this);
 
 	std::stringstream sstm;
+	uint32_t msgTs, msgV, msgVp, msgViews, msgTsSecured, msgInit;
+
+	istm >> msgTs >> msgV >> msgVp >> msgViews >> msgTsSecured >> msgInit;
 
 	//increment the number of replies received
 	m_replies ++;
 
 	if (m_prType == WRITER)
 	{
-		if(m_opStatus==PHASE1)
+		/////////////////////////////////
+		//////////// WRITER /////////////
+		/////////////////////////////////
+
+		if (m_replies >= (m_numServers - m_fail))
 		{
-			// Find the max Timestamp 
-			// We do not care about the id comparison since 
-			// we want to write and we will put ours. 
-			//if ((m_ts < ts) || ((m_ts == ts)&&(m_id<id))) 
-			if( ts >= m_ts)
-			{
-				m_ts = ts;
-				
-				// AsmCommon::Reset(sstm);
-				// sstm << "Discoved Max TS [" << m_ts << "]";
-				// LogInfo(sstm);
-			}
+			m_opStatus = IDLE;
+			ScheduleOperation (m_interval);
 
+			m_opEnd = Now();
+			m_opAve += m_opEnd - m_opStart;
 			AsmCommon::Reset(sstm);
-			sstm << "Waiting for " << (m_numServers-m_fail) << " discoverAck replies, received " << m_replies;
+			sstm << "*** WRITE COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, [<ts,value>]: [<" << m_ts << "," << m_value << ">] - @ 2 EXCH **";
 			LogInfo(sstm);
-
-			//if we received enough replies go to the next phase
-			if (m_replies >= (m_numServers - m_fail))
-			{	
-				//Phase 1
-				m_opStatus = PHASE2;
-				m_msgType = WRITE;
-				// Increase my timestamp, my writeop and generate a random value
-				m_ts ++; 
-				m_writeop ++;
-				m_value = m_writeop + 200;
-				
-				//Send msg to all
-				m_replies = 0;		//reset replies
-				HandleSend();
-			}
-		}
-		else
-		{	/////////////////////////////////
-			//////////// PHASE 2 ////////////
-			/////////////////////////////////
-
-			if (m_replies >= (m_numServers - m_fail))
-			{
-				
-				m_completeOps++;
-				m_opStatus = IDLE;
-				ScheduleOperation (m_interval);
-
-				m_opEnd = Now();
-				m_opAve += m_opEnd - m_opStart;
-				AsmCommon::Reset(sstm);
-				sstm << "*** WRITE COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, [<tag>,value]: [<" << m_ts << "," << m_personalID << ">," << m_value << "] - @ 4 EXCH **";
-				LogInfo(sstm);
-				m_replies = 0;
-			}
+			m_replies = 0;
 		}
 	}
 	else
@@ -673,32 +610,127 @@ OhMamClient::ProcessReply(uint32_t type, uint32_t ts, uint32_t id, uint32_t val,
 		//////////////////// READER ////////////////////
 		////////////////////////////////////////////////
 
-		//We have to find the min timestamp
-      	if((ts<m_MINts) || ((ts==m_MINts) && (id<m_MINId)))
-   		{
-      		m_MINts = ts;
-			m_MINId = id;
-			m_MINvalue = val;
-      	}
+		//We have to find the max timestamp
+		//if new max ts discovered - update the local <ts, value, pvalue>
+		if(m_ts < msgTs)
+		{
+			m_ts = msgTs;
+			m_value = msgV;
+			m_pvalue = msgVp;
 
+			AsmCommon::Reset(sstm);
+			sstm << "Updated local <ts,value> pair to: [" << m_ts << "," << m_value << "," << m_pvalue <<"]";
+			LogInfo(sstm);
+
+			//reset the maxAck set and tsSecured variables
+			m_repliesSet.clear();
+			m_isTsSecured = false;
+
+		}
+
+		// enclosed ts == maxTs - include the msg in the maxAck set and update maxViews variable
+		if ( m_ts == msgTs )
+		{
+			// add the sender and the
+			m_repliesSet.push_back(std::make_pair(sender, msgViews));
+
+			//check if the ts was propagated by a reader
+			if(msgTsSecured)
+			{
+				m_isTsSecured = true;
+
+				// this reader initiated 3rd exch
+				if ( msgInit )
+				{
+					m_initiator = true;
+				}
+			}
+
+		}
+		
       	if (m_replies >= (m_numServers - m_fail))
       	{
-      		// HERE WE WILL NEED AN IF STATEMENT TO COUNT THE SLOW 
-			// ONES IN THE NEXT ALGORITHM
-			m_completeOps++;
-			m_slowOpCount++;
-
-      		m_opEnd = Now();
-      		m_opAve += m_opEnd - m_opStart;
-   			m_opStatus = IDLE;
-			ScheduleOperation (m_interval);
       		AsmCommon::Reset(sstm);
-			sstm << "*** READ COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, [<tag>,value]: [<" << m_MINts << "," << m_MINId << ">," << m_MINvalue << "] - @ 3 EXCH **";
+      		m_opStatus = IDLE;
+
+      		// if ts is secured - return its associated value
+      		if ( m_isTsSecured )
+      		{
+      			m_opEnd = Now();
+      			sstm << "** READ COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, Secure Value: "<< m_value <<
+      					", <ts, value, pvalue>: ["<< m_ts << "," << m_value << ","<< m_pvalue <<"]";
+
+      			// if read triggered the 3rd phase
+      			if( m_initiator )
+      			{
+      				sstm << "- @ 3 EXCH **";
+      				m_slowOpCount++;
+      			}
+      			else
+      			{
+      				sstm << "- @ 2 EXCH **";
+      				m_fastOpCount++;
+      			}
+      		}
+      		else if ( IsPredicateValid () ) // check the predicate
+      		{
+      			m_opEnd = Now();
+      			sstm << "** READ COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, Return Value: "<< m_value <<
+      					", <ts, value, pvalue>: ["<< m_ts << "," << m_value << ","<< m_pvalue <<"] - @ 2 EXCH **";
+      			m_fastOpCount++;
+      		}
+      		else
+      		{
+      			m_opEnd = Now();
+      			sstm << "** READ COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, Return PValue: "<< m_pvalue <<
+      					", <ts, value, pvalue>: ["<< m_ts << "," << m_value << ","<< m_pvalue <<"] - @ 2 EXCH **";
+      			m_fastOpCount++;
+      		}
+
 			LogInfo(sstm);
+
+      		m_opAve += m_opEnd - m_opStart;
+			ScheduleOperation (m_interval);
 			m_replies =0;
 		}
 	}
 }
 
+bool
+OhFastClient::IsPredicateValid()
+{
+	NS_LOG_FUNCTION (this);
+
+	std::vector<uint16_t> buckets;
+	std::vector< std::pair<Address, uint32_t> >::iterator it;
+	int a;
+	std::stringstream sstm;
+
+	buckets.resize((int) ((m_numServers/m_fail) - 1));
+
+	// construct the buckets
+	for( it = m_repliesSet.begin(); it<m_repliesSet.end(); it++)
+	{
+		buckets[(*it).second]++;
+	}
+
+	for(a = ((m_numServers/m_fail) - 2); a > 0; a--)
+	{
+		AsmCommon::Reset(sstm);
+		sstm << "PREDICATE LOOP: a=" << a << ", b[a]="<< buckets[a] << ", bound=" << (m_numServers - a*m_fail);
+		LogInfo(sstm);
+
+		if (buckets[a] >= (m_numServers - a*m_fail))
+		{
+			return true;
+		}
+		else
+		{
+			buckets[a-1] += buckets[a];
+		}
+	}
+
+	return false;
+}
 
 } // Namespace ns3
