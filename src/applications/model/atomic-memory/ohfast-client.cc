@@ -254,14 +254,27 @@ OhFastClient::StopApplication ()
 
   Simulator::Cancel (m_sendEvent);
 
+  // switch(m_prType)
+  // {
+  // case WRITER:
+	 //  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #writes=" << m_opCount << ", AveOpTime="<< ( (m_opAve.GetSeconds()) /m_opCount) <<"s **";
+	 //  LogInfo(sstm);
+	 //  break;
+  // case READER:
+	 //  sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #reads=" << m_opCount << ", #3EXCH_reads="<< m_slowOpCount << ", #2EXCH_reads="<<m_fastOpCount<<", AveOpTime="<< ((m_opAve.GetSeconds())/m_opCount) <<"s, 3EXC_AveOpTime="<< ((m_opAve.GetSeconds())/m_slowOpCount) <<"s, 2EXC_AveOpTime=0.0s **";
+	 //  LogInfo(sstm);
+	 //  break;
+  // }
+
+  
   switch(m_prType)
   {
   case WRITER:
-	  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #writes=" << m_opCount << ", AveOpTime="<< ( (m_opAve.GetSeconds()) /m_opCount) <<"s **";
+	  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_slowOpCount+m_fastOpCount <<", AveOpTime="<< ( (m_opAve.GetSeconds()) /m_opCount) <<"s **";
 	  LogInfo(sstm);
 	  break;
   case READER:
-	  sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #reads=" << m_opCount << ", #3EXCH_reads="<< m_slowOpCount << ", #2EXCH_reads="<<m_fastOpCount<<", AveOpTime="<< ((m_opAve.GetSeconds())/m_opCount) <<"s, 3EXC_AveOpTime="<< ((m_opAve.GetSeconds())/m_slowOpCount) <<"s, 2EXC_AveOpTime=0.0s **";
+	  sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads=" << m_opCount <<", #CompletedReads="<<m_slowOpCount+m_fastOpCount <<", #3EXCH_reads="<< m_slowOpCount << ", #2EXCH_reads="<<m_fastOpCount<<", AveOpTime="<< ((m_opAve.GetSeconds())/m_opCount) <<"s **";
 	  LogInfo(sstm);
 	  break;
   }
@@ -416,12 +429,10 @@ OhFastClient::InvokeRead (void)
 	NS_LOG_FUNCTION (this);
 	std::stringstream sstm;
 
-	m_opCount ++;
+	
 	m_opStart = Now();
 
-	AsmCommon::Reset(sstm);
-	sstm << "** READ INVOKED: " << m_opCount << " at "<< m_opStart.GetSeconds() <<"s";
-	LogInfo(sstm);
+	
 
 	//check if we still have operations to perfrom
 	if ( m_opCount <  m_count )
@@ -429,12 +440,15 @@ OhFastClient::InvokeRead (void)
 		//Phase 1
 		m_opStatus = PHASE1;
 		m_msgType = READ;
+		m_opCount ++;
 		
 		// Reset ts security and 3 phase initiation
 		m_initiator = false;
 		m_isTsSecured = false;
 
-
+		AsmCommon::Reset(sstm);
+		sstm << "** READ INVOKED: " << m_opCount << " at "<< m_opStart.GetSeconds() <<"s";
+		LogInfo(sstm);
 		//Send msg to all
 		m_replies = 0;		//reset replies
 		HandleSend();
@@ -447,12 +461,10 @@ OhFastClient::InvokeWrite (void)
 	NS_LOG_FUNCTION (this);
 	std::stringstream sstm;
 
-	m_opCount ++;
+	
 	m_opStart = Now();
 	
-	AsmCommon::Reset(sstm);
-	sstm << "** WRITE INVOKED: " << m_opCount << " at "<< m_opStart.GetSeconds() <<"s";
-	LogInfo(sstm);
+	
 
 	//check if we still have operations to perfrom
 	if ( m_opCount <=  m_count )
@@ -460,7 +472,11 @@ OhFastClient::InvokeWrite (void)
 		m_opStatus = PHASE1;
 		m_msgType = WRITE;
 		m_ts ++;
-
+		m_opCount ++;
+		
+		AsmCommon::Reset(sstm);
+		sstm << "** WRITE INVOKED: " << m_opCount << " at "<< m_opStart.GetSeconds() <<"s";
+		LogInfo(sstm);
 		m_value = m_opCount + 900;
 		m_replies = 0;
 		HandleSend();
