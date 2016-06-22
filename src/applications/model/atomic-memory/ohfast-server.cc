@@ -439,7 +439,8 @@ OhFastServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket)
 
 		// prepare and send packet to all servers
 		AsmCommon::Reset(pkts);
-		pkts << reply_type << " " << m_ts << " " << m_value << " " << msgSenderID << " " << msgOp;
+		// <msgType, <ts,v,vp>, q, counter>
+		pkts << reply_type << " " << m_ts << " " << m_value << " " << m_pvalue << " "<< msgSenderID << " " << msgOp;
 		SetFill(pkts.str());
 		Ptr<Packet> pc;
 		if (m_dataSize)
@@ -471,7 +472,8 @@ OhFastServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket)
 	{
 		// prepare and send packet
 		AsmCommon::Reset(pkts);
-		pkts << reply_type << " " << m_ts << " " << m_value;
+		// <counter, msgType, <ts,v,vp>, secured, initiator>
+		pkts << msgOp << reply_type << " " << m_ts << " " << m_value << " " << m_pvalue << " " << m_tsSecured << " " << false;
 		SetFill(pkts.str());
 		Ptr<Packet> p;
 		if (m_dataSize)
@@ -544,7 +546,8 @@ OhFastServer::HandleRelay(std::istream istm, Ptr<Socket> socket)
 				msgT = READACK;
 
 				AsmCommon::Reset(pkts);
-				pkts << msgT << " " << m_ts << " " << m_value << " " << msgOp << " " << m_tsSecured;
+				// <msgType, <ts,v,vp>, q, counter, secured, initiator>
+				pkts << msgT << " " << m_ts << " " << m_value << " " << msgOp << " " << m_tsSecured << " " << true;
 				SetFill(pkts.str());
 
 				Ptr<Packet> pk;
@@ -559,7 +562,7 @@ OhFastServer::HandleRelay(std::istream istm, Ptr<Socket> socket)
 					pk = Create<Packet> (m_size);
 				}
 
-				//Send to the corresponding client (from the info of the message is msgSenderId)
+				//Send to the client that initiated the relay (from the info of the message is msgSenderId)
 				m_clntSocket[msgSenderID]->Send(pk);
 				m_sent++;
 				AsmCommon::Reset(sstm);
@@ -581,6 +584,7 @@ OhFastServer::HandleRelay(std::istream istm, Ptr<Socket> socket)
 		msgT = READRELAY;
 
 		AsmCommon::Reset(pkts);
+		// <msgType, <ts,v,vp>, q, counter>
 		pkts << reply_type << " " << msgTs << " " << msgV << " " << msgVp <<" "<< msgSenderID << " " << msgOp;
 		SetFill(pkts.str());
 

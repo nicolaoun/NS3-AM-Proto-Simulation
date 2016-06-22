@@ -22,6 +22,8 @@ def build(bld):
         'model/atomic-memory/ohMam-server.cc',
         'model/atomic-memory/ohSam-client.cc',
         'model/atomic-memory/ohSam-server.cc',
+        'model/atomic-memory/ohfast-client.cc',
+        'model/atomic-memory/ohfast-server.cc',
         'model/atomic-memory/cchybrid-client.cc',
         'model/atomic-memory/cchybrid-server.cc',
         'helper/bulk-send-helper.cc',
@@ -33,6 +35,7 @@ def build(bld):
         'helper/atomic-memory/abd-helper-mwmr.cc',
         'helper/atomic-memory/ohMam-helper.cc',
         'helper/atomic-memory/ohSam-helper.cc',
+        'helper/atomic-memory/ohfast-helper.cc',
         'helper/atomic-memory/cchybrid-helper.cc',
         ]
 
