@@ -621,7 +621,7 @@ OhFastServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 			}
 
 	}
-	else
+	else if (m_relayTs[msgSenderID] < msgTs) // if this node did not relay a higher ts for the same client reply back
 	{
 		// someone else relayed this ts - echo his msg
 		message_response_type = "readRelay";
@@ -629,6 +629,7 @@ OhFastServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 		AsmCommon::Reset(pkts);
 		// serialize <msgType, <ts,v,vp>, q, counter>
 		pkts << READRELAY << " " << msgTs << " " << msgV << " " << msgVp <<" "<< msgSenderID << " " << msgOp;
+
 		SetFill(pkts.str());
 
 		Ptr<Packet> pk;
@@ -647,7 +648,7 @@ OhFastServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 		socket->Send(pk);
 		m_sent++;
 		AsmCommon::Reset(sstm);
-		sstm << "Sent " << message_response_type <<" "<< pk->GetSize () << " bytes to " << InetSocketAddress::ConvertFrom (from).GetIpv4();
+		sstm << "Echo  " << message_response_type <<" "<< pk->GetSize () << " bytes to " << InetSocketAddress::ConvertFrom (from).GetIpv4() << " data " << pkts.str();
 		LogInfo ( sstm );
 	}
 }
