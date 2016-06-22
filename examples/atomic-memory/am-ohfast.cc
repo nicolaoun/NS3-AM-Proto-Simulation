@@ -220,8 +220,10 @@ main (int argc, char *argv[])
 	//
 	// Now, do the actual simulation.
 	//
-	NS_LOG_INFO ("Run Simulation.");
-	Simulator::Run ();
-	Simulator::Destroy ();
-	NS_LOG_INFO ("Done.");
+	NS_LOG_INFO ("Run Simulation: oh-fast.");
+  Simulator::Run ();
+  Simulator::Destroy ();
+  NS_LOG_INFO (">>>> oh-fast Scenario - Servers:"<<numServers<<", Readers:"<<numReaders<<", Writers:"<<numWriters<<", Failures:"<<numFail<<", ReadInterval:"<<readInterval<<", WriteInterval:"<<writeInterval<<", <<<<");
+  NS_LOG_INFO ("Scenario Succesfully completed.");
+  NS_LOG_INFO ("Exiting...");
 }
