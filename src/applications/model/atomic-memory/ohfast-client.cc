@@ -129,8 +129,6 @@ OhFastClient::OhFastClient ()
 	m_id = 0;					//initialize the id of the tag
 	m_value = 0;				//initialize local value
 	m_opStatus = PHASE1; 		//initialize status
-	m_MINts = 10000000;
-	m_MINId = 10000000;
 	m_fail = 0;
 	m_opCount=0;
 	m_slowOpCount=0;
@@ -148,8 +146,6 @@ OhFastClient::~OhFastClient()
 	m_value = 0;				//initialize local value
 	m_id = 0;					//initialize the id of the tag
 	m_opStatus = PHASE1; 		//initialize status
-	m_MINts = 10000000;
-	m_MINId = 10000000;
 	m_fail = 0;
 	m_opCount=0;
 	m_slowOpCount=0;
@@ -479,16 +475,16 @@ OhFastClient::HandleSend (void)
 	std::string message_type;
 
 	// Serialize the appropriate message for READ or WRITE
-	if (m_ptType == WRITER)
+	if (m_prType == WRITER)
 	{
-		// serialize <counter, msgType, ts, value, pvalue>
-		pkts << m_sent << " " << m_msgType << " " << m_ts << " " << m_value << " " << m_pvalue;
+		// serialize <msgType, ts, value, pvalue, counter>
+		pkts << m_msgType << " " << m_ts << " " << m_value << " " << m_pvalue << " " << m_sent;
 		message_type = "write";
 	}
 	else
 	{
 		// serialize <counter, msgType, ts, value, pvalue, readerID>
-		pkts << m_sent << " " << m_msgType << " " << m_ts << " " << m_value << " " << m_pvalue;" "<< m_personalID;
+		pkts << m_msgType << " " << m_ts << " " << m_value << " " << m_pvalue << " "<< m_personalID << m_sent;
 		message_type = "read";
 	}
 
@@ -507,6 +503,8 @@ OhFastClient::HandleSend (void)
 		p = Create<Packet> (m_size);
 	}
 
+	p->RemoveAllPacketTags ();
+	p->RemoveAllByteTags ();
 
 	//Send a single packet to each server
 	for (int i=0; i<m_serverAddress.size(); i++)
@@ -520,8 +518,6 @@ OhFastClient::HandleSend (void)
 		<< " port " << m_peerPort << " data " << pkts.str();
 		LogInfo ( sstm );
 	}
-	p->RemoveAllPacketTags ();
-	p->RemoveAllByteTags ();
 }
 
 void
@@ -549,12 +545,12 @@ OhFastClient::HandleRecv (Ptr<Socket> socket)
 	  if (msgT==READACK)
 	  {
 			message_type = "readAck";
-			istm >> msgTs >> msgV >> msgOp;
+			//istm >> msgTs >> msgV >> msgOp;
 	  }
 	  else
 	  {
 			message_type = "writeAck";
-			istm >> msgTs >> msgV;
+			//istm >> msgTs >> msgV;
 	  }
 	 
 

@@ -81,11 +81,11 @@ private:
   /**
    * \brief handle read/write messages
    */
-  void HandleRecvMsg(std::istream& istm, Ptr<Socket> socket)
+  void HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType T);
   /**
    * \brief handle relay messages
    */
-  void HandleRelay(std::istream& istm, Ptr<Socket> socket)
+  void HandleRelay(std::istream& istm, Ptr<Socket> socket);
 
   
     /**
@@ -145,11 +145,12 @@ private:
   uint32_t m_ts; 				//!< latest timestamp
   uint32_t m_value;				//!< value associated with m_ts
   uint32_t m_pvalue;			//!< value associated with m_ts - 1 (previous value)
+  std::set< Address > m_seen;	//!< set of IDs storing the IDs of the processes seen our latest ts/value
   bool m_tsSecured;
 
   uint32_t m_sent;    //!< Counter for sent msgs
   //std::vector<uint32_t> m_writeop;     // Now its a single writer! just check ts
-  std::vector<uint32_t> m_operations;
+  std::vector<uint32_t> m_relayTs;
   std::vector<uint32_t> m_relays;
 };
 

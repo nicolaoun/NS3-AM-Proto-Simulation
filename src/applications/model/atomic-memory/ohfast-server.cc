@@ -82,12 +82,12 @@ OhFastServer::GetTypeId (void)
 OhFastServer::OhFastServer ()
 {
 	NS_LOG_FUNCTION (this);
-	m_id = 0;
+	//m_id = 0;
 	m_ts = 0;
 	m_value = 0;
 	m_serversConnected =0;
 	m_sent=0;
-	m_operations.resize(100);
+	m_relayTs.resize(100);
 	m_relays.resize(100);
 
 }
@@ -96,12 +96,12 @@ OhFastServer::~OhFastServer()
 {
 	NS_LOG_FUNCTION (this);
 	//m_socket = 0;
-	m_id = 0;
+	//m_id = 0;
 	m_ts = 0;
 	m_value = 0;
 	m_sent=0;
 	m_serversConnected =0;
-	m_operations.resize(100);
+	m_relayTs.resize(100);
 	m_relays.resize(100);
 }
 
@@ -358,6 +358,7 @@ OhFastServer::HandleRead (Ptr<Socket> socket)
 	uint32_t msgT;
 	std::stringstream sstm;
 	std::string message_type = "";
+	MessageType replyT;
 	AsmCommon::Reset(sstm);
 
 	while ((packet = socket->RecvFrom (from)))
@@ -374,8 +375,10 @@ OhFastServer::HandleRead (Ptr<Socket> socket)
 
 		if (msgT==WRITE){
 			message_type = "write";
+			replyT = WRITEACK;
 		}else if (msgT==READ){
 			message_type = "read";
+			replyT = READACK;
 		}else{
 			message_type = "readRelay";
 		}
@@ -390,25 +393,29 @@ OhFastServer::HandleRead (Ptr<Socket> socket)
 
 		if ( msgT == WRITE || msgT == READ )
 		{
-			HandleRecvMsg(istm, from);
+			HandleRecvMsg(istm, socket, replyT);
 		}
 		else
 		{
-			HandleRelay(istm,from);
+			HandleRelay(istm, socket);
 		}
 	}
 }
 
 void
-OhFastServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket)
+OhFastServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType replyT)
 {
-	uint32_t msgT, msgTs, msgV, msgVp, msgOp, msgSenderID, reply_type;
+	uint32_t msgTs, msgV, msgVp, msgOp, msgSenderID;
 	std::stringstream sstm;
 	std::string message_type = "";
 	std::string message_response_type = "";
 	std::stringstream pkts;
+	Address from;
+
 	AsmCommon::Reset(pkts);
 	AsmCommon::Reset(sstm);
+
+	socket->GetPeerName(from);
 
 	istm >> msgTs >> msgV >> msgVp >> msgSenderID >> msgOp;
 
@@ -427,21 +434,22 @@ OhFastServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket)
 	}
 
 	//insert the sender in the seen set
-	m_seen.insert(from);
+	m_seen.insert( InetSocketAddress::ConvertFrom(from).GetIpv4() );
 
 	// check condition to move to relay phase
-	if ( m_seen.size() > ((m_numServers/m_fail) - 2) && !m_tsSecured && m_operations[msgSenderID] < msgOp)
+	if ( m_seen.size() > ((m_numServers/m_fail) - 2) && !m_tsSecured && m_relayTs[msgSenderID] < msgTs)
 	{
 		message_response_type = "readRelay";
-		reply_type = READRELAY;
-		m_operations[msgSenderID] = msgTs;
+		m_relayTs[msgSenderID] = msgTs;
 		m_relays[msgSenderID] = 1;
 
 		// prepare and send packet to all servers
 		AsmCommon::Reset(pkts);
 		// <msgType, <ts,v,vp>, q, counter>
-		pkts << reply_type << " " << m_ts << " " << m_value << " " << m_pvalue << " "<< msgSenderID << " " << msgOp;
+		pkts << READRELAY << " " << m_ts << " " << m_value << " " << m_pvalue << " "<< msgSenderID << " " << msgOp;
+
 		SetFill(pkts.str());
+
 		Ptr<Packet> pc;
 		if (m_dataSize)
 		{
@@ -472,9 +480,11 @@ OhFastServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket)
 	{
 		// prepare and send packet
 		AsmCommon::Reset(pkts);
-		// <counter, msgType, <ts,v,vp>, secured, initiator>
-		pkts << msgOp << reply_type << " " << m_ts << " " << m_value << " " << m_pvalue << " " << m_tsSecured << " " << false;
+		// serialize <counter, msgType, <ts,v,vp>, secured, initiator>
+		pkts << msgOp << replyT << " " << m_ts << " " << m_value << " " << m_pvalue << " " << m_tsSecured << " " << false;
+
 		SetFill(pkts.str());
+
 		Ptr<Packet> p;
 		if (m_dataSize)
 		{
@@ -499,18 +509,21 @@ OhFastServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket)
 }
 
 void
-OhFastServer::HandleRelay(std::istream istm, Ptr<Socket> socket)
+OhFastServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 {
 	/////////////////////////////////
 	////////// READ RELAY ///////////
 	/////////////////////////////////
-	uint32_t msgT, msgTs, msgV, msgVp, msgOp, msgSenderID, reply_type;
+	uint32_t msgTs, msgV, msgVp, msgOp, msgSenderID;
 	std::stringstream sstm;
 	std::string message_type = "";
 	std::string message_response_type = "";
 	std::stringstream pkts;
 	AsmCommon::Reset(pkts);
 	AsmCommon::Reset(sstm);
+	Address from;
+
+	socket->GetPeerName(from);
 
 	istm >> msgTs >> msgV >> msgVp >> msgSenderID >> msgOp;
 
@@ -527,9 +540,9 @@ OhFastServer::HandleRelay(std::istream istm, Ptr<Socket> socket)
 	}
 
 	//insert the sender in the seen set
-	m_seen.insert(from);
+	m_seen.insert( InetSocketAddress::ConvertFrom(from).GetIpv4() );
 
-	if (m_operations[msgSenderID] == msgTs)
+	if (m_relayTs[msgSenderID] == msgTs)
 	{
 		m_relays[msgSenderID] ++;
 
@@ -543,11 +556,11 @@ OhFastServer::HandleRelay(std::istream istm, Ptr<Socket> socket)
 
 				// REPLY back to the reader
 				message_response_type = "readAck";
-				msgT = READACK;
 
 				AsmCommon::Reset(pkts);
-				// <msgType, <ts,v,vp>, q, counter, secured, initiator>
-				pkts << msgT << " " << m_ts << " " << m_value << " " << msgOp << " " << m_tsSecured << " " << true;
+				// <counter, msgType, <ts,v,vp>, secured, initiator>
+				pkts << msgOp << " " << READACK << " " << m_ts << " " << m_value << " " << m_tsSecured << " " << true;
+
 				SetFill(pkts.str());
 
 				Ptr<Packet> pk;
@@ -562,6 +575,9 @@ OhFastServer::HandleRelay(std::istream istm, Ptr<Socket> socket)
 					pk = Create<Packet> (m_size);
 				}
 
+				pk->RemoveAllPacketTags ();
+				pk->RemoveAllByteTags ();
+
 				//Send to the client that initiated the relay (from the info of the message is msgSenderId)
 				m_clntSocket[msgSenderID]->Send(pk);
 				m_sent++;
@@ -571,9 +587,6 @@ OhFastServer::HandleRelay(std::istream istm, Ptr<Socket> socket)
 			}
 
 
-			pk->RemoveAllPacketTags ();
-			pk->RemoveAllByteTags ();
-
 			//reset the replies for that reader to one (to count ours)
 			m_relays[msgSenderID] =1;
 	}
@@ -581,11 +594,10 @@ OhFastServer::HandleRelay(std::istream istm, Ptr<Socket> socket)
 	{
 		// someone else relayed this ts - echo his msg
 		message_response_type = "readRelay";
-		msgT = READRELAY;
 
 		AsmCommon::Reset(pkts);
-		// <msgType, <ts,v,vp>, q, counter>
-		pkts << reply_type << " " << msgTs << " " << msgV << " " << msgVp <<" "<< msgSenderID << " " << msgOp;
+		// serialize <msgType, <ts,v,vp>, q, counter>
+		pkts << READRELAY << " " << msgTs << " " << msgV << " " << msgVp <<" "<< msgSenderID << " " << msgOp;
 		SetFill(pkts.str());
 
 		Ptr<Packet> pk;

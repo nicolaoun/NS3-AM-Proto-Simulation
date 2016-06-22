@@ -13,5 +13,8 @@ def build(bld):
     obj = bld.create_ns3_program('am-ohSam', ['csma', 'point-to-point', 'internet', 'applications'])
     obj.source = 'am-ohSam.cc'
     
+    obj = bld.create_ns3_program('am-ohfast', ['csma', 'point-to-point', 'internet', 'applications'])
+    obj.source = 'am-ohfast.cc'
+    
     obj = bld.create_ns3_program('am-cchybrid', ['csma', 'point-to-point', 'internet', 'applications'])
     obj.source = 'am-cchybrid.cc'
