@@ -26,6 +26,8 @@ def build(bld):
         'model/atomic-memory/ohfast-server.cc',
         'model/atomic-memory/cchybrid-client.cc',
         'model/atomic-memory/cchybrid-server.cc',
+        'model/atomic-memory/semifast-client.cc',
+        'model/atomic-memory/semifast-server.cc',
         'helper/bulk-send-helper.cc',
         'helper/on-off-helper.cc',
         'helper/packet-sink-helper.cc',
@@ -37,6 +39,7 @@ def build(bld):
         'helper/atomic-memory/ohSam-helper.cc',
         'helper/atomic-memory/ohfast-helper.cc',
         'helper/atomic-memory/cchybrid-helper.cc',
+        'helper/atomic-memory/semifast-helper.cc',
         ]
 
     applications_test = bld.create_ns3_module_test_library('applications')
@@ -58,6 +61,8 @@ def build(bld):
         'model/udp-echo-client.h',
         'model/udp-echo-server.h',
         'model/application-packet-probe.h',
+        'model/atomic-memory/set-operations.h',
+        'model/atomic-memory/set-operations.cc',
         'model/atomic-memory/abd-client.h',
         'model/atomic-memory/abd-server.h',
         'model/atomic-memory/abd-client-mwmr.h',
@@ -70,6 +75,8 @@ def build(bld):
         'model/atomic-memory/ohfast-server.h',
         'model/atomic-memory/cchybrid-client.h',
         'model/atomic-memory/cchybrid-server.h',
+        'model/atomic-memory/semifast-client.h',
+        'model/atomic-memory/semifast-server.h',
         'model/atomic-memory/asm-common.h',
         'helper/bulk-send-helper.h',
         'helper/on-off-helper.h',
@@ -82,6 +89,7 @@ def build(bld):
         'helper/atomic-memory/ohSam-helper.h',
         'helper/atomic-memory/ohfast-helper.h',
         'helper/atomic-memory/cchybrid-helper.h',
+        'helper/atomic-memory/semifast-helper.h',
         ]
 
     bld.ns3_python_bindings()
