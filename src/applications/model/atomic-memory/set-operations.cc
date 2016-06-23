@@ -141,15 +141,11 @@ std::set< std::set<TargetClass> > SetOperation<TargetClass>::subsetsSizeK(const 
                                                     			int k)
 {
     int combinations;
-    int f1,f2,f3;
     int i;
     typename std::set< std::set<TargetClass> > powerset;
 
     //compute the total number of subsets of size k
-    f1 = Factorial(set1.size());
-    f2 = Factorial(k);
-    f3 = Factorial(set1.size()-k);
-    combinations = f1 / (f2*f3);
+    combinations = Choose(set1.size(), k);
     
     for ( i=0; i<combinations; i++ )
     {
@@ -179,32 +175,33 @@ std::set<TargetClass> SetOperation<TargetClass>::IthSubsetSizeK(const std::set<T
 	typename std::set<TargetClass>::iterator it;
 	int combinations;
 	int combinadics[k];
-	int i=k, element;
-	int combinadic = set1.size();
-	int f1,f2,f3;
+	int i=0, element, n=set1.size();
+	int combinadic = n;
+	int dual_index = (Choose(n,k)-1)-index; //getting the dual index to add the combinadics in increasing order
 
-	while ( index > 0 )
+	//cout << "SUBSETK: setSize=" << n << " k=" << k << ", index=" << index << ", dual="<< dual_index << "\n";
+	while ( i < k )
 	{
 		// compute C(c, i) = c!/(i!*(c-i)!)
-		f1 = Factorial(combinadic);
-		f2 = Factorial(i);
-		f3 = Factorial(combinadic-i);
-		combinations = f1 / (f2*f3);
+		combinations = Choose(combinadic, k-i);
 
+		//cout << "Combinations=" << combinations << ", Choose(" << combinadic <<"," << (k-i) << ") dual_index=" <<dual_index << "\n";
 		// if combinations is the largest value less than index - insert the combinatic
-		if ( index > combinations )
+		if ( dual_index >= combinations )
 		{
+			//cout << "Adding: " << i;
 			// 1 <= i <= k
-			combinadics[i-1] = combinadic;
-			i--;
-			index -= combinations;
+			combinadics[i] = (n-1) - combinadic;
+			i++;
+			dual_index -= combinations;
+
+			//cout << ", Added: " << combinadics[i-1] << "\n";
 		}
 
 		combinadic --;
 	}
-
 	i = 0;
-	element = 1;
+	element = 0;
 
 	//construct the resulting set by inserting the picked combinatics
 	for (it=set1.begin(); it != set1.end() && i<k; it++)
@@ -219,6 +216,26 @@ std::set<TargetClass> SetOperation<TargetClass>::IthSubsetSizeK(const std::set<T
 	}
 
 	return result;
+}
+
+// Goal: Compute the Choose(n,k)
+template < class TargetClass >
+int SetOperation<TargetClass>::Choose(int n, int k)
+{
+	int f1,f2,f3;
+
+	if (n < 0 || k < 0)
+		return -1;
+	if (n < k)
+		return 0;  // special case
+	if (n == k)
+		return 1;
+
+	f1 = Factorial(n);
+	f2 = Factorial(k);
+	f3 = Factorial(n-k);
+
+	return f1 / (f2*f3);
 }
 
 // Goal: Compute the factorial of a given number

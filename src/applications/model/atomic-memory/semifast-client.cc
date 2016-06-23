@@ -119,6 +119,8 @@ SemifastClient::SemifastClient ()
 
 	m_ts = 0;					//initialize the local timestamp
 	m_value = 0;				//initialize local value
+	m_pvalue = 0;
+	m_opCount=0;
 	m_opStatus = PHASE1; 		//initialize status
 
 	m_fail = 0;
@@ -139,6 +141,8 @@ SemifastClient::~SemifastClient()
 
 	m_ts = 0;					//initialize the local timestamp
 	m_value = 0;				//initialize local value
+	m_pvalue = 0;
+	m_opCount=0;
 	m_opStatus = PHASE1; 		//initialize status
 
 	m_fail = 0;
@@ -185,7 +189,7 @@ SemifastClient::StartApplication (void)
 	}
 
 	AsmCommon::Reset(sstm);
-	sstm << "Started Succesfully: #S=" << m_numServers <<", #F=" << m_fail << ", Vid=" << m_virtualId << ", opInt=" << m_interval;
+	sstm << "Started Succesfully: #S=" << m_numServers <<", #F=" << m_fail << " #vNodes= "<< m_numVNodes <<", Vid=" << m_virtualId << ", opInt=" << m_interval;
 	LogInfo(sstm);
 
 }
@@ -273,13 +277,16 @@ void SemifastClient::ConnectionFailed (Ptr<Socket> socket)
 void
 SemifastClient::SetServers (std::vector<Address> ip)
 {
-	int bound = (m_numServers/m_fail) - 3;
+	int bound;
 
 	m_serverAddress = ip;
 	m_numServers = m_serverAddress.size();
 
+	bound = (m_numServers/m_fail) - 3;
+
 	// compute number of virtual nodes
 	m_numVNodes = (bound > 1)? bound : 1;
+
 	//compute client's vID
 	if ( m_prType == WRITER )
 	{
@@ -381,6 +388,10 @@ SemifastClient::InvokeRead (void)
 	m_opCount ++;
 	m_opStart = Now();
 
+	AsmCommon::Reset(sstm);
+	sstm << "** READ INVOKED: " << m_opCount << " at "<< m_opStart.GetSeconds() <<"s";
+	LogInfo(sstm);
+
 	//check if we still have operations to perfrom
 	if ( m_opCount <=  m_count )
 	{
@@ -390,11 +401,9 @@ SemifastClient::InvokeRead (void)
 
 		//Send msg to all
 		m_replies = 0;		//reset replies
+		m_maxAckSet.clear();
+		m_propSet.clear();
 		HandleSend();
-
-		AsmCommon::Reset(sstm);
-		sstm << "** READ INVOKED: " << m_opCount << " at "<< m_opStart.GetSeconds() <<"s";
-		LogInfo(sstm);
 	}
 }
 
@@ -406,6 +415,10 @@ SemifastClient::InvokeWrite (void)
 
 	m_opCount ++;
 	m_opStart = Now();
+
+	AsmCommon::Reset(sstm);
+	sstm << "** WRITE INVOKED: " << m_opCount << " at "<< m_opStart.GetSeconds() <<"s";
+	LogInfo(sstm);
 
 	//check if we still have operations to perfrom
 	if ( m_opCount <=  m_count )
@@ -422,10 +435,6 @@ SemifastClient::InvokeWrite (void)
 		//Send msg to all
 		m_replies = 0;		//reset replies
 		HandleSend();
-
-		AsmCommon::Reset(sstm);
-		sstm << "** WRITE INVOKED: " << m_opCount << " at "<< m_opStart.GetSeconds() <<"s";
-		LogInfo(sstm);
 	}
 }
 
@@ -434,7 +443,7 @@ SemifastClient::HandleSend (void)
 {
   NS_LOG_FUNCTION (this);
 
-  NS_ASSERT (m_sendEvent.IsExpired ());
+  //NS_ASSERT (m_sendEvent.IsExpired ());
 
   // Prepare packet content
   std::stringstream pkts;
@@ -601,7 +610,7 @@ SemifastClient::ProcessReply(std::istream& istm, Address sender)
 					predRes = IsPredicateValid ();
 
 					//check the predicate to return in one round
-					if ( predRes == 1 || m_propSet.size() > m_fail+1 )
+					if ( predRes == 1 || m_propSet.size() >= m_fail+1 )
 					{
 						m_opStatus = IDLE;
 						m_opEnd = Now();
@@ -628,6 +637,8 @@ SemifastClient::ProcessReply(std::istream& istm, Address sender)
 
 						//Send msg to all
 						m_replies = 0;		//reset replies
+						m_maxAckSet.clear();
+						m_propSet.clear();
 						HandleSend();
 					}
 					else
@@ -682,30 +693,42 @@ SemifastClient::IsPredicateValid()
 
 	int a, msSize, combinations;
 	std::stringstream sstm;
-	int f1,f2,f3;
+	//int f1,f2,f3;
 	std::set< std::pair< Address, std::set<uint32_t> > > maxSet;
 	std::set< std::pair< Address, std::set<uint32_t> > >::iterator it;
 	std::set<uint32_t> intersection;
 
-	f1 = SetOperation<int>::Factorial(m_maxAckSet.size());
+	//f1 = SetOperation<int>::Factorial(m_maxAckSet.size());
 
 	for(a = 1; a < m_numVNodes+1; a++)
 	{
 		msSize = m_numServers - a*m_fail;
 
 		AsmCommon::Reset(sstm);
-		sstm << "PREDICATE LOOP: a=" << a << ", msSize="<< msSize << ", bound=" << (m_numServers - a*m_fail);
+		sstm << "PREDICATE LOOP: a=" << a << ", msSize="<< msSize << " maxAckSize="<< m_maxAckSet.size() <<", bound=" << (m_numServers - a*m_fail);
 		LogInfo(sstm);
 
 		// Choose(maxAck.size(), msSize) possible different sets MS
-		f2 = SetOperation<int>::Factorial(msSize);
-		f3 = SetOperation<int>::Factorial(m_maxAckSet.size()-msSize);
-		combinations = f1/(f2*f3);
+		//f2 = SetOperation<int>::Factorial(msSize);
+		//f3 = SetOperation<int>::Factorial(m_maxAckSet.size()-msSize);
+		//combinations = f1/(f2*f3);
+
+		combinations = SetOperation<int>::Choose(m_maxAckSet.size(), msSize);
 
 		// check each maxSet of size msSize
 		for(int i=0; i<combinations; i++)
 		{
 			maxSet = SetOperation< std::pair< Address, std::set<uint32_t> > >::IthSubsetSizeK(m_maxAckSet, msSize, i);
+
+			AsmCommon::Reset(sstm);
+			sstm << "MAX SET:{ ";
+			for ( it = maxSet.begin(); it != maxSet.end(); it++)
+			{
+				sstm << (*it).first << " ";
+			}
+			sstm << "}";
+			LogInfo(sstm);
+
 
 			// compute the intersection of the seen sets in maxSet
 			for (it = maxSet.begin(); it != maxSet.end(); it++)

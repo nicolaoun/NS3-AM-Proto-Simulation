@@ -46,7 +46,7 @@ main (int argc, char *argv[])
 	int numFail = -1;
 	int readInterval = 2;	//read interval in seconds
 	int writeInterval = 3;	//read interval in seconds
-	uint16_t usePropagation = 0;	//whther to use propagation flag to prevent multiple 2 round reads
+	uint16_t usePropagation = 1;	//whther to use propagation flag to prevent multiple 2 round reads
 
 //
 // Users may find it convenient to turn on explicit debugging
@@ -198,7 +198,7 @@ main (int argc, char *argv[])
   NS_LOG_INFO ("Run Simulation: ccHybrid.");
   Simulator::Run ();
   Simulator::Destroy ();
-  NS_LOG_INFO (">>>> ccHybrid Scenario - Servers:"<<numServers<<", Readers:"<<numReaders<<", Writers:1, Failures:"<<numFail<<", ReadInterval:"<<readInterval<<", WriteInterval:"<<writeInterval<<", <<<<");
+  NS_LOG_INFO (">>>> Semifast Scenario - Servers:"<<numServers<<", Readers:"<<numReaders<<", Writers:1, Failures:"<<numFail<<", ReadInterval:"<<readInterval<<", WriteInterval:"<<writeInterval<<", <<<<");
   NS_LOG_INFO ("Scenario Succesfully completed.");
   NS_LOG_INFO ("Exiting...");
 }

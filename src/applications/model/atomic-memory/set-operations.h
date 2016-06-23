@@ -93,6 +93,9 @@ public:
                                                           int k,
                                                           int index);
 
+    // Goal: Compute Choose(n,k)
+    static int Choose(int n, int k);
+
     // Goal: Compute the factorial of a given number
     static int Factorial(int n);
 
