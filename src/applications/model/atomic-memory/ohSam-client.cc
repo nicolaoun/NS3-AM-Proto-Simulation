@@ -274,14 +274,20 @@ ohSamClient::StopApplication ()
 
   Simulator::Cancel (m_sendEvent);
 
+  float avg_time=0;
+  if(m_opCount==0)
+  	avg_time = 0;
+  else
+  	avg_time = ((m_opAve.GetSeconds()) /m_opCount);
+
   switch(m_prType)
   {
   case WRITER:
-	  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_completeOps <<", AveOpTime="<< ( (m_opAve.GetSeconds()) /m_opCount) <<"s **";
+	  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_completeOps <<", AveOpTime="<< avg_time <<"s **";
 	  LogInfo(sstm);
 	  break;
   case READER:
-	  sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads=" << m_opCount <<", #CompletedReads="<<m_completeOps <<", #3EXCH_reads="<< m_completeOps << ", #2EXCH_reads=0, AveOpTime="<< ((m_opAve.GetSeconds())/m_opCount) <<"s **";
+	  sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads=" << m_opCount <<", #CompletedReads="<<m_completeOps <<", #3EXCH_reads="<< m_completeOps << ", #2EXCH_reads=0, AveOpTime="<< avg_time <<"s **";
 	  LogInfo(sstm);
 	  break;
   }

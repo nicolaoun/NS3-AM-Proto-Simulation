@@ -268,27 +268,21 @@ OhFastClient::StopApplication ()
 
   Simulator::Cancel (m_sendEvent);
 
-  // switch(m_prType)
-  // {
-  // case WRITER:
-	 //  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #writes=" << m_opCount << ", AveOpTime="<< ( (m_opAve.GetSeconds()) /m_opCount) <<"s **";
-	 //  LogInfo(sstm);
-	 //  break;
-  // case READER:
-	 //  sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #reads=" << m_opCount << ", #3EXCH_reads="<< m_slowOpCount << ", #2EXCH_reads="<<m_fastOpCount<<", AveOpTime="<< ((m_opAve.GetSeconds())/m_opCount) <<"s, 3EXC_AveOpTime="<< ((m_opAve.GetSeconds())/m_slowOpCount) <<"s, 2EXC_AveOpTime=0.0s **";
-	 //  LogInfo(sstm);
-	 //  break;
-  // }
-
+  
+  float avg_time=0;
+  if(m_opCount==0)
+  	avg_time = 0;
+  else
+  	avg_time = ((m_opAve.GetSeconds()) /m_opCount);
   
   switch(m_prType)
   {
   case WRITER:
-	  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_slowOpCount+m_fastOpCount <<", AveOpTime="<< ( (m_opAve.GetSeconds()) /m_opCount) <<"s **";
+	  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_slowOpCount+m_fastOpCount <<", AveOpTime="<< avg_time <<"s **";
 	  LogInfo(sstm);
 	  break;
   case READER:
-	  sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads=" << m_opCount <<", #CompletedReads="<<m_slowOpCount+m_fastOpCount <<", #3EXCH_reads="<< m_slowOpCount << ", #2EXCH_reads="<<m_fastOpCount<<", AveOpTime="<< ((m_opAve.GetSeconds())/m_opCount) <<"s **";
+	  sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads=" << m_opCount <<", #CompletedReads="<<m_slowOpCount+m_fastOpCount <<", #3EXCH_reads="<< m_slowOpCount << ", #2EXCH_reads="<<m_fastOpCount<<", AveOpTime="<< avg_time <<"s **";
 	  LogInfo(sstm);
 	  break;
   }

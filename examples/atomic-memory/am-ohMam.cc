@@ -45,9 +45,10 @@ main (int argc, char *argv[])
 	int numReaders = 2;
   int numWriters = 1;
 	int numFail = -1;
-	int readInterval = 2;	//read interval in seconds
-	int writeInterval = 3;	//read interval in seconds
+	float readInterval = 2;	//read interval in seconds
+	float writeInterval = 3;	//read interval in seconds
   int numClients = 0;
+  int version=1;
 
 //
 // Users may find it convenient to turn on explicit debugging
@@ -70,6 +71,7 @@ main (int argc, char *argv[])
   cmd.AddValue ("failures", "Number of server Failures", numFail);
   cmd.AddValue ("rInterval", "Read interval in seconds", readInterval);
   cmd.AddValue ("wInterval", "Write interval in seconds", writeInterval);
+  cmd.AddValue ("version", "Version 1 for FixInt, 2 for randInt", version);
   cmd.Parse (argc, argv);
 
   // By default set the failures equal to the minority
@@ -153,8 +155,8 @@ main (int argc, char *argv[])
     s_apps.Add (app);
   }
 
-  s_apps.Start (Seconds (1.0));
-  s_apps.Stop (Seconds (15.0));
+  s_apps.Start (Seconds (2.0));
+  s_apps.Stop (Seconds (30.0));
 
 
 //
@@ -208,7 +210,7 @@ main (int argc, char *argv[])
   }
 
   c_apps.Start (Seconds (1.0));
-  c_apps.Stop (Seconds (15.0));
+  c_apps.Stop (Seconds (30.0));
 
 
   //AsciiTraceHelper ascii;
