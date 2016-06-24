@@ -225,6 +225,9 @@ private:
 	uint32_t m_twoExOps;	//!< operations with 2 message exchanges
 	uint32_t m_fourExOps;	//!< operations with 4 message exchanges
 
+	//randomness
+	uint16_t m_randInt;		//!< Flag indicating the choose of a random interval for each op invocation
+	uint16_t m_seed;		//!< Randomness seed
 
 
 	/// Callbacks for tracing the packet Tx events

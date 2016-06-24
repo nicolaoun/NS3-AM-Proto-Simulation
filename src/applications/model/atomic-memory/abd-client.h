@@ -215,7 +215,9 @@ private:
 	uint32_t m_sent; 		//!< Counter for sent packets
 	uint32_t m_count; 		//!< Maximum number of packets the application will send
 
-
+	//randomness
+	uint16_t m_randInt;		//!< Flag indicating the choose of a random interval for each op invocation
+	uint16_t m_seed;		//!< Randomness seed
 
 	/// Callbacks for tracing the packet Tx events
 	TracedCallback<Ptr<const Packet> > m_txTrace;

@@ -110,6 +110,17 @@ OhFastClient::GetTypeId (void)
                    	 UintegerValue (100),
                   	 MakeUintegerAccessor (&OhFastClient::m_personalID),
                   	 MakeUintegerChecker<uint32_t> ())
+	 .AddAttribute ("RandomInterval",
+					 "Apply randomness on the invocation interval",
+					 UintegerValue (0),
+					 MakeUintegerAccessor (&OhFastClient::m_randInt),
+					 MakeUintegerChecker<uint16_t> ())
+	 .AddAttribute ("Seed",
+					 "Seed for the pseudorandom generator",
+					 UintegerValue (0),
+					 MakeUintegerAccessor (&OhFastClient::m_seed),
+					 MakeUintegerChecker<uint16_t> ())
+					 ;
   ;
   return tid;
 }
@@ -161,6 +172,9 @@ OhFastClient::StartApplication (void)
 
 	NS_LOG_FUNCTION (this);
 	std::stringstream sstm;
+
+	// seed pseudo-randomness
+	srand(m_seed);
 
 	if (m_insocket == 0)
 	{
@@ -410,6 +424,18 @@ void
 OhFastClient::ScheduleOperation (Time dt)
 {
   NS_LOG_FUNCTION (this << dt);
+  std::stringstream sstm;
+
+  // if rndomness is set - choose a random interval
+  if ( m_randInt )
+  {
+	  dt = Time::From( ((int) rand() % (int) dt.GetSeconds())+1 );
+  }
+
+  AsmCommon::Reset(sstm);
+  sstm << "** NEXT OPERATION: in " << dt.GetSeconds() <<"s";
+  LogInfo(sstm);
+
   if (m_prType == READER )
   {
 	  m_sendEvent = Simulator::Schedule (dt, &OhFastClient::InvokeRead, this);

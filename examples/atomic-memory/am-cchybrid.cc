@@ -44,8 +44,8 @@ main (int argc, char *argv[])
 	int numServers = 3;
 	int numReaders = 2;
 	int numFail = -1;
-	int readInterval = 2;	//read interval in seconds
-	int writeInterval = 3;	//read interval in seconds
+	double readInterval = 2.3;	//read interval in seconds
+	int writeInterval = 4;	//read interval in seconds
 	uint16_t usePropagation = 0;	//whther to use propagation flag to prevent multiple 2 round reads
 
 //
@@ -130,7 +130,7 @@ main (int argc, char *argv[])
   {
 	  CCHybridServerHelper server (port);
 	  server.SetAttribute("PacketSize", UintegerValue (1024) );
-    server.SetAttribute ("ID", UintegerValue (i-1));
+	  server.SetAttribute ("ID", UintegerValue (i-1));
 	  server.SetAttribute("LocalAddress", AddressValue (serverAddress[i-1]) );
 	  server.SetAttribute("Optimize", UintegerValue (usePropagation));
 	  s_apps.Add ((server.Install(nodes.Get (i))).Get(0));
@@ -160,6 +160,8 @@ main (int argc, char *argv[])
   client.SetAttribute ("Interval", TimeValue (interPacketInterval));
   client.SetAttribute ("PacketSize", UintegerValue (packetSize));
   client.SetAttribute ("SetRole", UintegerValue(WRITER));				//set writer role
+  client.SetAttribute ("RandomInterval", UintegerValue(1));
+  client.SetAttribute ("Seed", UintegerValue(19));
   Ptr<Application> app = (client.Install (nodes.Get (0))).Get(0);
   client.SetServers(app, serverAddress);
   c_apps.Add(app);
@@ -172,11 +174,13 @@ main (int argc, char *argv[])
 	  interPacketInterval = Seconds (readInterval);
 	  CCHybridClientHelper client (Address(ipIn.GetAddress (i)), port);
 	  client.SetAttribute ("MaxOperations", UintegerValue (maxPacketCount));
-    client.SetAttribute ("ID", UintegerValue (i-numServers));
+	  client.SetAttribute ("ID", UintegerValue (i-numServers));
 	  client.SetAttribute ("MaxFailures", UintegerValue (numFail));
 	  client.SetAttribute ("Interval", TimeValue (interPacketInterval));
 	  client.SetAttribute ("PacketSize", UintegerValue (packetSize));
 	  client.SetAttribute ("SetRole", UintegerValue(READER));				//set reader role
+	  client.SetAttribute ("RandomInterval", UintegerValue(1));
+	  client.SetAttribute ("Seed", UintegerValue(10));
 	  Ptr<Application> app = (client.Install (nodes.Get (i))).Get(0);
 	  client.SetServers(app, serverAddress);
 	  c_apps.Add(app);

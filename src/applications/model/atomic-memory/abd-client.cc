@@ -100,6 +100,17 @@ AbdClient::GetTypeId (void)
                    	 UintegerValue (100),
                   	 MakeUintegerAccessor (&AbdClient::m_personalID),
                   	 MakeUintegerChecker<uint32_t> ())
+	 .AddAttribute ("RandomInterval",
+					 "Apply randomness on the invocation interval",
+					 UintegerValue (0),
+					 MakeUintegerAccessor (&AbdClient::m_randInt),
+					 MakeUintegerChecker<uint16_t> ())
+	 .AddAttribute ("Seed",
+					 "Seed for the pseudorandom generator",
+					 UintegerValue (0),
+					 MakeUintegerAccessor (&AbdClient::m_seed),
+					 MakeUintegerChecker<uint16_t> ())
+					 ;
   ;
   return tid;
 }
@@ -190,6 +201,9 @@ AbdClient::StopApplication ()
   NS_LOG_FUNCTION (this);
 
   std::stringstream sstm;
+
+  // seed pseudo-randomness
+  srand(m_seed);
 
   if ( !m_socket.empty() )
     {
@@ -328,6 +342,18 @@ void
 AbdClient::ScheduleOperation (Time dt)
 {
   NS_LOG_FUNCTION (this << dt);
+  std::stringstream sstm;
+
+  // if rndomness is set - choose a random interval
+  if ( m_randInt )
+  {
+	  dt = Time::From( ((int) rand() % (int) dt.GetSeconds())+1 );
+  }
+
+  AsmCommon::Reset(sstm);
+  sstm << "** NEXT OPERATION: in " << dt.GetSeconds() <<"s";
+  LogInfo(sstm);
+
   if (m_prType == READER )
   {
 	  m_sendEvent = Simulator::Schedule (dt, &AbdClient::InvokeRead, this);
