@@ -191,7 +191,7 @@ OhMamServer::StartApplication (void)
 		//Set the number of sockets we need
 		m_srvSocket.resize( m_serverAddress.size() );
 
-		for (int i = 0; i < m_serverAddress.size(); i++ )
+		for (uint32_t i = 0; i < m_serverAddress.size(); i++ )
 		{
 			AsmCommon::Reset(sstm);
 			sstm << "Connecting to SERVER (" << Ipv4Address::ConvertFrom(m_serverAddress[i]) << ")";
@@ -220,7 +220,7 @@ OhMamServer::StartApplication (void)
 		//Set the number of sockets we need
 		m_clntSocket.resize( m_clntAddress.size() );
 
-		for (int i = 0; i < m_clntAddress.size(); i++ )
+		for (uint32_t i = 0; i < m_clntAddress.size(); i++ )
 		{
 			AsmCommon::Reset(sstm);
 			sstm << "Connecting to SERVER (" << Ipv4Address::ConvertFrom(m_clntAddress[i]) << ")";
@@ -257,7 +257,7 @@ OhMamServer::StopApplication ()
 
 	if ( !m_srvSocket.empty() )
 	{
-		for(int i=0; i< m_srvSocket.size(); i++ )
+		for(uint32_t i=0; i< m_srvSocket.size(); i++ )
 		{
 			m_srvSocket[i]->Close ();
 			m_srvSocket[i]->SetRecvCallback (MakeNullCallback<void, Ptr<Socket> > ());
@@ -265,7 +265,7 @@ OhMamServer::StopApplication ()
 	}
 	if ( !m_clntSocket.empty() )
 	{
-		for(int i=0; i< m_clntSocket.size(); i++ )
+		for(uint32_t i=0; i< m_clntSocket.size(); i++ )
 		{
 			m_clntSocket[i]->Close ();
 			m_clntSocket[i]->SetRecvCallback (MakeNullCallback<void, Ptr<Socket> > ());
@@ -497,7 +497,7 @@ OhMamServer::HandleRead (Ptr<Socket> socket)
 		    	}
 
 			//Send a single packet to each server
-  			for (int i=0; i<m_serverAddress.size(); i++)
+  			for (uint32_t i=0; i<m_serverAddress.size(); i++)
   			{
 	  			m_sent++;
   				if (m_serverAddress[i] != m_myAddress)
