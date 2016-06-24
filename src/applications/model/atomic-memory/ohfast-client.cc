@@ -201,7 +201,7 @@ OhFastClient::StartApplication (void)
 		//Set the number of sockets we need
 		m_socket.resize( m_serverAddress.size() );
 
-		for (int i = 0; i < m_serverAddress.size(); i++ )
+		for (uint32_t i = 0; i < m_serverAddress.size(); i++ )
 		{
 			AsmCommon::Reset(sstm);
 			sstm << "Connecting to SERVER (" << Ipv4Address::ConvertFrom(m_serverAddress[i]) << ")";
@@ -245,7 +245,7 @@ OhFastClient::StopApplication ()
 
   if ( !m_socket.empty() )
     {
-	  for(int i=0; i< m_socket.size(); i++ )
+	  for(uint32_t i=0; i< m_socket.size(); i++ )
 	  {
 		  m_socket[i]->Close ();
 		  m_socket[i]->SetRecvCallback (MakeNullCallback<void, Ptr<Socket> > ());
@@ -528,7 +528,7 @@ OhFastClient::HandleSend (void)
 	p->RemoveAllByteTags ();
 
 	//Send a single packet to each server
-	for (int i=0; i<m_serverAddress.size(); i++)
+	for (uint32_t i=0; i<m_serverAddress.size(); i++)
 	{
 		m_sent++; //count the messages sent
 		m_txTrace (p);
