@@ -71,7 +71,7 @@ def create_output_file_for_scenario(drct,mode):
 		if (mode==1):
 			text_file.write("Protocol Version #Servers #Readers rIntvl wIntvl fastOps slowOps readRatio readPrcnt readAvgT rdrMsgs wrtMsgs srvMsgs\n")
 		else:
-			text_file.write("Protocol Version #Servers #Readers  rIntvl wIntvl fastOps slowOps readRatio readPrcnt readAvgT     rdrAvgMsgs wrtAvgMsgs srvAvgMsgs\n")
+			text_file.write("Protocol Version #Servers #Readers  rIntvl wIntvl fastOps slowOps readRatio readPrcnt readAvgT rdrAvgMsgs TotRdrAvgMsgs wrtAvgMsgs srvAvgMsgs TotSrvAvgMsgs\n")
 	return directory
 
 def execute():
@@ -127,13 +127,16 @@ def execute():
 	main_avg_readRatio = main_avg_readRatio / tests
 	main_avg_readPrcnt = main_avg_readPrcnt / tests
 	main_avg_readTime = main_avg_readTime / tests
-	main_avg_rdrMsgs = main_avg_rdrMsgs / tests
+	main_avg_Total_rdrMsgs = main_avg_rdrMsgs / tests
+	main_avg_rdrMsgs = main_avg_rdrMsgs / tests / numReaders
 	main_avg_wrtMsgs = main_avg_wrtMsgs / tests
-	main_avg_srvMsgs = main_avg_srvMsgs / tests
+	main_avg_Total_srvMsgs = main_avg_srvMsgs / tests
+	main_avg_srvMsgs = main_avg_srvMsgs / tests / numServers
+
 	# Now write them to the main file
 	with open(main_directory, "a") as main_text_file:
 		# we have to write this: "Protocol Version #Servers #Readers rIntvl wIntvl fastOps slowOps readRatio readPrcnt readAvgT rdrAvgMsgs wrtAvgMsgs srvAvgMsgs\n"
-		output = str(alg) + "  \t  " + str(Version)+"    "+ str(numServers)+"       "+ str(numReaders)+"\t"+ str(rInterval)+"   "+ str(wInterval)+"\t"+ str(main_avg_fastOps)+"     " + str(main_avg_slowOps)+"\t"+ str(main_avg_readRatio)+"\t  "+ str(main_avg_readPrcnt)+"\t   "+ str(main_avg_readTime)+"\t    "+ str(main_avg_rdrMsgs)+"\t        "+ str(main_avg_wrtMsgs)+"\t   "+ str(main_avg_srvMsgs)+"\n"
+		output = str(alg) + " " + str(Version)+" "+ str(numServers)+" "+ str(numReaders)+" "+ str(rInterval)+" "+ str(wInterval)+" "+ str(main_avg_fastOps)+" " + str(main_avg_slowOps)+" "+ str(main_avg_readRatio)+" "+ str(main_avg_readPrcnt)+" "+ str(main_avg_readTime)+" "+ str(main_avg_rdrMsgs)+" "+str(main_avg_Total_rdrMsgs)+" "+ str(main_avg_wrtMsgs)+" "+ str(main_avg_srvMsgs)+" "+str(main_avg_Total_srvMsgs)+"\n"
 		main_text_file.write(output)
 # WE ARE DONE
 
