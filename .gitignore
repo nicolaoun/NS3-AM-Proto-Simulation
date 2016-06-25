@@ -6,3 +6,4 @@ doc/*
 .lock-waf_darwin_build
 waf-tools/*
 utils.pyc
+output/*

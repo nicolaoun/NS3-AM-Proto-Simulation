@@ -25,6 +25,17 @@
 // - DropTail queues 
 // - Tracing of queues and packet receptions to file "udp-echo.tr"
 
+// Default Network topology, 9 nodes in a star
+/*
+          n2 n3 n4
+           \ | /
+            \|/
+       n1---n0---n5
+            /| \
+           / | \
+          n8 n7 n6
+*/
+
 #include <fstream>
 #include "ns3/core-module.h"
 #include "ns3/csma-module.h"
@@ -87,10 +98,14 @@ main (int argc, char *argv[])
 	// Explicitly create the nodes required by the topology (shown above).
 	//
 	NS_LOG_INFO ("Create nodes.");
-	NodeContainer nodes;
-	//nodes.Create (numServers+numReaders+1);
-	nodes.Create (numServers+numReaders+numWriters);
-	//TO - DO
+	NodeContainer serverNodess;
+	NodeContainer readerNodes;
+	NodeContainer writerNode;
+	serverNodes.Create(numServers);
+	readerNodes.Create(numReaders);
+	writerNode.Create(1);
+	NodeContainer clientNodes = NodeContainer(readerNodes, writerNode);
+	NodeContainer allNodes = NodeContainer ( serverNodes, clientNodes);
 
 	NS_LOG_INFO ("Create channels for " << nodes.GetN() << " nodes.");
 	//
@@ -156,7 +171,7 @@ main (int argc, char *argv[])
 	}
 
 	s_apps.Start (Seconds (1.0));
-	s_apps.Stop (Seconds (30.0));
+	s_apps.Stop (Seconds (60.0));
 
 
 	//
@@ -210,7 +225,7 @@ main (int argc, char *argv[])
 	}
 
 	c_apps.Start (Seconds (1.0));
-	c_apps.Stop (Seconds (30.0));
+	c_apps.Stop (Seconds (60.0));
 
 
 	// AsciiTraceHelper ascii;

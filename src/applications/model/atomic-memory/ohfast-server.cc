@@ -31,6 +31,7 @@
 #include "ns3/packet.h"
 #include "ns3/uinteger.h"
 #include "ohfast-server.h"
+//#include <algorithm>
 
 namespace ns3 {
 
@@ -91,6 +92,7 @@ OhFastServer::OhFastServer ()
 	m_relayTs.resize(100);
 	m_relays.resize(100);
 
+	m_numClients=0;
 }
 
 OhFastServer::~OhFastServer()
@@ -105,6 +107,8 @@ OhFastServer::~OhFastServer()
 	m_serversConnected =0;
 	m_relayTs.resize(100);
 	m_relays.resize(100);
+
+	m_numClients=0;
 }
 
 /**************************************************************************************
@@ -126,6 +130,7 @@ OhFastServer::SetServers (std::vector<Address> ip)
 void
 OhFastServer::SetClients (std::vector<Address> ip)
 {
+	/*
 	m_clntAddress = ip;
 	m_numClients = m_clntAddress.size();
 
@@ -133,6 +138,7 @@ OhFastServer::SetClients (std::vector<Address> ip)
 	{
 		NS_LOG_FUNCTION (this << "server" << Ipv4Address::ConvertFrom(m_clntAddress[i]));
 	}
+	*/
 }
 
 
@@ -179,6 +185,7 @@ OhFastServer::StartApplication (void)
 	}
 
 
+	/*
 	//connect to the other servers
 	if ( m_srvSocket.empty() )
 	{
@@ -207,8 +214,13 @@ OhFastServer::StartApplication (void)
 
 		}
 	}
+	*/
+
+	//Set the number of sockets we need
+	//m_clntSocket.resize( m_clntAddress.size() );
 
 	//connect to clients
+	/*
 	if ( m_clntSocket.empty() )
 	{
 		//Set the number of sockets we need
@@ -217,7 +229,7 @@ OhFastServer::StartApplication (void)
 		for (uint32_t i = 0; i < m_clntAddress.size(); i++ )
 		{
 			AsmCommon::Reset(sstm);
-			sstm << "Connecting to SERVER (" << Ipv4Address::ConvertFrom(m_clntAddress[i]) << ")";
+			sstm << "Connecting to CLIENT (" << Ipv4Address::ConvertFrom(m_clntAddress[i]) << ")";
 			LogInfo(sstm);
 
 			TypeId tid = TypeId::LookupByName ("ns3::TcpSocketFactory");
@@ -235,6 +247,7 @@ OhFastServer::StartApplication (void)
 					MakeCallback (&OhFastServer::ConnectionFailed, this));
 		}
 	}
+	*/
 }
 
 
@@ -295,8 +308,35 @@ void OhFastServer::HandlePeerError (Ptr<Socket> socket)
 void OhFastServer::HandleAccept (Ptr<Socket> s, const Address& from)
 {
 	NS_LOG_FUNCTION (this << s << from);
-	s->SetRecvCallback (MakeCallback (&OhFastServer::HandleRead, this));
-	m_socketList.push_back (s);
+	//Address from;
+	bool isServer = false;
+	std::stringstream sstm;
+
+	//s->SetRecvCallback (MakeCallback (&OhFastServer::HandleRead, this));
+	//s->GetPeerName(from);
+
+	for (uint32_t i=0; i < m_serverAddress.size(); i++)
+	{
+		if ( InetSocketAddress::ConvertFrom(from).GetIpv4() == m_serverAddress[i] )
+		{
+			isServer = true;
+		}
+	}
+
+	if( !isServer )
+	{
+		m_clntAddress.push_back(from);
+		m_clntSocket.push_back(s);
+		m_numClients++;
+
+		AsmCommon::Reset(sstm);
+		sstm << "ACCEPTED CLIENT " << m_clntAddress.size() << ": " << InetSocketAddress::ConvertFrom(from).GetIpv4();
+		LogInfo(sstm);
+	}
+	else
+	{
+		m_socketList.push_back (s);
+	}
 }
 
  void OhFastServer::ConnectionSucceeded (Ptr<Socket> socket)

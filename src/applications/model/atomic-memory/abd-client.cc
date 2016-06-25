@@ -133,6 +133,8 @@ AbdClient::AbdClient ()
 	m_opStatus = PHASE1; 		//initialize status
 
 	m_fail = 0;
+	m_opCount = 0;
+	m_completeOps = 0;
 }
 
 AbdClient::~AbdClient()
@@ -150,6 +152,8 @@ AbdClient::~AbdClient()
 	m_opStatus = PHASE1; 		//initialize status
 
 	m_fail = 0;
+	m_opCount = 0;
+	m_completeOps = 0;
 }
 
 /**************************************************************************************
