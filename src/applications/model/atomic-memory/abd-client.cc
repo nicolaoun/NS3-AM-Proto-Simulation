@@ -39,6 +39,8 @@ NS_OBJECT_ENSURE_REGISTERED (AbdClient);
 void
 AbdClient::LogInfo( std::stringstream& s)
 {
+	NS_LOG_FUNCTION (this);
+
 	NS_LOG_INFO("[CLIENT " << m_personalID << " - "<< Ipv4Address::ConvertFrom(m_myAddress) << "] (" << Simulator::Now ().GetSeconds () << "s):" << s.str());
 }
 
