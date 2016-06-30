@@ -127,7 +127,7 @@ private:
 	 * \bief logging helper to record address and time
 	 * \param string stream to be printed on the output
 	 */
-	void LogInfo(std::stringstream& s);
+	void Log(logLevel_t l, std::stringstream& s);
 	/**
 	 * \brief clear the string stream
 	 */

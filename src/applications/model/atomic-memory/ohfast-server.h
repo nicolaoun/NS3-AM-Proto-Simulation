@@ -65,7 +65,7 @@ private:
   virtual void StopApplication (void);
 
   //string stream for ease of output
-  void LogInfo(std::stringstream& s);
+  void Log( logLevel_t l, std::stringstream& s);
   /**
    * \brief function to fill the packet with data
    */

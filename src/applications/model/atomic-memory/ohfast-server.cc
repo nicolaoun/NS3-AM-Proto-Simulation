@@ -40,9 +40,16 @@ NS_LOG_COMPONENT_DEFINE ("OhFastServerApplication");
 NS_OBJECT_ENSURE_REGISTERED (OhFastServer);
 
 void
-OhFastServer::LogInfo( std::stringstream& s)
+OhFastServer::Log( logLevel_t l, std::stringstream& s)
 {
-	NS_LOG_INFO("[SERVER "<< m_personalID << " - " << Ipv4Address::ConvertFrom(m_myAddress) << "] (" << Simulator::Now ().GetSeconds () << "s):" << s.str());
+	if ( l == INFO )
+	{
+		NS_LOG_INFO("[SERVER "<< m_personalID << " - " << Ipv4Address::ConvertFrom(m_myAddress) << "] (" << Simulator::Now ().GetSeconds () << "s):" << s.str());
+	}
+	else
+	{
+		NS_LOG_DEBUG("[SERVER "<< m_personalID << " - " << Ipv4Address::ConvertFrom(m_myAddress) << "] (" << Simulator::Now ().GetSeconds () << "s):" << s.str());
+	}
 }
 
 TypeId
@@ -190,7 +197,7 @@ OhFastServer::StartApplication (void)
 		{
 			AsmCommon::Reset(sstm);
 			sstm << "Connecting to SERVER (" << Ipv4Address::ConvertFrom(m_serverAddress[i]) << ")";
-			LogInfo(sstm);
+			Log(DEBUG, sstm);
 
 			TypeId tid = TypeId::LookupByName ("ns3::TcpSocketFactory");
 			m_srvSocket[i] = Socket::CreateSocket (GetNode (), tid);
@@ -223,7 +230,7 @@ OhFastServer::StartApplication (void)
 		{
 			AsmCommon::Reset(sstm);
 			sstm << "Connecting to CLIENT (" << Ipv4Address::ConvertFrom(m_clntAddress[i]) << ")";
-			LogInfo(sstm);
+			Log(DEBUG, sstm);
 
 			TypeId tid = TypeId::LookupByName ("ns3::TcpSocketFactory");
 			m_clntSocket[i] = Socket::CreateSocket (GetNode (), tid);
@@ -273,7 +280,7 @@ OhFastServer::StopApplication ()
 	}
 	std::stringstream sstm;
 	sstm << "** SERVER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent<<" **";
-	LogInfo(sstm);
+	Log(INFO, sstm);
 }
 
 void
@@ -327,7 +334,7 @@ void OhFastServer::HandleAccept (Ptr<Socket> s, const Address& from)
 
 		AsmCommon::Reset(sstm);
 		sstm << "ACCEPTED CLIENT " << m_clntAddress.size() << ": " << InetSocketAddress::ConvertFrom(from).GetIpv4();
-		LogInfo(sstm);
+		Log(DEBUG, sstm);
 	}
 	else
 	{
@@ -335,7 +342,7 @@ void OhFastServer::HandleAccept (Ptr<Socket> s, const Address& from)
 
 		AsmCommon::Reset(sstm);
 		sstm << "ACCEPTED SERVER " << m_socketList.size() << ": " << InetSocketAddress::ConvertFrom(from).GetIpv4();
-		LogInfo(sstm);
+		Log(DEBUG, sstm);
 	}
 }
 
@@ -349,7 +356,7 @@ void OhFastServer::HandleAccept (Ptr<Socket> s, const Address& from)
 
    std::stringstream sstm;
    sstm << "Connected to NODE (" << InetSocketAddress::ConvertFrom (from).GetIpv4() <<")";
-   LogInfo(sstm);
+   Log(DEBUG, sstm);
 
    // Check if connected to the all the servers start operations
    //if (m_serversConnected == m_serverAddress.size() )
@@ -357,7 +364,7 @@ void OhFastServer::HandleAccept (Ptr<Socket> s, const Address& from)
    {
  	AsmCommon::Reset(sstm);
  	sstm << "Connected to all Nodes.";
- 	LogInfo(sstm);
+ 	Log(DEBUG, sstm);
    }
  }
 
@@ -431,7 +438,7 @@ OhFastServer::HandleRead (Ptr<Socket> socket)
 		sstm << "Received " << message_type <<" "<< packet->GetSize () << " bytes from " <<
 				InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
 				InetSocketAddress::ConvertFrom (from).GetPort () << " data " << buf;
-		LogInfo(sstm);
+		Log(DEBUG, sstm);
 
 		if ( msgT == WRITE || msgT == READ )
 		{
@@ -504,7 +511,7 @@ OhFastServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType 
 		AsmCommon::Reset(sstm);
 		sstm << "SeenSize: "<< m_seen.size() << ", Bound: (" << m_numServers << "/" << m_fail << ")-2 = " << ((m_numServers/m_fail)-2)
 		 	 << ", TsSecured: " << m_tsSecured << ", RelayTs: " << m_relayTs[msgSenderID] << ", ServerTs: " << m_ts;
-		LogInfo ( sstm );
+		Log(DEBUG,  sstm );
 
 		// check condition to move to relay phase
 		if ( m_seen.size() > ((m_numServers/m_fail) - 2) && !m_tsSecured && m_relayTs[msgSenderID] < m_ts)
@@ -545,7 +552,7 @@ OhFastServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType 
 
 					AsmCommon::Reset(sstm);
 					sstm << "Sent "<< message_response_type << " " << pc->GetSize () << " bytes to " << Ipv4Address::ConvertFrom (m_serverAddress[i]) << ", seen size: " << m_seen.size();
-					LogInfo ( sstm );
+					Log(DEBUG,  sstm );
 				}
 			}
 		}
@@ -584,7 +591,7 @@ OhFastServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType 
 
 			sstm << "} data " << pkts.str();
 
-			LogInfo(sstm);
+			Log(DEBUG, sstm);
 		}
 	} // end if(msgSenderID)
 }
@@ -624,7 +631,7 @@ OhFastServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 
 	AsmCommon::Reset(sstm);
 	sstm << "Processing ReadRelay: InitiatorIp= " << Ipv4Address::ConvertFrom(senderIp) << " InitiatorID=" << msgSenderID;// << ", relayTs=" << m_relayTs[msgSenderID] << ", msgTs=" << msgTs << ", #RelaysRcved=" << m_relays[msgSenderID];
-	LogInfo ( sstm );
+	Log(DEBUG,  sstm );
 
 	if ( msgSenderID >= 0 && msgSenderID < m_clntAddress.size() )
 	{
@@ -689,7 +696,7 @@ OhFastServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 				m_sent++;
 				AsmCommon::Reset(sstm);
 				sstm << "Sent " << message_response_type <<" "<< pk->GetSize () << " bytes after RELAY to " << InetSocketAddress::ConvertFrom (m_clntAddress[msgSenderID]).GetIpv4();
-				LogInfo ( sstm );
+				Log(DEBUG,  sstm );
 
 				//reset the replies for that reader to one (to count ours)
 				//m_relays[msgSenderID] =1;
@@ -727,7 +734,7 @@ OhFastServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 			m_sent++;
 			AsmCommon::Reset(sstm);
 			sstm << "Echo  " << message_response_type <<" "<< pk->GetSize () << " bytes to " << InetSocketAddress::ConvertFrom (from).GetIpv4() << " data " << pkts.str();
-			LogInfo ( sstm );
+			Log(DEBUG,  sstm );
 		}
 	}
 }

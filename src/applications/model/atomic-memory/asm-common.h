@@ -32,6 +32,12 @@ enum MessageType{
 	DISCOVERACK
 };
 
+// Log message level
+enum logLevel_t{
+	INFO,
+	DEBUG
+};
+
 class AsmCommon
 {
 public:
