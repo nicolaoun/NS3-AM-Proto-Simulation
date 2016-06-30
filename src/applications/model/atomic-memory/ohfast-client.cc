@@ -49,7 +49,11 @@ OhFastClient::LogInfo( std::stringstream& s)
 	NS_LOG_INFO("[CLIENT " << m_personalID << " - "<< Ipv4Address::ConvertFrom(m_myAddress) << "] (" << Simulator::Now ().GetSeconds () << "s):" << s.str());
 }
 
-
+void
+OhFastClient::LogDebug( std::stringstream& s)
+{
+	NS_LOG_DEBUG("[CLIENT " << m_personalID << " - "<< Ipv4Address::ConvertFrom(m_myAddress) << "] (" << Simulator::Now ().GetSeconds () << "s):" << s.str());
+}
 
 TypeId
 OhFastClient::GetTypeId (void)
@@ -139,6 +143,7 @@ OhFastClient::OhFastClient ()
 	m_ts = 0;					//initialize the local timestamp
 	m_id = 0;					//initialize the id of the tag
 	m_value = 0;				//initialize local value
+	m_pvalue = 0;				//initialize local value
 	m_opStatus = PHASE1; 		//initialize status
 	m_fail = 0;
 	m_opCount=0;
@@ -155,6 +160,7 @@ OhFastClient::~OhFastClient()
 	m_serversConnected = 0;
 	m_ts = 0;					//initialize the local timestamp - here is the MIN_TS
 	m_value = 0;				//initialize local value
+	m_pvalue = 0;				//initialize local value
 	m_id = 0;					//initialize the id of the tag
 	m_opStatus = PHASE1; 		//initialize status
 	m_fail = 0;
@@ -278,7 +284,7 @@ OhFastClient::StopApplication ()
   switch(m_prType)
   {
   case WRITER:
-	  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_slowOpCount+m_fastOpCount <<", AveOpTime="<< avg_time <<"s **";
+	  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<< m_slowOpCount+m_fastOpCount <<", AveOpTime="<< avg_time <<"s **";
 	  LogInfo(sstm);
 	  break;
   case READER:
@@ -524,7 +530,7 @@ OhFastClient::HandleSend (void)
 	}
 	else
 	{
-		// serialize <counter, msgType, ts, value, pvalue, readerID>
+		// serialize <msgType, ts, value, pvalue, readerID, counter>
 		pkts << m_msgType << " " << m_ts << " " << m_value << " " << m_pvalue << " "<< m_personalID << " "<< m_opCount;
 		message_type = "read";
 	}
@@ -638,6 +644,7 @@ OhFastClient::ProcessReply(std::istream& istm, Address sender)
 			AsmCommon::Reset(sstm);
 			sstm << "*** WRITE COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, [<ts,value>]: [<" << m_ts << "," << m_value << ">] - @ 2 EXCH **";
 			LogInfo(sstm);
+			m_fastOpCount++;
 			m_replies = 0;
 		}
 	}
