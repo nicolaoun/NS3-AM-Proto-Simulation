@@ -252,7 +252,7 @@ main (int argc, char *argv[])
 	// Create the writer+reader processes
 	NS_LOG_INFO ("Create Clients (Writer+Readers).");
 
-	for (int i=0; i<=numReaders; i++)
+	for (int i=0; i< numClients; i++)
 	{
 		int lan = (int) (i/clientsPerLan);
 

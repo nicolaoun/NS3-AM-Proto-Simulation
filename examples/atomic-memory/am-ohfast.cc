@@ -78,7 +78,6 @@ main (int argc, char *argv[])
 	//cmd.AddValue ("useIpv6", "Use Ipv6", useV6);
 	cmd.AddValue ("servers", "Number of servers", numServers);
 	cmd.AddValue ("readers", "Number of readers", numReaders);
-	cmd.AddValue ("writers", "Number of writers", numWriters);
 	cmd.AddValue ("failures", "Number of server Failures", numFail);
 	cmd.AddValue ("rInterval", "Read interval in seconds", readInterval);
 	cmd.AddValue ("wInterval", "Write interval in seconds", writeInterval);
@@ -94,6 +93,12 @@ main (int argc, char *argv[])
 	//set the number of clients (all together)
 	numClients = numReaders+numWriters;
 
+	/********************************************************************
+	 ********************************************************************
+	 *                        CREATE TOPOLOGY							*
+	 ********************************************************************
+	 ********************************************************************/
+
 	//
 	// Explicitly create the nodes required by the topology (shown above).
 	//
@@ -101,72 +106,71 @@ main (int argc, char *argv[])
 	NodeContainer serverNodes;
 	NodeContainer readerNodes;
 	NodeContainer writerNode;
+	NodeContainer routers;
+	routers.Create(numServers);
 	serverNodes.Create(numServers);
 	readerNodes.Create(numReaders);
 	writerNode.Create(1);
 	NodeContainer clientNodes = NodeContainer(readerNodes, writerNode);
-	NodeContainer allNodes = NodeContainer ( serverNodes, clientNodes);
+	NodeContainer allNodes = NodeContainer ( routers, serverNodes, clientNodes);
 
-	NS_LOG_INFO ("Create channels"); // for " << nodes.GetN() << " nodes.");
+	NS_LOG_INFO ("Create channels");
+
 	//
 	// Explicitly create the channels required by the topology (shown above).
 	//
-
 	InternetStackHelper internet;
 	internet.Install (allNodes);
 
-	//Collect an adjacency list of nodes for the p2p topology
-	//connect every client with a single server
-	std::vector<NodeContainer> clientAdjacencyList (numClients*numServers);
+	//Create LANs
+	std::vector<NodeContainer> nodeLanList;
+	int clientsPerLan = std::ceil((float) numClients/ (float) numServers);
 
-	//connect the writer with the first server
-	//clientAdjacencyList[0] = NodeContainer (writerNode, serverNodes(0));
+	NS_LOG_INFO ("Clients per lan: "<< clientsPerLan);
 
-
-	//clients to all servers
-	for(uint32_t i=0; i<numClients; ++i)
+	// Create one lan around each server
+	for ( uint32_t i=0; i<numServers; i++)
 	{
-		for(uint32_t j=0; j<numServers; ++j)
+		NodeContainer lanClients;
+		for ( uint32_t j=i*clientsPerLan; j < numClients && j < (i+1)*clientsPerLan; j++ )
 		{
-			clientAdjacencyList[numServers*i+j] = NodeContainer (serverNodes.Get(j), clientNodes.Get(i));
+			lanClients.Add ( clientNodes.Get(j) );
 		}
+
+		nodeLanList.push_back( NodeContainer (routers.Get(i), serverNodes.Get(i), lanClients) );
 	}
 
-	std::vector<NodeContainer> serverAdjacencyList;
 
-	//servers to all servers
-	for(uint32_t i=0; i<numServers; ++i)
+	std::vector<NodeContainer> routerAdjacencyList;
+
+	//connect the routers with p2p
+	for(uint32_t i=0; i<numServers-1; ++i)
 	{
-		// connect i to i+1, i+2, ...., n
-		for(uint32_t j=i+1; j<numServers; ++j)
-		{
-			serverAdjacencyList.push_back ( NodeContainer (serverNodes.Get(i), serverNodes.Get(j)) );
-		}
+		routerAdjacencyList.push_back ( NodeContainer (routers.Get(i), routers.Get(i+1)) );
 	}
 
-	/*
+
 	CsmaHelper csma;
 	csma.SetChannelAttribute ("DataRate", DataRateValue (DataRate (5000000)));
 	csma.SetChannelAttribute ("Delay", TimeValue (MilliSeconds (2)));
 	csma.SetDeviceAttribute ("Mtu", UintegerValue (1400));
-	NetDeviceContainer devices = csma.Install (nodes);
-	*/
+
+	std::vector<NetDeviceContainer> csmaDeviceAdjacencyList;
+
+	for(uint32_t i=0; i<nodeLanList.size (); ++i)
+	{
+		csmaDeviceAdjacencyList.push_back( csma.Install (nodeLanList[i]) );
+	}
+
 	PointToPointHelper p2p;
-	p2p.SetDeviceAttribute ("DataRate", StringValue ("5Mbps"));
-	p2p.SetChannelAttribute ("Delay", StringValue ("2ms"));
-	std::vector<NetDeviceContainer> deviceAdjacencyList;
+	p2p.SetDeviceAttribute ("DataRate", StringValue ("1.5Mbps"));
+	p2p.SetChannelAttribute ("Delay", StringValue ("10ms"));
+	std::vector<NetDeviceContainer> p2pDeviceAdjacencyList;
 
-	for(uint32_t i=0; i<clientAdjacencyList.size (); ++i)
+	for(uint32_t i=0; i<routerAdjacencyList.size (); ++i)
 	{
-		deviceAdjacencyList.push_back( p2p.Install (clientAdjacencyList[i]) );
+		p2pDeviceAdjacencyList.push_back( p2p.Install (routerAdjacencyList[i]) );
 	}
-
-	for(uint32_t i=0; i<serverAdjacencyList.size (); ++i)
-	{
-		deviceAdjacencyList.push_back( p2p.Install (serverAdjacencyList[i]) );
-	}
-
-	//  NS_LOG_INFO ("Created " << devices.GetN() << " connections.");
 
 	//
 	// We've got the "hardware" in place.  Now we need to add IP addresses.
@@ -174,48 +178,41 @@ main (int argc, char *argv[])
 	NS_LOG_INFO ("Assign IP Addresses.");
 
 	Ipv4AddressHelper ipv4;
-	std::vector<Ipv4InterfaceContainer> interfaceAdjacencyList;
-	for(uint32_t i=0; i<interfaceAdjacencyList.size (); ++i)
+	std::vector<Ipv4InterfaceContainer> csmaInterfaceAdjacencyList;
+
+	//assign LAN addresses
+	for(uint32_t i=0; i<csmaDeviceAdjacencyList.size (); ++i)
+	{
+		std::ostringstream subnet;
+		subnet<<"192.168."<<i+1<<".0";
+		ipv4.SetBase (subnet.str ().c_str (), "255.255.255.0");
+		csmaInterfaceAdjacencyList.push_back ( ipv4.Assign (csmaDeviceAdjacencyList[i]) );
+	}
+
+	std::vector<Ipv4InterfaceContainer> p2pInterfaceAdjacencyList;
+	//assign Router addresses
+	for(uint32_t i=0; i<p2pDeviceAdjacencyList.size (); ++i)
 	{
 		std::ostringstream subnet;
 		subnet<<"10.1."<<i+1<<".0";
 		ipv4.SetBase (subnet.str ().c_str (), "255.255.255.0");
-		interfaceAdjacencyList.push_back ( ipv4.Assign (deviceAdjacencyList[i]) );
+		p2pInterfaceAdjacencyList.push_back ( ipv4.Assign (p2pDeviceAdjacencyList[i]) );
 	}
 
 	//Turn on global static routing
 	Ipv4GlobalRoutingHelper::PopulateRoutingTables ();
 
 
-	std::vector<Address> tmpAddress;
-	std::vector< std::vector <Address> > serverAddress;                            //
-	/*
-	Ipv4AddressHelper ipv4;
-	ipv4.SetBase ("10.1.1.0", "255.255.255.0");
-	Ipv4InterfaceContainer ipIn = ipv4.Assign (devices);
-	*/
-
-	for(uint32_t i=0; i<numClients; ++i)
+	//collect the server adresses
+	std::vector<Address> serverAddress;
+	for(uint32_t i=0; i<csmaInterfaceAdjacencyList.size (); ++i)
 	{
-		tmpAddress.clear();
-
-		for(uint32_t j=0; j<numServers; ++j)
-		{
-			// get the address of each server
-			tmpAddress.push_back(Address(interfaceAdjacencyList[j+numServers*i].GetAddress (1)));
-		}
-
-		serverAddress.push_back(tmpAddress);
+		serverAddress.push_back(csmaInterfaceAdjacencyList[i].GetAddress(1));
 	}
 
-	/*
-	for(int k=numServers; k<numServers+numReaders+numWriters; k++)       ////
-	{
-		clientAddress.push_back(Address(ipIn.GetAddress (k)));
-	}
-	*/
-
-	// NS_LOG_INFO ("Assigned "<< ipIn.GetN() << " IP Addresses.");
+	/********************************************************************
+	 *                        ./TOPOLOGY_CREATED						*
+	 ********************************************************************/
 
 	//
 	// Create a OhFastServer application on node one.
@@ -230,12 +227,12 @@ main (int argc, char *argv[])
 		OhFastServerHelper server (port);
 		server.SetAttribute("PacketSize", UintegerValue (1024) );
 		server.SetAttribute ("ID", UintegerValue (i));
-		//server.SetAttribute("LocalAddress", AddressValue (serverAddress[i-1]) );
+		server.SetAttribute("LocalAddress", AddressValue (csmaInterfaceAdjacencyList[i].GetAddress(1)) );
 		//server.SetAttribute("LocalAddress", AddressValue ("0.0.0.0") );
 		server.SetAttribute ("MaxFailures", UintegerValue (numFail));
 		//Set the servers
 		Ptr<Application> app = ((server.Install(serverNodes.Get (i))).Get(0));
-		//server.SetServers(app, serverAddress);
+		server.SetServers(app, serverAddress);
 		//server.SetClients(app, clientAddress);
 		s_apps.Add (app);
 	}
@@ -254,7 +251,7 @@ main (int argc, char *argv[])
 	ApplicationContainer c_apps;
 
 	// Create the writer process
-
+/*
 	NS_LOG_INFO ("Create the Writer.");
 
 	interPacketInterval = Seconds (writeInterval);
@@ -269,25 +266,38 @@ main (int argc, char *argv[])
 	Ptr<Application> app = (client.Install (clientNodes.Get(0))).Get(0);
 	client.SetServers(app, serverAddress[0]);
 	c_apps.Add(app);
-
+*/
 
 
 	// Create the reader processes
-	NS_LOG_INFO ("Create Readers.");
+	NS_LOG_INFO ("Create Clients (Writer+Readers).");
 
-	for (int i=1; i<numReaders; i++)
+	for (int i=0; i<numClients; i++)
 	{
-		interPacketInterval = Seconds (readInterval);
-		OhFastClientHelper client (Address(interfaceAdjacencyList[i].GetAddress (0)), port);
+		int lan = (int) (i/clientsPerLan);
+
+		OhFastClientHelper client (Address(csmaInterfaceAdjacencyList[lan].GetAddress ((i%clientsPerLan)+2)), port);
+
+		// if this is the writer - set role and interval
+		if(i == 0 )
+		{
+			interPacketInterval = Seconds (writeInterval);
+			client.SetAttribute ("SetRole", UintegerValue(WRITER));				//set writer role
+		}
+		else
+		{
+			interPacketInterval = Seconds (readInterval);
+			client.SetAttribute ("SetRole", UintegerValue(READER));				//set reader role
+		}
+
 		client.SetAttribute ("MaxOperations", UintegerValue (maxPacketCount));
 		client.SetAttribute ("Port", UintegerValue (port));               // Incoming packets port
 		client.SetAttribute ("ID", UintegerValue (i));    //we want them to start from Writers
 		client.SetAttribute ("MaxFailures", UintegerValue (numFail));
 		client.SetAttribute ("Interval", TimeValue (interPacketInterval));
 		client.SetAttribute ("PacketSize", UintegerValue (packetSize));
-		client.SetAttribute ("SetRole", UintegerValue(READER));				//set reader role
 		Ptr<Application> app = (client.Install (clientNodes.Get (i))).Get(0);
-		client.SetServers(app, serverAddress[i]);
+		client.SetServers(app, serverAddress);
 		c_apps.Add(app);
 	}
 
@@ -298,8 +308,6 @@ main (int argc, char *argv[])
 	// AsciiTraceHelper ascii;
 	// csma.EnableAsciiAll (ascii.CreateFileStream ("am-OhFast.tr"));
 	// csma.EnablePcapAll ("am-OhFast", false);
-
-	Ipv4GlobalRoutingHelper::PopulateRoutingTables ();
 
 	//
 	// Now, do the actual simulation.
