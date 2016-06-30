@@ -16,25 +16,27 @@
 
 // Network topology
 //
-//   w   s0    s1   ...   s_n   c0    c1   ...   c_m
-//   |   |     |    ...    |    |     |    ...    |
-//   ==============================================
-//                          LAN
+//      w   s0    c1   ...   ci
+//      |   |     |    ...    |
+//  r1 =======================
+//   |           LAN
+//   |
+//   |  s1  c(i+1)   ...   c(2i)
+//   |  |     |      ...    |
+//  r2 =======================
+//   |           LAN
+//   |
+//   .
+//	 .
+//   .
+//   |  sn  c((n-1)*i)  ...   c(ni)
+//   |  |       |       ...    |
+//  rn =========================
+//              LAN
 //
-// - UDP flows from n0 to n1 and back
+// - Links between r_i and r_{i+1}: Point to point 1.5Mpbs, 10ms delay
+// - Links between nodes in LAN: CSMA 5Mpbs, 2ms delay
 // - DropTail queues 
-// - Tracing of queues and packet receptions to file "udp-echo.tr"
-
-// Default Network topology, 9 nodes in a star
-/*
-          n2 n3 n4
-           \ | /
-            \|/
-       n1---n0---n5
-            /| \
-           / | \
-          n8 n7 n6
-*/
 
 #include <fstream>
 #include "ns3/core-module.h"

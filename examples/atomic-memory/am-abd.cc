@@ -37,7 +37,7 @@
 // - Links between r_i and r_{i+1}: Point to point 1.5Mpbs, 10ms delay
 // - Links between nodes in LAN: CSMA 5Mpbs, 2ms delay
 // - DropTail queues 
-// - Tracing of queues and packet receptions to file "udp-echo.tr"
+
 
 #include <fstream>
 #include "ns3/core-module.h"
