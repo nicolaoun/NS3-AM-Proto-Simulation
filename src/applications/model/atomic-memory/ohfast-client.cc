@@ -44,12 +44,17 @@ NS_OBJECT_ENSURE_REGISTERED (OhFastClient);
 
 
 void
-OhFastClient::LogInfo( std::stringstream& s)
+OhFastClient::Log(logLevel_t l, std::stringstream& s)
 {
-	NS_LOG_INFO("[CLIENT " << m_personalID << " - "<< Ipv4Address::ConvertFrom(m_myAddress) << "] (" << Simulator::Now ().GetSeconds () << "s):" << s.str());
+	if ( l == INFO )
+	{
+		NS_LOG_INFO("[CLIENT " << m_personalID << " - "<< Ipv4Address::ConvertFrom(m_myAddress) << "] (" << Simulator::Now ().GetSeconds () << "s):" << s.str());
+	}
+	else
+	{
+		NS_LOG_DEBUG("[CLIENT " << m_personalID << " - "<< Ipv4Address::ConvertFrom(m_myAddress) << "] (" << Simulator::Now ().GetSeconds () << "s):" << s.str());
+	}
 }
-
-
 
 TypeId
 OhFastClient::GetTypeId (void)
@@ -139,6 +144,7 @@ OhFastClient::OhFastClient ()
 	m_ts = 0;					//initialize the local timestamp
 	m_id = 0;					//initialize the id of the tag
 	m_value = 0;				//initialize local value
+	m_pvalue = 0;				//initialize local value
 	m_opStatus = PHASE1; 		//initialize status
 	m_fail = 0;
 	m_opCount=0;
@@ -155,6 +161,7 @@ OhFastClient::~OhFastClient()
 	m_serversConnected = 0;
 	m_ts = 0;					//initialize the local timestamp - here is the MIN_TS
 	m_value = 0;				//initialize local value
+	m_pvalue = 0;				//initialize local value
 	m_id = 0;					//initialize the id of the tag
 	m_opStatus = PHASE1; 		//initialize status
 	m_fail = 0;
@@ -219,7 +226,7 @@ OhFastClient::StartApplication (void)
 		{
 			AsmCommon::Reset(sstm);
 			sstm << "Connecting to SERVER (" << Ipv4Address::ConvertFrom(m_serverAddress[i]) << ")";
-			LogInfo(sstm);
+			Log(DEBUG, sstm);
 
 			TypeId tid = TypeId::LookupByName ("ns3::TcpSocketFactory");
 			m_socket[i] = Socket::CreateSocket (GetNode (), tid);
@@ -239,8 +246,8 @@ OhFastClient::StartApplication (void)
 
 	
 	AsmCommon::Reset(sstm);
-	sstm << "Started Succesfully: #S=" << m_numServers <<", #F=" << m_fail << ", opInt=" << m_interval;
-	LogInfo(sstm);
+	sstm << "Started Successfully: #S=" << m_numServers <<", #F=" << m_fail << ", opInt=" << m_interval;
+	Log(DEBUG, sstm);
 
 }
 
@@ -278,12 +285,12 @@ OhFastClient::StopApplication ()
   switch(m_prType)
   {
   case WRITER:
-	  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_slowOpCount+m_fastOpCount <<", AveOpTime="<< avg_time <<"s **";
-	  LogInfo(sstm);
+	  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<< m_slowOpCount+m_fastOpCount <<", AveOpTime="<< avg_time <<"s **";
+	  Log( INFO, sstm);
 	  break;
   case READER:
 	  sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads=" << m_opCount <<", #CompletedReads="<<m_slowOpCount+m_fastOpCount <<", #3EXCH_reads="<< m_slowOpCount << ", #2EXCH_reads="<<m_fastOpCount<<", AveOpTime="<< avg_time <<"s **";
-	  LogInfo(sstm);
+	  Log( INFO, sstm);
 	  break;
   }
 }
@@ -328,7 +335,7 @@ void OhFastClient::ConnectionSucceeded (Ptr<Socket> socket)
 
   std::stringstream sstm;
   sstm << "Connected to SERVER (" << InetSocketAddress::ConvertFrom (from).GetIpv4() <<")";
-  LogInfo(sstm);
+  Log(DEBUG, sstm);
 
   // Check if connected to the all the servers start operations
   if (m_serversConnected == m_serverAddress.size() )
@@ -342,7 +349,7 @@ void OhFastClient::ConnectionFailed (Ptr<Socket> socket)
   NS_LOG_FUNCTION (this << socket);
   std::stringstream sstm;
   sstm << "Connection to SERVER Failed.";
-  LogInfo(sstm);
+  Log( INFO, sstm);
 }
 
 /**************************************************************************************
@@ -428,7 +435,7 @@ OhFastClient::ScheduleOperation (Time dt)
 
   AsmCommon::Reset(sstm);
   sstm << "** NEXT OPERATION: in " << dt.GetSeconds() <<"s";
-  LogInfo(sstm);
+  Log( INFO, sstm);
 
   if (m_prType == READER )
   {
@@ -468,7 +475,7 @@ OhFastClient::InvokeRead (void)
 
 		AsmCommon::Reset(sstm);
 		sstm << "** READ INVOKED: " << m_opCount << " at "<< m_opStart.GetSeconds() <<"s";
-		LogInfo(sstm);
+		Log( INFO, sstm);
 		//Send msg to all
 		m_replies = 0;		//reset replies
 		HandleSend();
@@ -496,7 +503,7 @@ OhFastClient::InvokeWrite (void)
 		
 		AsmCommon::Reset(sstm);
 		sstm << "** WRITE INVOKED: " << m_opCount << " at "<< m_opStart.GetSeconds() <<"s";
-		LogInfo(sstm);
+		Log( INFO, sstm);
 		m_value = m_opCount + 900;
 		m_replies = 0;
 		HandleSend();
@@ -524,7 +531,7 @@ OhFastClient::HandleSend (void)
 	}
 	else
 	{
-		// serialize <counter, msgType, ts, value, pvalue, readerID>
+		// serialize <msgType, ts, value, pvalue, readerID, counter>
 		pkts << m_msgType << " " << m_ts << " " << m_value << " " << m_pvalue << " "<< m_personalID << " "<< m_opCount;
 		message_type = "read";
 	}
@@ -557,7 +564,7 @@ OhFastClient::HandleSend (void)
 		std::stringstream sstm;
 		sstm << "Sent " << message_type <<" "<< p->GetSize() << " bytes to " << Ipv4Address::ConvertFrom (m_serverAddress[i])
 		<< " port " << m_peerPort << " data " << pkts.str();
-		LogInfo ( sstm );
+		Log(DEBUG,  sstm );
 	}
 }
 
@@ -598,7 +605,7 @@ OhFastClient::HandleRecv (Ptr<Socket> socket)
 	  sstm << "Received " << message_type <<" "<< packet->GetSize () << " bytes from " <<
 			  InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
 			  InetSocketAddress::ConvertFrom (from).GetPort () << " data " << buf;
-	  LogInfo (sstm);
+	  Log(DEBUG, sstm);
 
       // check message freshness and if client is waiting
       if ((msgC == m_opCount) && (m_opStatus != IDLE))
@@ -637,7 +644,8 @@ OhFastClient::ProcessReply(std::istream& istm, Address sender)
 			m_opAve += m_opEnd - m_opStart;
 			AsmCommon::Reset(sstm);
 			sstm << "*** WRITE COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, [<ts,value>]: [<" << m_ts << "," << m_value << ">] - @ 2 EXCH **";
-			LogInfo(sstm);
+			Log( INFO, sstm);
+			m_fastOpCount++;
 			m_replies = 0;
 		}
 	}
@@ -656,7 +664,7 @@ OhFastClient::ProcessReply(std::istream& istm, Address sender)
 
 			AsmCommon::Reset(sstm);
 			sstm << "Updated local <ts,value> pair to: [" << m_ts << "," << m_value << "," << m_pvalue <<"]";
-			LogInfo(sstm);
+			Log(DEBUG, sstm);
 
 			//reset the maxAck set and tsSecured variables
 			m_repliesSet.clear();
@@ -723,7 +731,7 @@ OhFastClient::ProcessReply(std::istream& istm, Address sender)
       			m_fastOpCount++;
       		}
 
-			LogInfo(sstm);
+			Log( INFO, sstm);
 
       		m_opAve += m_opEnd - m_opStart;
 			ScheduleOperation (m_interval);
@@ -754,7 +762,7 @@ OhFastClient::IsPredicateValid()
 	{
 		AsmCommon::Reset(sstm);
 		sstm << "PREDICATE LOOP: a=" << a << ", b[a]="<< buckets[a] << ", bound=" << (m_numServers - a*m_fail);
-		LogInfo(sstm);
+		Log(DEBUG, sstm);
 
 		if (buckets[a] >= (m_numServers - a*m_fail))
 		{

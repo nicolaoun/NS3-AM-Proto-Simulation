@@ -54,8 +54,6 @@ public:
 
   void SetServers (std::vector<Address> ip);
 
-  void SetClients (std::vector<Address> ip);
-
 protected:
   virtual void DoDispose (void);
 
@@ -65,7 +63,7 @@ private:
   virtual void StopApplication (void);
 
   //string stream for ease of output
-  void LogInfo(std::stringstream& s);
+  void Log( logLevel_t l, std::stringstream& s);
   /**
    * \brief function to fill the packet with data
    */

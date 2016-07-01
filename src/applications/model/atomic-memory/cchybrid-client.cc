@@ -132,6 +132,7 @@ CCHybridClient::CCHybridClient ()
 	m_opStatus = PHASE1; 		//initialize status
 
 	m_fail = 0;
+	m_opCount = 0;
 
 	m_twoExOps = 0;
 	m_fourExOps = 0;
@@ -152,6 +153,7 @@ CCHybridClient::~CCHybridClient()
 	m_opStatus = PHASE1; 		//initialize status
 
 	m_fail = 0;
+	m_opCount = 0;
 
 	m_twoExOps = 0;
 	m_fourExOps = 0;

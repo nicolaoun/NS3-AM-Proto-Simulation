@@ -302,7 +302,7 @@ CCHybridServer::HandleRead (Ptr<Socket> socket)
 				InetSocketAddress::ConvertFrom (from).GetPort () << " seen: { ";
 
 		for(std::set< Address >::iterator it=m_seen.begin(); it!=m_seen.end(); it++)
-			sstm << " " <<  *it;
+			sstm << " " <<  InetSocketAddress::ConvertFrom( *it ).GetIpv4();
 
 		sstm << "} data " << pkts.str();
 		LogInfo(sstm);

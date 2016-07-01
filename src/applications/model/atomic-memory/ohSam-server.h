@@ -54,7 +54,7 @@ public:
 
   void SetServers (std::vector<Address> ip);
 
-  void SetClients (std::vector<Address> ip);
+  //void SetClients (std::vector<Address> ip);
 
 protected:
   virtual void DoDispose (void);
@@ -79,6 +79,11 @@ private:
    */
   
   void HandleRead (Ptr<Socket> socket);
+
+  void HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType msgT);
+
+  void HandleRelay(std::istream& istm, Ptr<Socket> socket);
+
     /**
    * \brief Handle an incoming connection
    * \param socket the incoming connection socket

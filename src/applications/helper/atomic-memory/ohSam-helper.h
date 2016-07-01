@@ -55,8 +55,6 @@ public:
 
   void SetServers (Ptr<Application> app, std::vector<Address> serverIps);
 
-  void SetClients (Ptr<Application> app, std::vector<Address> clientIps);
-  
   /**
    * Create a ohSamServerApplication on the specified Node.
    *

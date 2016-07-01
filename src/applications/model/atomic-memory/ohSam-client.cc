@@ -461,7 +461,6 @@ ohSamClient::InvokeRead (void)
 		//Phase 1
 		m_opStatus = PHASE1;
 		m_msgType = READ;
-		m_readop ++;
 		m_opCount++;
 
 		m_MINts = 10000000;
@@ -516,15 +515,16 @@ ohSamClient::HandleSend (void)
   std::stringstream pkts;
   std::string message_type;
   
+  AsmCommon::Reset(pkts);
   // Serialize the appropriate message for READ or WRITE
-  if ((m_msgType == WRITE) && (m_opStatus == PHASE1))
+  if ( m_msgType == WRITE )
   	{
   		pkts << m_msgType << " " << m_ts << " " << m_value;
   		message_type = "write";
 	}
   else 
     {
-		pkts << m_msgType <<" "<< m_personalID <<" "<< m_readop;
+		pkts << m_msgType <<" "<< m_opCount;
 		message_type = "read";
     }
 
@@ -548,7 +548,7 @@ ohSamClient::HandleSend (void)
   for (uint32_t i=0; i<m_serverAddress.size(); i++)
   {
   	  m_sent++; //count the messages sent
-	  m_txTrace (p);
+	  //m_txTrace (p);
 	  m_socket[i]->Send (p);
 
 	  std::stringstream sstm;
@@ -593,7 +593,7 @@ ohSamClient::HandleRecv (Ptr<Socket> socket)
 	  }
 	 
 
-	  if((msgOp==m_readop)||(msgTs==m_ts))
+	  if((msgOp==m_opCount)||(msgTs==m_ts))
 	  {
 	  	sstm << "Received " << message_type <<" "<< packet->GetSize () << " bytes from " <<
 	                        InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
@@ -604,7 +604,7 @@ ohSamClient::HandleRecv (Ptr<Socket> socket)
 	  }
 
       // check message freshness and if client is waiting
-      if ((msgOp == m_readop) && (msgT==READACK) && (m_opStatus != IDLE))
+      if ((msgOp == m_opCount) && (msgT==READACK) && (m_opStatus != IDLE))
        {
     		ProcessReply(msgT, msgTs, msgV);
        }

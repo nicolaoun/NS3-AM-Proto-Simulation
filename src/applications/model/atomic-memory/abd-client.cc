@@ -39,6 +39,8 @@ NS_OBJECT_ENSURE_REGISTERED (AbdClient);
 void
 AbdClient::LogInfo( std::stringstream& s)
 {
+	NS_LOG_FUNCTION (this);
+
 	NS_LOG_INFO("[CLIENT " << m_personalID << " - "<< Ipv4Address::ConvertFrom(m_myAddress) << "] (" << Simulator::Now ().GetSeconds () << "s):" << s.str());
 }
 
@@ -133,6 +135,8 @@ AbdClient::AbdClient ()
 	m_opStatus = PHASE1; 		//initialize status
 
 	m_fail = 0;
+	m_opCount = 0;
+	m_completeOps = 0;
 }
 
 AbdClient::~AbdClient()
@@ -150,6 +154,8 @@ AbdClient::~AbdClient()
 	m_opStatus = PHASE1; 		//initialize status
 
 	m_fail = 0;
+	m_opCount = 0;
+	m_completeOps = 0;
 }
 
 /**************************************************************************************

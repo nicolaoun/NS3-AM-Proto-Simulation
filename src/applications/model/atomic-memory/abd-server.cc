@@ -42,7 +42,7 @@ NS_OBJECT_ENSURE_REGISTERED (AbdServer);
 void
 AbdServer::LogInfo( std::stringstream& s)
 {
-	NS_LOG_INFO("[CLIENT " << m_personalID << " - "<< Ipv4Address::ConvertFrom(m_myAddress) << "] (" << Simulator::Now ().GetSeconds () << "s):" << s.str());
+	NS_LOG_INFO("[SERVER " << m_personalID << " - "<< InetSocketAddress::ConvertFrom(m_myAddress).GetIpv4() << "] (" << Simulator::Now ().GetSeconds () << "s):" << s.str());
 }
 
 

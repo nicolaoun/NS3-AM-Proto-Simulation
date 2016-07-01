@@ -1,0 +1,1647 @@
+Waf: Entering directory `/Users/nicolasnicolaou/Documents/workspace/ns-allinone-3.25/ns-3.25/build'
+[1912/2268] Compiling examples/atomic-memory/am-cchybrid.cc
+[2140/2268] Linking build/examples/atomic-memory/ns3.25-am-cchybrid-debug
+Waf: Leaving directory `/Users/nicolasnicolaou/Documents/workspace/ns-allinone-3.25/ns-3.25/build'
+Build commands will be stored in build/compile_commands.json
+'build' finished successfully (3.427s)
+Create nodes.
+Create channels
+Clients per lan: 2
+Assign IP Addresses.
+Create Servers.
+Create Clients (Writer+Readers).
+Run Simulation: ccHybrid.
+[CLIENT 0 - 192.168.1.3] (2s):Connecting to SERVER (192.168.1.2)
+[CLIENT 0 - 192.168.1.3] (2s):Connecting to SERVER (192.168.2.2)
+[CLIENT 0 - 192.168.1.3] (2s):Connecting to SERVER (192.168.3.2)
+[CLIENT 0 - 192.168.1.3] (2s):Connecting to SERVER (192.168.4.2)
+[CLIENT 0 - 192.168.1.3] (2s):Connecting to SERVER (192.168.5.2)
+[CLIENT 0 - 192.168.1.3] (2s):Started Succesfully: #S=5, #F=1, opInt=+4000000000.0ns
+[CLIENT 1 - 192.168.1.4] (2s):Connecting to SERVER (192.168.1.2)
+[CLIENT 1 - 192.168.1.4] (2s):Connecting to SERVER (192.168.2.2)
+[CLIENT 1 - 192.168.1.4] (2s):Connecting to SERVER (192.168.3.2)
+[CLIENT 1 - 192.168.1.4] (2s):Connecting to SERVER (192.168.4.2)
+[CLIENT 1 - 192.168.1.4] (2s):Connecting to SERVER (192.168.5.2)
+[CLIENT 1 - 192.168.1.4] (2s):Started Succesfully: #S=5, #F=1, opInt=+2299999952.0ns
+[CLIENT 2 - 192.168.2.3] (2s):Connecting to SERVER (192.168.1.2)
+[CLIENT 2 - 192.168.2.3] (2s):Connecting to SERVER (192.168.2.2)
+[CLIENT 2 - 192.168.2.3] (2s):Connecting to SERVER (192.168.3.2)
+[CLIENT 2 - 192.168.2.3] (2s):Connecting to SERVER (192.168.4.2)
+[CLIENT 2 - 192.168.2.3] (2s):Connecting to SERVER (192.168.5.2)
+[CLIENT 2 - 192.168.2.3] (2s):Started Succesfully: #S=5, #F=1, opInt=+2299999952.0ns
+[CLIENT 3 - 192.168.2.4] (2s):Connecting to SERVER (192.168.1.2)
+[CLIENT 3 - 192.168.2.4] (2s):Connecting to SERVER (192.168.2.2)
+[CLIENT 3 - 192.168.2.4] (2s):Connecting to SERVER (192.168.3.2)
+[CLIENT 3 - 192.168.2.4] (2s):Connecting to SERVER (192.168.4.2)
+[CLIENT 3 - 192.168.2.4] (2s):Connecting to SERVER (192.168.5.2)
+[CLIENT 3 - 192.168.2.4] (2s):Started Succesfully: #S=5, #F=1, opInt=+2299999952.0ns
+[CLIENT 4 - 192.168.3.3] (2s):Connecting to SERVER (192.168.1.2)
+[CLIENT 4 - 192.168.3.3] (2s):Connecting to SERVER (192.168.2.2)
+[CLIENT 4 - 192.168.3.3] (2s):Connecting to SERVER (192.168.3.2)
+[CLIENT 4 - 192.168.3.3] (2s):Connecting to SERVER (192.168.4.2)
+[CLIENT 4 - 192.168.3.3] (2s):Connecting to SERVER (192.168.5.2)
+[CLIENT 4 - 192.168.3.3] (2s):Started Succesfully: #S=5, #F=1, opInt=+2299999952.0ns
+[CLIENT 5 - 192.168.3.4] (2s):Connecting to SERVER (192.168.1.2)
+[CLIENT 5 - 192.168.3.4] (2s):Connecting to SERVER (192.168.2.2)
+[CLIENT 5 - 192.168.3.4] (2s):Connecting to SERVER (192.168.3.2)
+[CLIENT 5 - 192.168.3.4] (2s):Connecting to SERVER (192.168.4.2)
+[CLIENT 5 - 192.168.3.4] (2s):Connecting to SERVER (192.168.5.2)
+[CLIENT 5 - 192.168.3.4] (2s):Started Succesfully: #S=5, #F=1, opInt=+2299999952.0ns
+[CLIENT 4 - 192.168.3.3] (2.03335s):Connected to SERVER (192.168.3.2)
+[CLIENT 0 - 192.168.1.3] (2.03523s):Connected to SERVER (192.168.1.2)
+[CLIENT 3 - 192.168.2.4] (2.04915s):Connected to SERVER (192.168.2.2)
+[CLIENT 2 - 192.168.2.3] (2.06699s):Connected to SERVER (192.168.2.2)
+[CLIENT 5 - 192.168.3.4] (2.07357s):Connected to SERVER (192.168.3.2)
+[CLIENT 1 - 192.168.1.4] (2.07686s):Connected to SERVER (192.168.1.2)
+[CLIENT 2 - 192.168.2.3] (2.08692s):Connected to SERVER (192.168.1.2)
+[CLIENT 4 - 192.168.3.3] (2.08838s):Connected to SERVER (192.168.4.2)
+[CLIENT 0 - 192.168.1.3] (2.09125s):Connected to SERVER (192.168.3.2)
+[CLIENT 2 - 192.168.2.3] (2.09152s):Connected to SERVER (192.168.3.2)
+[CLIENT 4 - 192.168.3.3] (2.0935s):Connected to SERVER (192.168.1.2)
+[CLIENT 2 - 192.168.2.3] (2.09577s):Connected to SERVER (192.168.4.2)
+[CLIENT 0 - 192.168.1.3] (2.09588s):Connected to SERVER (192.168.4.2)
+[CLIENT 0 - 192.168.1.3] (2.10028s):Connected to SERVER (192.168.2.2)
+[CLIENT 5 - 192.168.3.4] (2.10859s):Connected to SERVER (192.168.4.2)
+[CLIENT 3 - 192.168.2.4] (2.109s):Connected to SERVER (192.168.1.2)
+[CLIENT 1 - 192.168.1.4] (2.11199s):Connected to SERVER (192.168.3.2)
+[CLIENT 5 - 192.168.3.4] (2.1136s):Connected to SERVER (192.168.1.2)
+[CLIENT 3 - 192.168.2.4] (2.11567s):Connected to SERVER (192.168.3.2)
+[CLIENT 1 - 192.168.1.4] (2.11637s):Connected to SERVER (192.168.2.2)
+[CLIENT 4 - 192.168.3.3] (2.118s):Connected to SERVER (192.168.2.2)
+[CLIENT 3 - 192.168.2.4] (2.11994s):Connected to SERVER (192.168.4.2)
+[CLIENT 1 - 192.168.1.4] (2.12301s):Connected to SERVER (192.168.4.2)
+[CLIENT 5 - 192.168.3.4] (2.12579s):Connected to SERVER (192.168.2.2)
+[CLIENT 4 - 192.168.3.3] (5.06819s):Connected to SERVER (192.168.5.2)
+[CLIENT 4 - 192.168.3.3] (5.06819s):** NEXT OPERATION: in 2.3s
+[CLIENT 5 - 192.168.3.4] (5.07267s):Connected to SERVER (192.168.5.2)
+[CLIENT 5 - 192.168.3.4] (5.07267s):** NEXT OPERATION: in 2.3s
+[CLIENT 2 - 192.168.2.3] (5.08519s):Connected to SERVER (192.168.5.2)
+[CLIENT 2 - 192.168.2.3] (5.08519s):** NEXT OPERATION: in 2.3s
+[CLIENT 0 - 192.168.1.3] (5.09782s):Connected to SERVER (192.168.5.2)
+[CLIENT 0 - 192.168.1.3] (5.09782s):** NEXT OPERATION: in 4s
+[CLIENT 1 - 192.168.1.4] (5.10224s):Connected to SERVER (192.168.5.2)
+[CLIENT 1 - 192.168.1.4] (5.10224s):** NEXT OPERATION: in 2.3s
+[CLIENT 4 - 192.168.3.3] (7.36819s):Sent 10 bytes to 192.168.1.2 port 44400
+[CLIENT 4 - 192.168.3.3] (7.36819s):Sent 10 bytes to 192.168.2.2 port 44400
+[CLIENT 4 - 192.168.3.3] (7.36819s):Sent 10 bytes to 192.168.3.2 port 44400
+[CLIENT 4 - 192.168.3.3] (7.36819s):Sent 10 bytes to 192.168.4.2 port 44400
+[CLIENT 4 - 192.168.3.3] (7.36819s):Sent 10 bytes to 192.168.5.2 port 44400
+[CLIENT 4 - 192.168.3.3] (7.36819s):** READ INVOKED: 1 at 7.36819s
+[CLIENT 5 - 192.168.3.4] (7.37267s):Sent 10 bytes to 192.168.1.2 port 44400
+[CLIENT 5 - 192.168.3.4] (7.37267s):Sent 10 bytes to 192.168.2.2 port 44400
+[CLIENT 5 - 192.168.3.4] (7.37267s):Sent 10 bytes to 192.168.3.2 port 44400
+[CLIENT 5 - 192.168.3.4] (7.37267s):Sent 10 bytes to 192.168.4.2 port 44400
+[CLIENT 5 - 192.168.3.4] (7.37267s):Sent 10 bytes to 192.168.5.2 port 44400
+[CLIENT 5 - 192.168.3.4] (7.37267s):** READ INVOKED: 1 at 7.37267s
+[SERVER 2 - 192.168.3.2] (7.37735s):Received 10 bytes from 192.168.3.3 port 49155 data 1 1 0 0 0 optimized 1
+[SERVER 2 - 192.168.3.2] (7.37735s):Sent 10 bytes to 192.168.3.3 port 49155 seen: {  192.168.3.3} data 1 1 0 0 0 1 0
+[CLIENT 4 - 192.168.3.3] (7.38172s):Received 14 bytes from 192.168.3.2 port 44400 data 1 1 0 0 0 1 0
+[SERVER 1 - 192.168.2.2] (7.38499s):Received 10 bytes from 192.168.3.3 port 49154 data 1 1 0 0 0 optimized 1
+[SERVER 1 - 192.168.2.2] (7.38499s):Sent 10 bytes to 192.168.3.3 port 49154 seen: {  192.168.3.3} data 1 1 0 0 0 1 0
+[CLIENT 2 - 192.168.2.3] (7.38519s):Sent 10 bytes to 192.168.1.2 port 44400
+[CLIENT 2 - 192.168.2.3] (7.38519s):Sent 10 bytes to 192.168.2.2 port 44400
+[CLIENT 2 - 192.168.2.3] (7.38519s):Sent 10 bytes to 192.168.3.2 port 44400
+[CLIENT 2 - 192.168.2.3] (7.38519s):Sent 10 bytes to 192.168.4.2 port 44400
+[CLIENT 2 - 192.168.2.3] (7.38519s):Sent 10 bytes to 192.168.5.2 port 44400
+[CLIENT 2 - 192.168.2.3] (7.38519s):** READ INVOKED: 1 at 7.38519s
+[SERVER 2 - 192.168.3.2] (7.39108s):Received 10 bytes from 192.168.3.4 port 49155 data 1 1 0 0 0 optimized 1
+[SERVER 2 - 192.168.3.2] (7.39108s):Sent 10 bytes to 192.168.3.4 port 49155 seen: {  192.168.3.3 192.168.3.4} data 1 1 0 0 0 2 0
+[SERVER 0 - 192.168.1.2] (7.39313s):Received 10 bytes from 192.168.3.3 port 49153 data 1 1 0 0 0 optimized 1
+[SERVER 0 - 192.168.1.2] (7.39313s):Sent 10 bytes to 192.168.3.3 port 49153 seen: {  192.168.3.3} data 1 1 0 0 4081455648 1 0
+[SERVER 1 - 192.168.2.2] (7.39446s):Received 10 bytes from 192.168.2.3 port 49154 data 1 1 0 0 0 optimized 1
+[SERVER 1 - 192.168.2.2] (7.39446s):Sent 10 bytes to 192.168.2.3 port 49154 seen: {  192.168.2.3 192.168.3.3} data 1 1 0 0 0 2 0
+[CLIENT 5 - 192.168.3.4] (7.39536s):Received 14 bytes from 192.168.3.2 port 44400 data 1 1 0 0 0 2 0
+[SERVER 3 - 192.168.4.2] (7.39652s):Received 10 bytes from 192.168.3.3 port 49156 data 1 1 0 0 0 optimized 1
+[SERVER 3 - 192.168.4.2] (7.39652s):Sent 10 bytes to 192.168.3.3 port 49156 seen: {  192.168.3.3} data 1 1 0 0 0 1 0
+[SERVER 0 - 192.168.1.2] (7.39761s):Received 10 bytes from 192.168.3.4 port 49153 data 1 1 0 0 0 optimized 1
+[SERVER 0 - 192.168.1.2] (7.39761s):Sent 10 bytes to 192.168.3.4 port 49153 seen: {  192.168.3.3 192.168.3.4} data 1 1 0 0 4081455648 2 0
+[SERVER 1 - 192.168.2.2] (7.3988s):Received 10 bytes from 192.168.3.4 port 49154 data 1 1 0 0 0 optimized 1
+[SERVER 1 - 192.168.2.2] (7.3988s):Sent 10 bytes to 192.168.3.4 port 49154 seen: {  192.168.2.3 192.168.3.3 192.168.3.4} data 1 1 0 0 0 3 0
+[CLIENT 2 - 192.168.2.3] (7.40107s):Received 14 bytes from 192.168.2.2 port 44400 data 1 1 0 0 0 2 0
+[CLIENT 1 - 192.168.1.4] (7.40224s):Sent 10 bytes to 192.168.1.2 port 44400
+[CLIENT 1 - 192.168.1.4] (7.40224s):Sent 10 bytes to 192.168.2.2 port 44400
+[CLIENT 1 - 192.168.1.4] (7.40224s):Sent 10 bytes to 192.168.3.2 port 44400
+[CLIENT 1 - 192.168.1.4] (7.40224s):Sent 10 bytes to 192.168.4.2 port 44400
+[CLIENT 1 - 192.168.1.4] (7.40224s):Sent 10 bytes to 192.168.5.2 port 44400
+[CLIENT 1 - 192.168.1.4] (7.40224s):** READ INVOKED: 1 at 7.40224s
+[SERVER 0 - 192.168.1.2] (7.40453s):Received 10 bytes from 192.168.1.4 port 49153 data 1 1 0 0 0 optimized 1
+[SERVER 0 - 192.168.1.2] (7.40453s):Sent 10 bytes to 192.168.1.4 port 49153 seen: {  192.168.1.4 192.168.3.3 192.168.3.4} data 1 1 0 0 4081455648 3 0
+[CLIENT 4 - 192.168.3.3] (7.40529s):Received 14 bytes from 192.168.2.2 port 44400 data 1 1 0 0 0 1 0
+[SERVER 0 - 192.168.1.2] (7.40675s):Received 10 bytes from 192.168.2.3 port 49153 data 1 1 0 0 0 optimized 1
+[SERVER 0 - 192.168.1.2] (7.40675s):Sent 10 bytes to 192.168.2.3 port 49153 seen: {  192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 1 1 0 0 4081455648 4 0
+[SERVER 3 - 192.168.4.2] (7.41069s):Received 10 bytes from 192.168.3.4 port 49156 data 1 1 0 0 0 optimized 1
+[SERVER 3 - 192.168.4.2] (7.41069s):Sent 10 bytes to 192.168.3.4 port 49156 seen: {  192.168.3.3 192.168.3.4} data 1 1 0 0 0 2 0
+[SERVER 4 - 192.168.5.2] (7.41158s):Received 10 bytes from 192.168.3.3 port 49157 data 1 1 0 0 0 optimized 1
+[SERVER 4 - 192.168.5.2] (7.41158s):Sent 10 bytes to 192.168.3.3 port 49157 seen: {  192.168.3.3} data 1 1 0 0 0 1 0
+[CLIENT 4 - 192.168.3.3] (7.41327s):Received 14 bytes from 192.168.4.2 port 44400 data 1 1 0 0 0 1 0
+[SERVER 2 - 192.168.3.2] (7.41574s):Received 10 bytes from 192.168.2.3 port 49155 data 1 1 0 0 0 optimized 1
+[SERVER 2 - 192.168.3.2] (7.41574s):Sent 10 bytes to 192.168.2.3 port 49155 seen: {  192.168.2.3 192.168.3.3 192.168.3.4} data 1 1 0 0 0 3 0
+[CLIENT 1 - 192.168.1.4] (7.41878s):Received 23 bytes from 192.168.1.2 port 44400 data 1 1 0 0 4081455648 3 0
+[CLIENT 4 - 192.168.3.3] (7.42533s):Received 23 bytes from 192.168.1.2 port 44400 data 1 1 0 0 4081455648 1 0
+[CLIENT 4 - 192.168.3.3] (7.42533s):Waiting for 4 replies, received 4
+[CLIENT 4 - 192.168.3.3] (7.42533s):Checking the PREDICATE, maxViews 1, bound 3
+[CLIENT 4 - 192.168.3.3] (7.42533s):PREDICATE LOOP: a=3, b[a]=0, bound=2
+[CLIENT 4 - 192.168.3.3] (7.42533s):PREDICATE LOOP: a=2, b[a]=0, bound=3
+[CLIENT 4 - 192.168.3.3] (7.42533s):PREDICATE LOOP: a=1, b[a]=4, bound=4
+[CLIENT 4 - 192.168.3.3] (7.42533s):** READ COMPLETED: 1 in 0.0571427s, Return Value: 0, <ts, value, pvalue>: [0,0,0] - @ 2 EXCH **
+[CLIENT 4 - 192.168.3.3] (7.42533s):** NEXT OPERATION: in 2.3s
+[SERVER 4 - 192.168.5.2] (7.42575s):Received 10 bytes from 192.168.3.4 port 49157 data 1 1 0 0 0 optimized 1
+[SERVER 4 - 192.168.5.2] (7.42575s):Sent 10 bytes to 192.168.3.4 port 49157 seen: {  192.168.3.3 192.168.3.4} data 1 1 0 0 0 2 0
+[SERVER 1 - 192.168.2.2] (7.42616s):Received 10 bytes from 192.168.1.4 port 49154 data 1 1 0 0 0 optimized 1
+[SERVER 1 - 192.168.2.2] (7.42616s):Sent 10 bytes to 192.168.1.4 port 49154 seen: {  192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 1 1 0 0 0 4 0
+[SERVER 3 - 192.168.4.2] (7.42863s):Received 10 bytes from 192.168.2.3 port 49156 data 1 1 0 0 0 optimized 1
+[SERVER 3 - 192.168.4.2] (7.42863s):Sent 10 bytes to 192.168.2.3 port 49156 seen: {  192.168.2.3 192.168.3.3 192.168.3.4} data 1 1 0 0 0 3 0
+[CLIENT 2 - 192.168.2.3] (7.43279s):Received 14 bytes from 192.168.3.2 port 44400 data 1 1 0 0 0 3 0
+[CLIENT 5 - 192.168.3.4] (7.43502s):Received 14 bytes from 192.168.2.2 port 44400 data 1 1 0 0 0 3 0
+[CLIENT 5 - 192.168.3.4] (7.43746s):Received 14 bytes from 192.168.4.2 port 44400 data 1 1 0 0 0 2 0
+[CLIENT 5 - 192.168.3.4] (7.44017s):Received 23 bytes from 192.168.1.2 port 44400 data 1 1 0 0 4081455648 2 0
+[CLIENT 5 - 192.168.3.4] (7.44017s):Waiting for 4 replies, received 4
+[CLIENT 5 - 192.168.3.4] (7.44017s):Checking the PREDICATE, maxViews 3, bound 3
+[CLIENT 5 - 192.168.3.4] (7.44017s):PREDICATE LOOP: a=3, b[a]=1, bound=2
+[CLIENT 5 - 192.168.3.4] (7.44017s):PREDICATE LOOP: a=2, b[a]=4, bound=3
+[CLIENT 5 - 192.168.3.4] (7.44017s):** READ COMPLETED: 1 in 0.0675029s, Return Value: 0, <ts, value, pvalue>: [0,0,0] - @ 2 EXCH **
+[CLIENT 5 - 192.168.3.4] (7.44017s):** NEXT OPERATION: in 2.3s
+[SERVER 4 - 192.168.5.2] (7.44094s):Received 10 bytes from 192.168.2.3 port 49157 data 1 1 0 0 0 optimized 1
+[SERVER 4 - 192.168.5.2] (7.44094s):Sent 10 bytes to 192.168.2.3 port 49157 seen: {  192.168.2.3 192.168.3.3 192.168.3.4} data 1 1 0 0 0 3 0
+[CLIENT 2 - 192.168.2.3] (7.44095s):Received 23 bytes from 192.168.1.2 port 44400 data 1 1 0 0 4081455648 4 0
+[CLIENT 4 - 192.168.3.3] (7.44511s):Received 14 bytes from 192.168.5.2 port 44400 data 1 1 0 0 0 1 0
+[SERVER 2 - 192.168.3.2] (7.44732s):Received 10 bytes from 192.168.1.4 port 49155 data 1 1 0 0 0 optimized 1
+[SERVER 2 - 192.168.3.2] (7.44732s):Sent 10 bytes to 192.168.1.4 port 49155 seen: {  192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 1 1 0 0 0 4 0
+[CLIENT 1 - 192.168.1.4] (7.44791s):Received 14 bytes from 192.168.2.2 port 44400 data 1 1 0 0 0 4 0
+[SERVER 3 - 192.168.4.2] (7.4544s):Received 10 bytes from 192.168.1.4 port 49156 data 1 1 0 0 0 optimized 1
+[SERVER 3 - 192.168.4.2] (7.4544s):Sent 10 bytes to 192.168.1.4 port 49156 seen: {  192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 1 1 0 0 0 4 0
+[CLIENT 2 - 192.168.2.3] (7.45582s):Received 14 bytes from 192.168.4.2 port 44400 data 1 1 0 0 0 3 0
+[CLIENT 2 - 192.168.2.3] (7.45582s):Waiting for 4 replies, received 4
+[CLIENT 2 - 192.168.2.3] (7.45582s):Proceeding to PHASE2, maxViews 4, bound 3
+[CLIENT 2 - 192.168.2.3] (7.45582s):Sent 10 bytes to 192.168.1.2 port 44400
+[CLIENT 2 - 192.168.2.3] (7.45582s):Sent 10 bytes to 192.168.2.2 port 44400
+[CLIENT 2 - 192.168.2.3] (7.45582s):Sent 10 bytes to 192.168.3.2 port 44400
+[CLIENT 2 - 192.168.2.3] (7.45582s):Sent 10 bytes to 192.168.4.2 port 44400
+[CLIENT 2 - 192.168.2.3] (7.45582s):Sent 10 bytes to 192.168.5.2 port 44400
+[CLIENT 5 - 192.168.3.4] (7.45668s):Received 14 bytes from 192.168.5.2 port 44400 data 1 1 0 0 0 2 0
+[SERVER 1 - 192.168.2.2] (7.46047s):Received 10 bytes from 192.168.2.3 port 49154 data 2 2 0 0 0 optimized 1
+[SERVER 1 - 192.168.2.2] (7.46047s):Sent 10 bytes to 192.168.2.3 port 49154 seen: {  192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 2 2 0 0 0 4 1
+[CLIENT 2 - 192.168.2.3] (7.4626s):Received 14 bytes from 192.168.2.2 port 44400 data 2 2 0 0 0 4 1
+[SERVER 4 - 192.168.5.2] (7.46722s):Received 10 bytes from 192.168.1.4 port 49157 data 1 1 0 0 0 optimized 1
+[SERVER 4 - 192.168.5.2] (7.46722s):Sent 10 bytes to 192.168.1.4 port 49157 seen: {  192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 1 1 0 0 0 4 0
+[SERVER 0 - 192.168.1.2] (7.47041s):Received 10 bytes from 192.168.2.3 port 49153 data 2 2 0 0 0 optimized 1
+[SERVER 0 - 192.168.1.2] (7.47041s):Sent 10 bytes to 192.168.2.3 port 49153 seen: {  192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 2 2 0 0 4081455648 4 1
+[SERVER 2 - 192.168.3.2] (7.47785s):Received 10 bytes from 192.168.2.3 port 49155 data 2 2 0 0 0 optimized 1
+[SERVER 2 - 192.168.3.2] (7.47785s):Sent 10 bytes to 192.168.2.3 port 49155 seen: {  192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 2 2 0 0 0 4 1
+[CLIENT 1 - 192.168.1.4] (7.47803s):Received 14 bytes from 192.168.3.2 port 44400 data 1 1 0 0 0 4 0
+[CLIENT 2 - 192.168.2.3] (7.47855s):Received 14 bytes from 192.168.5.2 port 44400 data 1 1 0 0 0 3 0
+[CLIENT 2 - 192.168.2.3] (7.48512s):Received 23 bytes from 192.168.1.2 port 44400 data 2 2 0 0 4081455648 4 1
+[SERVER 3 - 192.168.4.2] (7.49093s):Received 10 bytes from 192.168.2.3 port 49156 data 2 2 0 0 0 optimized 1
+[SERVER 3 - 192.168.4.2] (7.49093s):Sent 10 bytes to 192.168.2.3 port 49156 seen: {  192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 2 2 0 0 0 4 1
+[CLIENT 1 - 192.168.1.4] (7.49229s):Received 14 bytes from 192.168.4.2 port 44400 data 1 1 0 0 0 4 0
+[CLIENT 1 - 192.168.1.4] (7.49229s):Waiting for 4 replies, received 4
+[CLIENT 1 - 192.168.1.4] (7.49229s):Proceeding to PHASE2, maxViews 4, bound 3
+[CLIENT 1 - 192.168.1.4] (7.49229s):Sent 10 bytes to 192.168.1.2 port 44400
+[CLIENT 1 - 192.168.1.4] (7.49229s):Sent 10 bytes to 192.168.2.2 port 44400
+[CLIENT 1 - 192.168.1.4] (7.49229s):Sent 10 bytes to 192.168.3.2 port 44400
+[CLIENT 1 - 192.168.1.4] (7.49229s):Sent 10 bytes to 192.168.4.2 port 44400
+[CLIENT 1 - 192.168.1.4] (7.49229s):Sent 10 bytes to 192.168.5.2 port 44400
+[CLIENT 2 - 192.168.2.3] (7.49248s):Received 14 bytes from 192.168.3.2 port 44400 data 2 2 0 0 0 4 1
+[SERVER 0 - 192.168.1.2] (7.49442s):Received 10 bytes from 192.168.1.4 port 49153 data 2 2 0 0 0 optimized 1
+[SERVER 0 - 192.168.1.2] (7.49442s):Sent 10 bytes to 192.168.1.4 port 49153 seen: {  192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 2 2 0 0 4081455648 4 1
+[CLIENT 1 - 192.168.1.4] (7.49657s):Received 23 bytes from 192.168.1.2 port 44400 data 2 2 0 0 4081455648 4 1
+[SERVER 4 - 192.168.5.2] (7.50388s):Received 10 bytes from 192.168.2.3 port 49157 data 2 2 0 0 0 optimized 1
+[SERVER 4 - 192.168.5.2] (7.50388s):Sent 10 bytes to 192.168.2.3 port 49157 seen: {  192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 2 2 0 0 0 4 1
+[SERVER 1 - 192.168.2.2] (7.51195s):Received 10 bytes from 192.168.1.4 port 49154 data 2 2 0 0 0 optimized 1
+[SERVER 1 - 192.168.2.2] (7.51195s):Sent 10 bytes to 192.168.1.4 port 49154 seen: {  192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 2 2 0 0 0 4 1
+[CLIENT 1 - 192.168.1.4] (7.51517s):Received 14 bytes from 192.168.5.2 port 44400 data 1 1 0 0 0 4 0
+[CLIENT 2 - 192.168.2.3] (7.51695s):Received 14 bytes from 192.168.4.2 port 44400 data 2 2 0 0 0 4 1
+[CLIENT 2 - 192.168.2.3] (7.51695s):** NEXT OPERATION: in 2.3s
+[CLIENT 2 - 192.168.2.3] (7.51695s):** READ COMPLETED: 1 in 0.13176s, <ts, value>: [0,0] - @ 4 EXCH **
+[SERVER 2 - 192.168.3.2] (7.52484s):Received 10 bytes from 192.168.1.4 port 49155 data 2 2 0 0 0 optimized 1
+[SERVER 2 - 192.168.3.2] (7.52484s):Sent 10 bytes to 192.168.1.4 port 49155 seen: {  192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 2 2 0 0 0 4 1
+[CLIENT 1 - 192.168.1.4] (7.52658s):Received 14 bytes from 192.168.2.2 port 44400 data 2 2 0 0 0 4 1
+[SERVER 3 - 192.168.4.2] (7.53752s):Received 10 bytes from 192.168.1.4 port 49156 data 2 2 0 0 0 optimized 1
+[SERVER 3 - 192.168.4.2] (7.53752s):Sent 10 bytes to 192.168.1.4 port 49156 seen: {  192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 2 2 0 0 0 4 1
+[CLIENT 2 - 192.168.2.3] (7.53924s):Received 14 bytes from 192.168.5.2 port 44400 data 2 2 0 0 0 4 1
+[CLIENT 1 - 192.168.1.4] (7.54996s):Received 14 bytes from 192.168.3.2 port 44400 data 2 2 0 0 0 4 1
+[SERVER 4 - 192.168.5.2] (7.55022s):Received 10 bytes from 192.168.1.4 port 49157 data 2 2 0 0 0 optimized 1
+[SERVER 4 - 192.168.5.2] (7.55022s):Sent 10 bytes to 192.168.1.4 port 49157 seen: {  192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 2 2 0 0 0 4 1
+[CLIENT 1 - 192.168.1.4] (7.57288s):Received 14 bytes from 192.168.4.2 port 44400 data 2 2 0 0 0 4 1
+[CLIENT 1 - 192.168.1.4] (7.57288s):** NEXT OPERATION: in 2.3s
+[CLIENT 1 - 192.168.1.4] (7.57288s):** READ COMPLETED: 1 in 0.170634s, <ts, value>: [0,0] - @ 4 EXCH **
+[CLIENT 1 - 192.168.1.4] (7.59594s):Received 14 bytes from 192.168.5.2 port 44400 data 2 2 0 0 0 4 1
+[CLIENT 3 - 192.168.2.4] (8.07426s):Connected to SERVER (192.168.5.2)
+[CLIENT 3 - 192.168.2.4] (8.07426s):** NEXT OPERATION: in 2.3s
+[CLIENT 0 - 192.168.1.3] (9.09782s):Sent 12 bytes to 192.168.1.2 port 44400
+[CLIENT 0 - 192.168.1.3] (9.09782s):Sent 12 bytes to 192.168.2.2 port 44400
+[CLIENT 0 - 192.168.1.3] (9.09782s):Sent 12 bytes to 192.168.3.2 port 44400
+[CLIENT 0 - 192.168.1.3] (9.09782s):Sent 12 bytes to 192.168.4.2 port 44400
+[CLIENT 0 - 192.168.1.3] (9.09782s):Sent 12 bytes to 192.168.5.2 port 44400
+[CLIENT 0 - 192.168.1.3] (9.09782s):** WRITE INVOKED: 1 at 9.09782s
+[SERVER 0 - 192.168.1.2] (9.09995s):Received 12 bytes from 192.168.1.3 port 49153 data 1 0 1 901 0 optimized 1
+[SERVER 0 - 192.168.1.2] (9.09995s):Sent 12 bytes to 192.168.1.3 port 49153 seen: {  192.168.1.3} data 1 0 1 901 0 1 0
+[CLIENT 0 - 192.168.1.3] (9.10637s):Received 16 bytes from 192.168.1.2 port 44400 data 1 0 1 901 0 1 0
+[SERVER 1 - 192.168.2.2] (9.1167s):Received 12 bytes from 192.168.1.3 port 49154 data 1 0 1 901 0 optimized 1
+[SERVER 1 - 192.168.2.2] (9.1167s):Sent 12 bytes to 192.168.1.3 port 49154 seen: {  192.168.1.3} data 1 0 1 901 0 1 0
+[SERVER 2 - 192.168.3.2] (9.13217s):Received 12 bytes from 192.168.1.3 port 49155 data 1 0 1 901 0 optimized 1
+[SERVER 2 - 192.168.3.2] (9.13217s):Sent 12 bytes to 192.168.1.3 port 49155 seen: {  192.168.1.3} data 1 0 1 901 0 1 0
+[CLIENT 0 - 192.168.1.3] (9.13413s):Received 16 bytes from 192.168.2.2 port 44400 data 1 0 1 901 0 1 0
+[SERVER 3 - 192.168.4.2] (9.14474s):Received 12 bytes from 192.168.1.3 port 49156 data 1 0 1 901 0 optimized 1
+[SERVER 3 - 192.168.4.2] (9.14474s):Sent 12 bytes to 192.168.1.3 port 49156 seen: {  192.168.1.3} data 1 0 1 901 0 1 0
+[SERVER 4 - 192.168.5.2] (9.15786s):Received 12 bytes from 192.168.1.3 port 49157 data 1 0 1 901 0 optimized 1
+[SERVER 4 - 192.168.5.2] (9.15786s):Sent 12 bytes to 192.168.1.3 port 49157 seen: {  192.168.1.3} data 1 0 1 901 0 1 0
+[CLIENT 0 - 192.168.1.3] (9.15948s):Received 16 bytes from 192.168.3.2 port 44400 data 1 0 1 901 0 1 0
+[CLIENT 0 - 192.168.1.3] (9.18284s):Received 16 bytes from 192.168.4.2 port 44400 data 1 0 1 901 0 1 0
+[CLIENT 0 - 192.168.1.3] (9.18284s):** NEXT OPERATION: in 4s
+[CLIENT 0 - 192.168.1.3] (9.18284s):** WRITE COMPLETED: 1 in 0.085029s, <ts, value>: [1,901], @ 2 EXCH **
+[CLIENT 0 - 192.168.1.3] (9.20604s):Received 16 bytes from 192.168.5.2 port 44400 data 1 0 1 901 0 1 0
+[CLIENT 4 - 192.168.3.3] (9.72533s):Sent 10 bytes to 192.168.1.2 port 44400
+[CLIENT 4 - 192.168.3.3] (9.72533s):Sent 10 bytes to 192.168.2.2 port 44400
+[CLIENT 4 - 192.168.3.3] (9.72533s):Sent 10 bytes to 192.168.3.2 port 44400
+[CLIENT 4 - 192.168.3.3] (9.72533s):Sent 10 bytes to 192.168.4.2 port 44400
+[CLIENT 4 - 192.168.3.3] (9.72533s):Sent 10 bytes to 192.168.5.2 port 44400
+[CLIENT 4 - 192.168.3.3] (9.72533s):** READ INVOKED: 2 at 9.72533s
+[SERVER 2 - 192.168.3.2] (9.73234s):Received 10 bytes from 192.168.3.3 port 49155 data 2 1 0 0 0 optimized 1
+[SERVER 2 - 192.168.3.2] (9.73234s):Sent 10 bytes to 192.168.3.3 port 49155 seen: {  192.168.1.3 192.168.3.3} data 2 1 1 901 0 2 0
+[CLIENT 4 - 192.168.3.3] (9.73447s):Received 16 bytes from 192.168.3.2 port 44400 data 2 1 1 901 0 2 0
+[CLIENT 4 - 192.168.3.3] (9.73447s):Updated local <ts,value> pair to: [1,901,0]
+[CLIENT 5 - 192.168.3.4] (9.74017s):Sent 10 bytes to 192.168.1.2 port 44400
+[CLIENT 5 - 192.168.3.4] (9.74017s):Sent 10 bytes to 192.168.2.2 port 44400
+[CLIENT 5 - 192.168.3.4] (9.74017s):Sent 10 bytes to 192.168.3.2 port 44400
+[CLIENT 5 - 192.168.3.4] (9.74017s):Sent 10 bytes to 192.168.4.2 port 44400
+[CLIENT 5 - 192.168.3.4] (9.74017s):Sent 10 bytes to 192.168.5.2 port 44400
+[CLIENT 5 - 192.168.3.4] (9.74017s):** READ INVOKED: 2 at 9.74017s
+[SERVER 1 - 192.168.2.2] (9.74237s):Received 10 bytes from 192.168.3.3 port 49154 data 2 1 0 0 0 optimized 1
+[SERVER 1 - 192.168.2.2] (9.74237s):Sent 10 bytes to 192.168.3.3 port 49154 seen: {  192.168.1.3 192.168.3.3} data 2 1 1 901 0 2 0
+[SERVER 2 - 192.168.3.2] (9.74694s):Received 10 bytes from 192.168.3.4 port 49155 data 2 1 0 0 0 optimized 1
+[SERVER 2 - 192.168.3.2] (9.74694s):Sent 10 bytes to 192.168.3.4 port 49155 seen: {  192.168.1.3 192.168.3.3 192.168.3.4} data 2 1 1 901 0 3 0
+[CLIENT 5 - 192.168.3.4] (9.74907s):Received 16 bytes from 192.168.3.2 port 44400 data 2 1 1 901 0 3 0
+[CLIENT 5 - 192.168.3.4] (9.74907s):Updated local <ts,value> pair to: [1,901,0]
+[SERVER 3 - 192.168.4.2] (9.74972s):Received 10 bytes from 192.168.3.3 port 49156 data 2 1 0 0 0 optimized 1
+[SERVER 3 - 192.168.4.2] (9.74972s):Sent 10 bytes to 192.168.3.3 port 49156 seen: {  192.168.1.3 192.168.3.3} data 2 1 1 901 0 2 0
+[SERVER 0 - 192.168.1.2] (9.75027s):Received 10 bytes from 192.168.3.3 port 49153 data 2 1 0 0 0 optimized 1
+[SERVER 0 - 192.168.1.2] (9.75027s):Sent 10 bytes to 192.168.3.3 port 49153 seen: {  192.168.1.3 192.168.3.3} data 2 1 1 901 0 2 0
+[SERVER 1 - 192.168.2.2] (9.75693s):Received 10 bytes from 192.168.3.4 port 49154 data 2 1 0 0 0 optimized 1
+[SERVER 1 - 192.168.2.2] (9.75693s):Sent 10 bytes to 192.168.3.4 port 49154 seen: {  192.168.1.3 192.168.3.3 192.168.3.4} data 2 1 1 901 0 3 0
+[CLIENT 4 - 192.168.3.3] (9.75702s):Received 16 bytes from 192.168.2.2 port 44400 data 2 1 1 901 0 2 0
+[SERVER 4 - 192.168.5.2] (9.76237s):Received 10 bytes from 192.168.3.3 port 49157 data 2 1 0 0 0 optimized 1
+[SERVER 4 - 192.168.5.2] (9.76237s):Sent 10 bytes to 192.168.3.3 port 49157 seen: {  192.168.1.3 192.168.3.3} data 2 1 1 901 0 2 0
+[SERVER 3 - 192.168.4.2] (9.76421s):Received 10 bytes from 192.168.3.4 port 49156 data 2 1 0 0 0 optimized 1
+[SERVER 3 - 192.168.4.2] (9.76421s):Sent 10 bytes to 192.168.3.4 port 49156 seen: {  192.168.1.3 192.168.3.3 192.168.3.4} data 2 1 1 901 0 3 0
+[CLIENT 4 - 192.168.3.3] (9.76436s):Received 16 bytes from 192.168.4.2 port 44400 data 2 1 1 901 0 2 0
+[SERVER 0 - 192.168.1.2] (9.76511s):Received 10 bytes from 192.168.3.4 port 49153 data 2 1 0 0 0 optimized 1
+[SERVER 0 - 192.168.1.2] (9.76511s):Sent 10 bytes to 192.168.3.4 port 49153 seen: {  192.168.1.3 192.168.3.3 192.168.3.4} data 2 1 1 901 0 3 0
+[CLIENT 5 - 192.168.3.4] (9.77158s):Received 16 bytes from 192.168.2.2 port 44400 data 2 1 1 901 0 3 0
+[CLIENT 4 - 192.168.3.3] (9.77529s):Received 16 bytes from 192.168.1.2 port 44400 data 2 1 1 901 0 2 0
+[CLIENT 4 - 192.168.3.3] (9.77529s):Waiting for 4 replies, received 4
+[CLIENT 4 - 192.168.3.3] (9.77529s):Checking the PREDICATE, maxViews 2, bound 3
+[CLIENT 4 - 192.168.3.3] (9.77529s):PREDICATE LOOP: a=3, b[a]=0, bound=2
+[CLIENT 4 - 192.168.3.3] (9.77529s):PREDICATE LOOP: a=2, b[a]=4, bound=3
+[CLIENT 4 - 192.168.3.3] (9.77529s):** READ COMPLETED: 2 in 0.0499605s, Return Value: 901, <ts, value, pvalue>: [1,901,0] - @ 2 EXCH **
+[CLIENT 4 - 192.168.3.3] (9.77529s):** NEXT OPERATION: in 2.3s
+[SERVER 4 - 192.168.5.2] (9.77682s):Received 10 bytes from 192.168.3.4 port 49157 data 2 1 0 0 0 optimized 1
+[SERVER 4 - 192.168.5.2] (9.77682s):Sent 10 bytes to 192.168.3.4 port 49157 seen: {  192.168.1.3 192.168.3.3 192.168.3.4} data 2 1 1 901 0 3 0
+[CLIENT 5 - 192.168.3.4] (9.77886s):Received 16 bytes from 192.168.4.2 port 44400 data 2 1 1 901 0 3 0
+[CLIENT 4 - 192.168.3.3] (9.7874s):Received 16 bytes from 192.168.5.2 port 44400 data 2 1 1 901 0 2 0
+[CLIENT 5 - 192.168.3.4] (9.79013s):Received 16 bytes from 192.168.1.2 port 44400 data 2 1 1 901 0 3 0
+[CLIENT 5 - 192.168.3.4] (9.79013s):Waiting for 4 replies, received 4
+[CLIENT 5 - 192.168.3.4] (9.79013s):Checking the PREDICATE, maxViews 3, bound 3
+[CLIENT 5 - 192.168.3.4] (9.79013s):PREDICATE LOOP: a=3, b[a]=4, bound=2
+[CLIENT 5 - 192.168.3.4] (9.79013s):** READ COMPLETED: 2 in 0.0499605s, Return Value: 901, <ts, value, pvalue>: [1,901,0] - @ 2 EXCH **
+[CLIENT 5 - 192.168.3.4] (9.79013s):** NEXT OPERATION: in 2.3s
+[CLIENT 5 - 192.168.3.4] (9.80185s):Received 16 bytes from 192.168.5.2 port 44400 data 2 1 1 901 0 3 0
+[CLIENT 2 - 192.168.2.3] (9.81695s):Sent 10 bytes to 192.168.1.2 port 44400
+[CLIENT 2 - 192.168.2.3] (9.81695s):Sent 10 bytes to 192.168.2.2 port 44400
+[CLIENT 2 - 192.168.2.3] (9.81695s):Sent 10 bytes to 192.168.3.2 port 44400
+[CLIENT 2 - 192.168.2.3] (9.81695s):Sent 10 bytes to 192.168.4.2 port 44400
+[CLIENT 2 - 192.168.2.3] (9.81695s):Sent 10 bytes to 192.168.5.2 port 44400
+[CLIENT 2 - 192.168.2.3] (9.81695s):** READ INVOKED: 2 at 9.81695s
+[SERVER 1 - 192.168.2.2] (9.82135s):Received 10 bytes from 192.168.2.3 port 49154 data 3 1 0 0 0 optimized 1
+[SERVER 1 - 192.168.2.2] (9.82135s):Sent 10 bytes to 192.168.2.3 port 49154 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 3 1 1 901 0 4 0
+[CLIENT 2 - 192.168.2.3] (9.82349s):Received 16 bytes from 192.168.2.2 port 44400 data 3 1 1 901 0 4 0
+[CLIENT 2 - 192.168.2.3] (9.82349s):Updated local <ts,value> pair to: [1,901,0]
+[SERVER 0 - 192.168.1.2] (9.83155s):Received 10 bytes from 192.168.2.3 port 49153 data 3 1 0 0 0 optimized 1
+[SERVER 0 - 192.168.1.2] (9.83155s):Sent 10 bytes to 192.168.2.3 port 49153 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 3 1 1 901 0 4 0
+[SERVER 2 - 192.168.3.2] (9.83827s):Received 10 bytes from 192.168.2.3 port 49155 data 3 1 0 0 0 optimized 1
+[SERVER 2 - 192.168.3.2] (9.83827s):Sent 10 bytes to 192.168.2.3 port 49155 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 3 1 1 901 0 4 0
+[CLIENT 2 - 192.168.2.3] (9.8462s):Received 16 bytes from 192.168.1.2 port 44400 data 3 1 1 901 0 4 0
+[SERVER 3 - 192.168.4.2] (9.85089s):Received 10 bytes from 192.168.2.3 port 49156 data 3 1 0 0 0 optimized 1
+[SERVER 3 - 192.168.4.2] (9.85089s):Sent 10 bytes to 192.168.2.3 port 49156 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 3 1 1 901 0 4 0
+[CLIENT 2 - 192.168.2.3] (9.85292s):Received 16 bytes from 192.168.3.2 port 44400 data 3 1 1 901 0 4 0
+[SERVER 4 - 192.168.5.2] (9.86348s):Received 10 bytes from 192.168.2.3 port 49157 data 3 1 0 0 0 optimized 1
+[SERVER 4 - 192.168.5.2] (9.86348s):Sent 10 bytes to 192.168.2.3 port 49157 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 3 1 1 901 0 4 0
+[CLIENT 1 - 192.168.1.4] (9.87288s):Sent 10 bytes to 192.168.1.2 port 44400
+[CLIENT 1 - 192.168.1.4] (9.87288s):Sent 10 bytes to 192.168.2.2 port 44400
+[CLIENT 1 - 192.168.1.4] (9.87288s):Sent 10 bytes to 192.168.3.2 port 44400
+[CLIENT 1 - 192.168.1.4] (9.87288s):Sent 10 bytes to 192.168.4.2 port 44400
+[CLIENT 1 - 192.168.1.4] (9.87288s):Sent 10 bytes to 192.168.5.2 port 44400
+[CLIENT 1 - 192.168.1.4] (9.87288s):** READ INVOKED: 2 at 9.87288s
+[SERVER 0 - 192.168.1.2] (9.875s):Received 10 bytes from 192.168.1.4 port 49153 data 3 1 0 0 0 optimized 1
+[SERVER 0 - 192.168.1.2] (9.875s):Sent 10 bytes to 192.168.1.4 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 3 1 1 901 0 5 0
+[CLIENT 2 - 192.168.2.3] (9.87591s):Received 16 bytes from 192.168.4.2 port 44400 data 3 1 1 901 0 4 0
+[CLIENT 2 - 192.168.2.3] (9.87591s):Waiting for 4 replies, received 4
+[CLIENT 2 - 192.168.2.3] (9.87591s):Proceeding to PHASE2, maxViews 4, bound 3
+[CLIENT 2 - 192.168.2.3] (9.87591s):Sent 12 bytes to 192.168.1.2 port 44400
+[CLIENT 2 - 192.168.2.3] (9.87591s):Sent 12 bytes to 192.168.2.2 port 44400
+[CLIENT 2 - 192.168.2.3] (9.87591s):Sent 12 bytes to 192.168.3.2 port 44400
+[CLIENT 2 - 192.168.2.3] (9.87591s):Sent 12 bytes to 192.168.4.2 port 44400
+[CLIENT 2 - 192.168.2.3] (9.87591s):Sent 12 bytes to 192.168.5.2 port 44400
+[CLIENT 1 - 192.168.1.4] (9.87714s):Received 16 bytes from 192.168.1.2 port 44400 data 3 1 1 901 0 5 0
+[CLIENT 1 - 192.168.1.4] (9.87714s):Updated local <ts,value> pair to: [1,901,0]
+[SERVER 1 - 192.168.2.2] (9.8827s):Received 12 bytes from 192.168.2.3 port 49154 data 4 2 1 901 0 optimized 1
+[SERVER 1 - 192.168.2.2] (9.8827s):Sent 12 bytes to 192.168.2.3 port 49154 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 4 2 1 901 0 4 1
+[CLIENT 2 - 192.168.2.3] (9.88484s):Received 16 bytes from 192.168.2.2 port 44400 data 4 2 1 901 0 4 1
+[SERVER 1 - 192.168.2.2] (9.89204s):Received 10 bytes from 192.168.1.4 port 49154 data 3 1 0 0 0 optimized 1
+[SERVER 1 - 192.168.2.2] (9.89204s):Sent 10 bytes to 192.168.1.4 port 49154 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 3 1 1 901 0 5 1
+[SERVER 0 - 192.168.1.2] (9.89299s):Received 12 bytes from 192.168.2.3 port 49153 data 4 2 1 901 0 optimized 1
+[SERVER 0 - 192.168.1.2] (9.89299s):Sent 12 bytes to 192.168.2.3 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 4 2 1 901 0 5 1
+[CLIENT 2 - 192.168.2.3] (9.89887s):Received 16 bytes from 192.168.5.2 port 44400 data 3 1 1 901 0 4 0
+[SERVER 2 - 192.168.3.2] (9.8996s):Received 12 bytes from 192.168.2.3 port 49155 data 4 2 1 901 0 optimized 1
+[SERVER 2 - 192.168.3.2] (9.8996s):Sent 12 bytes to 192.168.2.3 port 49155 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 4 2 1 901 0 4 1
+[SERVER 3 - 192.168.4.2] (9.90088s):Received 12 bytes from 192.168.2.3 port 49156 data 4 2 1 901 0 optimized 1
+[SERVER 3 - 192.168.4.2] (9.90088s):Sent 12 bytes to 192.168.2.3 port 49156 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 4 2 1 901 0 4 1
+[SERVER 2 - 192.168.3.2] (9.9054s):Received 10 bytes from 192.168.1.4 port 49155 data 3 1 0 0 0 optimized 1
+[SERVER 2 - 192.168.3.2] (9.9054s):Sent 10 bytes to 192.168.1.4 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 3 1 1 901 0 5 1
+[CLIENT 1 - 192.168.1.4] (9.90669s):Received 16 bytes from 192.168.2.2 port 44400 data 3 1 1 901 0 5 1
+[CLIENT 2 - 192.168.2.3] (9.90763s):Received 16 bytes from 192.168.1.2 port 44400 data 4 2 1 901 0 5 1
+[CLIENT 2 - 192.168.2.3] (9.91425s):Received 16 bytes from 192.168.3.2 port 44400 data 4 2 1 901 0 4 1
+[SERVER 3 - 192.168.4.2] (9.91792s):Received 10 bytes from 192.168.1.4 port 49156 data 3 1 0 0 0 optimized 1
+[SERVER 3 - 192.168.4.2] (9.91792s):Sent 10 bytes to 192.168.1.4 port 49156 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 3 1 1 901 0 5 1
+[SERVER 4 - 192.168.5.2] (9.92282s):Received 12 bytes from 192.168.2.3 port 49157 data 4 2 1 901 0 optimized 1
+[SERVER 4 - 192.168.5.2] (9.92282s):Sent 12 bytes to 192.168.2.3 port 49157 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 4 2 1 901 0 4 1
+[CLIENT 2 - 192.168.2.3] (9.9259s):Received 16 bytes from 192.168.4.2 port 44400 data 4 2 1 901 0 4 1
+[CLIENT 2 - 192.168.2.3] (9.9259s):** NEXT OPERATION: in 2.3s
+[CLIENT 2 - 192.168.2.3] (9.9259s):** READ COMPLETED: 2 in 0.108951s, <ts, value>: [1,901] - @ 4 EXCH **
+[CLIENT 1 - 192.168.1.4] (9.93042s):Received 16 bytes from 192.168.3.2 port 44400 data 3 1 1 901 0 5 1
+[SERVER 4 - 192.168.5.2] (9.93074s):Received 10 bytes from 192.168.1.4 port 49157 data 3 1 0 0 0 optimized 1
+[SERVER 4 - 192.168.5.2] (9.93074s):Sent 10 bytes to 192.168.1.4 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 3 1 1 901 0 5 1
+[CLIENT 1 - 192.168.1.4] (9.95331s):Received 16 bytes from 192.168.4.2 port 44400 data 3 1 1 901 0 5 1
+[CLIENT 1 - 192.168.1.4] (9.95331s):Waiting for 4 replies, received 4
+[CLIENT 1 - 192.168.1.4] (9.95331s):Proceeding to PHASE2, maxViews 5, bound 3
+[CLIENT 1 - 192.168.1.4] (9.95331s):** READ COMPLETED: 2 in 0.0804378s, Prop Value: 901, <ts, value, pvalue>: [1,901,0] - @ 2 EXCH **
+[CLIENT 1 - 192.168.1.4] (9.95331s):** NEXT OPERATION: in 2.3s
+[CLIENT 2 - 192.168.2.3] (9.95822s):Received 16 bytes from 192.168.5.2 port 44400 data 4 2 1 901 0 4 1
+[CLIENT 1 - 192.168.1.4] (9.97651s):Received 16 bytes from 192.168.5.2 port 44400 data 3 1 1 901 0 5 1
+[CLIENT 3 - 192.168.2.4] (10.3743s):Sent 10 bytes to 192.168.1.2 port 44400
+[CLIENT 3 - 192.168.2.4] (10.3743s):Sent 10 bytes to 192.168.2.2 port 44400
+[CLIENT 3 - 192.168.2.4] (10.3743s):Sent 10 bytes to 192.168.3.2 port 44400
+[CLIENT 3 - 192.168.2.4] (10.3743s):Sent 10 bytes to 192.168.4.2 port 44400
+[CLIENT 3 - 192.168.2.4] (10.3743s):Sent 10 bytes to 192.168.5.2 port 44400
+[CLIENT 3 - 192.168.2.4] (10.3743s):** READ INVOKED: 1 at 10.3743s
+[SERVER 1 - 192.168.2.2] (10.3792s):Received 10 bytes from 192.168.2.4 port 49154 data 1 1 0 0 0 optimized 1
+[SERVER 1 - 192.168.2.2] (10.3792s):Sent 10 bytes to 192.168.2.4 port 49154 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 1 1 1 901 0 6 1
+[CLIENT 3 - 192.168.2.4] (10.3836s):Received 16 bytes from 192.168.2.2 port 44400 data 1 1 1 901 0 6 1
+[CLIENT 3 - 192.168.2.4] (10.3836s):Updated local <ts,value> pair to: [1,901,0]
+[SERVER 0 - 192.168.1.2] (10.3889s):Received 10 bytes from 192.168.2.4 port 49153 data 1 1 0 0 0 optimized 1
+[SERVER 0 - 192.168.1.2] (10.3889s):Sent 10 bytes to 192.168.2.4 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 1 1 1 901 0 6 1
+[SERVER 2 - 192.168.3.2] (10.3989s):Received 10 bytes from 192.168.2.4 port 49155 data 1 1 0 0 0 optimized 1
+[SERVER 2 - 192.168.3.2] (10.3989s):Sent 10 bytes to 192.168.2.4 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 1 1 1 901 0 6 1
+[CLIENT 3 - 192.168.2.4] (10.4059s):Received 16 bytes from 192.168.1.2 port 44400 data 1 1 1 901 0 6 1
+[SERVER 3 - 192.168.4.2] (10.4119s):Received 10 bytes from 192.168.2.4 port 49156 data 1 1 0 0 0 optimized 1
+[SERVER 3 - 192.168.4.2] (10.4119s):Sent 10 bytes to 192.168.2.4 port 49156 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 1 1 1 901 0 6 1
+[CLIENT 3 - 192.168.2.4] (10.4164s):Received 16 bytes from 192.168.3.2 port 44400 data 1 1 1 901 0 6 1
+[SERVER 4 - 192.168.5.2] (10.4245s):Received 10 bytes from 192.168.2.4 port 49157 data 1 1 0 0 0 optimized 1
+[SERVER 4 - 192.168.5.2] (10.4245s):Sent 10 bytes to 192.168.2.4 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 1 1 1 901 0 6 1
+[CLIENT 3 - 192.168.2.4] (10.4393s):Received 16 bytes from 192.168.4.2 port 44400 data 1 1 1 901 0 6 1
+[CLIENT 3 - 192.168.2.4] (10.4393s):Waiting for 4 replies, received 4
+[CLIENT 3 - 192.168.2.4] (10.4393s):Proceeding to PHASE2, maxViews 6, bound 3
+[CLIENT 3 - 192.168.2.4] (10.4393s):** READ COMPLETED: 1 in 0.0650573s, Prop Value: 901, <ts, value, pvalue>: [1,901,0] - @ 2 EXCH **
+[CLIENT 3 - 192.168.2.4] (10.4393s):** NEXT OPERATION: in 2.3s
+[CLIENT 3 - 192.168.2.4] (10.4627s):Received 16 bytes from 192.168.5.2 port 44400 data 1 1 1 901 0 6 1
+[CLIENT 4 - 192.168.3.3] (12.0753s):Sent 12 bytes to 192.168.1.2 port 44400
+[CLIENT 4 - 192.168.3.3] (12.0753s):Sent 12 bytes to 192.168.2.2 port 44400
+[CLIENT 4 - 192.168.3.3] (12.0753s):Sent 12 bytes to 192.168.3.2 port 44400
+[CLIENT 4 - 192.168.3.3] (12.0753s):Sent 12 bytes to 192.168.4.2 port 44400
+[CLIENT 4 - 192.168.3.3] (12.0753s):Sent 12 bytes to 192.168.5.2 port 44400
+[CLIENT 4 - 192.168.3.3] (12.0753s):** READ INVOKED: 3 at 12.0753s
+[SERVER 2 - 192.168.3.2] (12.0823s):Received 12 bytes from 192.168.3.3 port 49155 data 3 1 1 901 0 optimized 1
+[SERVER 2 - 192.168.3.2] (12.0823s):Sent 12 bytes to 192.168.3.3 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 3 1 1 901 0 6 1
+[CLIENT 4 - 192.168.3.3] (12.0845s):Received 16 bytes from 192.168.3.2 port 44400 data 3 1 1 901 0 6 1
+[CLIENT 5 - 192.168.3.4] (12.0901s):Sent 12 bytes to 192.168.1.2 port 44400
+[CLIENT 5 - 192.168.3.4] (12.0901s):Sent 12 bytes to 192.168.2.2 port 44400
+[CLIENT 5 - 192.168.3.4] (12.0901s):Sent 12 bytes to 192.168.3.2 port 44400
+[CLIENT 5 - 192.168.3.4] (12.0901s):Sent 12 bytes to 192.168.4.2 port 44400
+[CLIENT 5 - 192.168.3.4] (12.0901s):Sent 12 bytes to 192.168.5.2 port 44400
+[CLIENT 5 - 192.168.3.4] (12.0901s):** READ INVOKED: 3 at 12.0901s
+[SERVER 1 - 192.168.2.2] (12.0923s):Received 12 bytes from 192.168.3.3 port 49154 data 3 1 1 901 0 optimized 1
+[SERVER 1 - 192.168.2.2] (12.0923s):Sent 12 bytes to 192.168.3.3 port 49154 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 3 1 1 901 0 6 1
+[SERVER 2 - 192.168.3.2] (12.0971s):Received 12 bytes from 192.168.3.4 port 49155 data 3 1 1 901 0 optimized 1
+[SERVER 2 - 192.168.3.2] (12.0971s):Sent 12 bytes to 192.168.3.4 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 3 1 1 901 0 6 1
+[CLIENT 5 - 192.168.3.4] (12.0992s):Received 16 bytes from 192.168.3.2 port 44400 data 3 1 1 901 0 6 1
+[SERVER 3 - 192.168.4.2] (12.0992s):Received 12 bytes from 192.168.3.3 port 49156 data 3 1 1 901 0 optimized 1
+[SERVER 3 - 192.168.4.2] (12.0992s):Sent 12 bytes to 192.168.3.3 port 49156 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 3 1 1 901 0 6 1
+[SERVER 0 - 192.168.1.2] (12.1003s):Received 12 bytes from 192.168.3.3 port 49153 data 3 1 1 901 0 optimized 1
+[SERVER 0 - 192.168.1.2] (12.1003s):Sent 12 bytes to 192.168.3.3 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 3 1 1 901 0 6 1
+[SERVER 1 - 192.168.2.2] (12.1069s):Received 12 bytes from 192.168.3.4 port 49154 data 3 1 1 901 0 optimized 1
+[SERVER 1 - 192.168.2.2] (12.1069s):Sent 12 bytes to 192.168.3.4 port 49154 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 3 1 1 901 0 6 1
+[CLIENT 4 - 192.168.3.3] (12.107s):Received 16 bytes from 192.168.2.2 port 44400 data 3 1 1 901 0 6 1
+[SERVER 4 - 192.168.5.2] (12.1118s):Received 12 bytes from 192.168.3.3 port 49157 data 3 1 1 901 0 optimized 1
+[SERVER 4 - 192.168.5.2] (12.1118s):Sent 12 bytes to 192.168.3.3 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 3 1 1 901 0 6 1
+[SERVER 3 - 192.168.4.2] (12.1139s):Received 12 bytes from 192.168.3.4 port 49156 data 3 1 1 901 0 optimized 1
+[SERVER 3 - 192.168.4.2] (12.1139s):Sent 12 bytes to 192.168.3.4 port 49156 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 3 1 1 901 0 6 1
+[CLIENT 4 - 192.168.3.3] (12.1139s):Received 16 bytes from 192.168.4.2 port 44400 data 3 1 1 901 0 6 1
+[SERVER 0 - 192.168.1.2] (12.1151s):Received 12 bytes from 192.168.3.4 port 49153 data 3 1 1 901 0 optimized 1
+[SERVER 0 - 192.168.1.2] (12.1151s):Sent 12 bytes to 192.168.3.4 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 3 1 1 901 0 6 1
+[CLIENT 5 - 192.168.3.4] (12.1216s):Received 16 bytes from 192.168.2.2 port 44400 data 3 1 1 901 0 6 1
+[CLIENT 4 - 192.168.3.3] (12.1253s):Received 16 bytes from 192.168.1.2 port 44400 data 3 1 1 901 0 6 1
+[CLIENT 4 - 192.168.3.3] (12.1253s):Waiting for 4 replies, received 4
+[CLIENT 4 - 192.168.3.3] (12.1253s):Proceeding to PHASE2, maxViews 6, bound 3
+[CLIENT 4 - 192.168.3.3] (12.1253s):** READ COMPLETED: 3 in 0.0499883s, Prop Value: 901, <ts, value, pvalue>: [1,901,0] - @ 2 EXCH **
+[CLIENT 4 - 192.168.3.3] (12.1253s):** NEXT OPERATION: in 2.3s
+[SERVER 4 - 192.168.5.2] (12.1264s):Received 12 bytes from 192.168.3.4 port 49157 data 3 1 1 901 0 optimized 1
+[SERVER 4 - 192.168.5.2] (12.1264s):Sent 12 bytes to 192.168.3.4 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 3 1 1 901 0 6 1
+[CLIENT 5 - 192.168.3.4] (12.1285s):Received 16 bytes from 192.168.4.2 port 44400 data 3 1 1 901 0 6 1
+[CLIENT 4 - 192.168.3.3] (12.1368s):Received 16 bytes from 192.168.5.2 port 44400 data 3 1 1 901 0 6 1
+[CLIENT 5 - 192.168.3.4] (12.1401s):Received 16 bytes from 192.168.1.2 port 44400 data 3 1 1 901 0 6 1
+[CLIENT 5 - 192.168.3.4] (12.1401s):Waiting for 4 replies, received 4
+[CLIENT 5 - 192.168.3.4] (12.1401s):Proceeding to PHASE2, maxViews 6, bound 3
+[CLIENT 5 - 192.168.3.4] (12.1401s):** READ COMPLETED: 3 in 0.0499883s, Prop Value: 901, <ts, value, pvalue>: [1,901,0] - @ 2 EXCH **
+[CLIENT 5 - 192.168.3.4] (12.1401s):** NEXT OPERATION: in 2.3s
+[CLIENT 5 - 192.168.3.4] (12.1514s):Received 16 bytes from 192.168.5.2 port 44400 data 3 1 1 901 0 6 1
+[CLIENT 2 - 192.168.2.3] (12.2259s):Sent 12 bytes to 192.168.1.2 port 44400
+[CLIENT 2 - 192.168.2.3] (12.2259s):Sent 12 bytes to 192.168.2.2 port 44400
+[CLIENT 2 - 192.168.2.3] (12.2259s):Sent 12 bytes to 192.168.3.2 port 44400
+[CLIENT 2 - 192.168.2.3] (12.2259s):Sent 12 bytes to 192.168.4.2 port 44400
+[CLIENT 2 - 192.168.2.3] (12.2259s):Sent 12 bytes to 192.168.5.2 port 44400
+[CLIENT 2 - 192.168.2.3] (12.2259s):** READ INVOKED: 3 at 12.2259s
+[SERVER 1 - 192.168.2.2] (12.2302s):Received 12 bytes from 192.168.2.3 port 49154 data 5 1 1 901 0 optimized 1
+[SERVER 1 - 192.168.2.2] (12.2302s):Sent 12 bytes to 192.168.2.3 port 49154 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 5 1 1 901 0 6 1
+[CLIENT 2 - 192.168.2.3] (12.2324s):Received 16 bytes from 192.168.2.2 port 44400 data 5 1 1 901 0 6 1
+[SERVER 0 - 192.168.1.2] (12.2405s):Received 12 bytes from 192.168.2.3 port 49153 data 5 1 1 901 0 optimized 1
+[SERVER 0 - 192.168.1.2] (12.2405s):Sent 12 bytes to 192.168.2.3 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 5 1 1 901 0 6 1
+[SERVER 2 - 192.168.3.2] (12.247s):Received 12 bytes from 192.168.2.3 port 49155 data 5 1 1 901 0 optimized 1
+[SERVER 2 - 192.168.3.2] (12.247s):Sent 12 bytes to 192.168.2.3 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 5 1 1 901 0 6 1
+[CLIENT 1 - 192.168.1.4] (12.2533s):Sent 12 bytes to 192.168.1.2 port 44400
+[CLIENT 1 - 192.168.1.4] (12.2533s):Sent 12 bytes to 192.168.2.2 port 44400
+[CLIENT 1 - 192.168.1.4] (12.2533s):Sent 12 bytes to 192.168.3.2 port 44400
+[CLIENT 1 - 192.168.1.4] (12.2533s):Sent 12 bytes to 192.168.4.2 port 44400
+[CLIENT 1 - 192.168.1.4] (12.2533s):Sent 12 bytes to 192.168.5.2 port 44400
+[CLIENT 1 - 192.168.1.4] (12.2533s):** READ INVOKED: 3 at 12.2533s
+[CLIENT 2 - 192.168.2.3] (12.2552s):Received 16 bytes from 192.168.1.2 port 44400 data 5 1 1 901 0 6 1
+[SERVER 0 - 192.168.1.2] (12.2554s):Received 12 bytes from 192.168.1.4 port 49153 data 4 1 1 901 0 optimized 1
+[SERVER 0 - 192.168.1.2] (12.2554s):Sent 12 bytes to 192.168.1.4 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 4 1 1 901 0 6 1
+[CLIENT 1 - 192.168.1.4] (12.2576s):Received 16 bytes from 192.168.1.2 port 44400 data 4 1 1 901 0 6 1
+[SERVER 3 - 192.168.4.2] (12.2597s):Received 12 bytes from 192.168.2.3 port 49156 data 5 1 1 901 0 optimized 1
+[SERVER 3 - 192.168.4.2] (12.2597s):Sent 12 bytes to 192.168.2.3 port 49156 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 5 1 1 901 0 6 1
+[CLIENT 2 - 192.168.2.3] (12.2617s):Received 16 bytes from 192.168.3.2 port 44400 data 5 1 1 901 0 6 1
+[SERVER 4 - 192.168.5.2] (12.2722s):Received 12 bytes from 192.168.2.3 port 49157 data 5 1 1 901 0 optimized 1
+[SERVER 4 - 192.168.5.2] (12.2722s):Sent 12 bytes to 192.168.2.3 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 5 1 1 901 0 6 1
+[SERVER 1 - 192.168.2.2] (12.2726s):Received 12 bytes from 192.168.1.4 port 49154 data 4 1 1 901 0 optimized 1
+[SERVER 1 - 192.168.2.2] (12.2726s):Sent 12 bytes to 192.168.1.4 port 49154 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 4 1 1 901 0 6 1
+[CLIENT 2 - 192.168.2.3] (12.2848s):Received 16 bytes from 192.168.4.2 port 44400 data 5 1 1 901 0 6 1
+[CLIENT 2 - 192.168.2.3] (12.2848s):Waiting for 4 replies, received 4
+[CLIENT 2 - 192.168.2.3] (12.2848s):Proceeding to PHASE2, maxViews 6, bound 3
+[CLIENT 2 - 192.168.2.3] (12.2848s):** READ COMPLETED: 3 in 0.0588525s, Prop Value: 901, <ts, value, pvalue>: [1,901,0] - @ 2 EXCH **
+[CLIENT 2 - 192.168.2.3] (12.2848s):** NEXT OPERATION: in 2.3s
+[SERVER 2 - 192.168.3.2] (12.2853s):Received 12 bytes from 192.168.1.4 port 49155 data 4 1 1 901 0 optimized 1
+[SERVER 2 - 192.168.3.2] (12.2853s):Sent 12 bytes to 192.168.1.4 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 4 1 1 901 0 6 1
+[CLIENT 1 - 192.168.1.4] (12.2872s):Received 16 bytes from 192.168.2.2 port 44400 data 4 1 1 901 0 6 1
+[SERVER 3 - 192.168.4.2] (12.2981s):Received 12 bytes from 192.168.1.4 port 49156 data 4 1 1 901 0 optimized 1
+[SERVER 3 - 192.168.4.2] (12.2981s):Sent 12 bytes to 192.168.1.4 port 49156 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 4 1 1 901 0 6 1
+[CLIENT 2 - 192.168.2.3] (12.3076s):Received 16 bytes from 192.168.5.2 port 44400 data 5 1 1 901 0 6 1
+[CLIENT 1 - 192.168.1.4] (12.3103s):Received 16 bytes from 192.168.3.2 port 44400 data 4 1 1 901 0 6 1
+[SERVER 4 - 192.168.5.2] (12.3108s):Received 12 bytes from 192.168.1.4 port 49157 data 4 1 1 901 0 optimized 1
+[SERVER 4 - 192.168.5.2] (12.3108s):Sent 12 bytes to 192.168.1.4 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 4 1 1 901 0 6 1
+[CLIENT 1 - 192.168.1.4] (12.3335s):Received 16 bytes from 192.168.4.2 port 44400 data 4 1 1 901 0 6 1
+[CLIENT 1 - 192.168.1.4] (12.3335s):Waiting for 4 replies, received 4
+[CLIENT 1 - 192.168.1.4] (12.3335s):Proceeding to PHASE2, maxViews 6, bound 3
+[CLIENT 1 - 192.168.1.4] (12.3335s):** READ COMPLETED: 3 in 0.0802178s, Prop Value: 901, <ts, value, pvalue>: [1,901,0] - @ 2 EXCH **
+[CLIENT 1 - 192.168.1.4] (12.3335s):** NEXT OPERATION: in 2.3s
+[CLIENT 1 - 192.168.1.4] (12.3566s):Received 16 bytes from 192.168.5.2 port 44400 data 4 1 1 901 0 6 1
+[CLIENT 3 - 192.168.2.4] (12.7393s):Sent 12 bytes to 192.168.1.2 port 44400
+[CLIENT 3 - 192.168.2.4] (12.7393s):Sent 12 bytes to 192.168.2.2 port 44400
+[CLIENT 3 - 192.168.2.4] (12.7393s):Sent 12 bytes to 192.168.3.2 port 44400
+[CLIENT 3 - 192.168.2.4] (12.7393s):Sent 12 bytes to 192.168.4.2 port 44400
+[CLIENT 3 - 192.168.2.4] (12.7393s):Sent 12 bytes to 192.168.5.2 port 44400
+[CLIENT 3 - 192.168.2.4] (12.7393s):** READ INVOKED: 2 at 12.7393s
+[SERVER 1 - 192.168.2.2] (12.7436s):Received 12 bytes from 192.168.2.4 port 49154 data 2 1 1 901 0 optimized 1
+[SERVER 1 - 192.168.2.2] (12.7436s):Sent 12 bytes to 192.168.2.4 port 49154 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 2 1 1 901 0 6 1
+[CLIENT 3 - 192.168.2.4] (12.7458s):Received 16 bytes from 192.168.2.2 port 44400 data 2 1 1 901 0 6 1
+[SERVER 0 - 192.168.1.2] (12.7539s):Received 12 bytes from 192.168.2.4 port 49153 data 2 1 1 901 0 optimized 1
+[SERVER 0 - 192.168.1.2] (12.7539s):Sent 12 bytes to 192.168.2.4 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 2 1 1 901 0 6 1
+[SERVER 2 - 192.168.3.2] (12.7608s):Received 12 bytes from 192.168.2.4 port 49155 data 2 1 1 901 0 optimized 1
+[SERVER 2 - 192.168.3.2] (12.7608s):Sent 12 bytes to 192.168.2.4 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 2 1 1 901 0 6 1
+[CLIENT 3 - 192.168.2.4] (12.7686s):Received 16 bytes from 192.168.1.2 port 44400 data 2 1 1 901 0 6 1
+[SERVER 3 - 192.168.4.2] (12.774s):Received 12 bytes from 192.168.2.4 port 49156 data 2 1 1 901 0 optimized 1
+[SERVER 3 - 192.168.4.2] (12.774s):Sent 12 bytes to 192.168.2.4 port 49156 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 2 1 1 901 0 6 1
+[CLIENT 3 - 192.168.2.4] (12.7754s):Received 16 bytes from 192.168.3.2 port 44400 data 2 1 1 901 0 6 1
+[SERVER 4 - 192.168.5.2] (12.7867s):Received 12 bytes from 192.168.2.4 port 49157 data 2 1 1 901 0 optimized 1
+[SERVER 4 - 192.168.5.2] (12.7867s):Sent 12 bytes to 192.168.2.4 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 2 1 1 901 0 6 1
+[CLIENT 3 - 192.168.2.4] (12.7991s):Received 16 bytes from 192.168.4.2 port 44400 data 2 1 1 901 0 6 1
+[CLIENT 3 - 192.168.2.4] (12.7991s):Waiting for 4 replies, received 4
+[CLIENT 3 - 192.168.2.4] (12.7991s):Proceeding to PHASE2, maxViews 6, bound 3
+[CLIENT 3 - 192.168.2.4] (12.7991s):** READ COMPLETED: 2 in 0.0597315s, Prop Value: 901, <ts, value, pvalue>: [1,901,0] - @ 2 EXCH **
+[CLIENT 3 - 192.168.2.4] (12.7991s):** NEXT OPERATION: in 2.3s
+[CLIENT 3 - 192.168.2.4] (12.8221s):Received 16 bytes from 192.168.5.2 port 44400 data 2 1 1 901 0 6 1
+[CLIENT 0 - 192.168.1.3] (13.1828s):Sent 14 bytes to 192.168.1.2 port 44400
+[CLIENT 0 - 192.168.1.3] (13.1828s):Sent 14 bytes to 192.168.2.2 port 44400
+[CLIENT 0 - 192.168.1.3] (13.1828s):Sent 14 bytes to 192.168.3.2 port 44400
+[CLIENT 0 - 192.168.1.3] (13.1828s):Sent 14 bytes to 192.168.4.2 port 44400
+[CLIENT 0 - 192.168.1.3] (13.1828s):Sent 14 bytes to 192.168.5.2 port 44400
+[CLIENT 0 - 192.168.1.3] (13.1828s):** WRITE INVOKED: 2 at 13.1828s
+[SERVER 0 - 192.168.1.2] (13.185s):Received 14 bytes from 192.168.1.3 port 49153 data 2 0 2 902 901 optimized 1
+[SERVER 0 - 192.168.1.2] (13.185s):Sent 14 bytes to 192.168.1.3 port 49153 seen: {  192.168.1.3} data 2 0 2 902 901 1 0
+[CLIENT 0 - 192.168.1.3] (13.1871s):Received 18 bytes from 192.168.1.2 port 44400 data 2 0 2 902 901 1 0
+[SERVER 1 - 192.168.2.2] (13.2021s):Received 14 bytes from 192.168.1.3 port 49154 data 2 0 2 902 901 optimized 1
+[SERVER 1 - 192.168.2.2] (13.2021s):Sent 14 bytes to 192.168.1.3 port 49154 seen: {  192.168.1.3} data 2 0 2 902 901 1 0
+[SERVER 2 - 192.168.3.2] (13.215s):Received 14 bytes from 192.168.1.3 port 49155 data 2 0 2 902 901 optimized 1
+[SERVER 2 - 192.168.3.2] (13.215s):Sent 14 bytes to 192.168.1.3 port 49155 seen: {  192.168.1.3} data 2 0 2 902 901 1 0
+[CLIENT 0 - 192.168.1.3] (13.2168s):Received 18 bytes from 192.168.2.2 port 44400 data 2 0 2 902 901 1 0
+[SERVER 3 - 192.168.4.2] (13.228s):Received 14 bytes from 192.168.1.3 port 49156 data 2 0 2 902 901 optimized 1
+[SERVER 3 - 192.168.4.2] (13.228s):Sent 14 bytes to 192.168.1.3 port 49156 seen: {  192.168.1.3} data 2 0 2 902 901 1 0
+[CLIENT 0 - 192.168.1.3] (13.2401s):Received 18 bytes from 192.168.3.2 port 44400 data 2 0 2 902 901 1 0
+[SERVER 4 - 192.168.5.2] (13.2406s):Received 14 bytes from 192.168.1.3 port 49157 data 2 0 2 902 901 optimized 1
+[SERVER 4 - 192.168.5.2] (13.2406s):Sent 14 bytes to 192.168.1.3 port 49157 seen: {  192.168.1.3} data 2 0 2 902 901 1 0
+[CLIENT 0 - 192.168.1.3] (13.2634s):Received 18 bytes from 192.168.4.2 port 44400 data 2 0 2 902 901 1 0
+[CLIENT 0 - 192.168.1.3] (13.2634s):** NEXT OPERATION: in 4s
+[CLIENT 0 - 192.168.1.3] (13.2634s):** WRITE COMPLETED: 2 in 0.0805972s, <ts, value>: [2,902], @ 2 EXCH **
+[CLIENT 0 - 192.168.1.3] (13.2864s):Received 18 bytes from 192.168.5.2 port 44400 data 2 0 2 902 901 1 0
+[CLIENT 4 - 192.168.3.3] (14.4253s):Sent 12 bytes to 192.168.1.2 port 44400
+[CLIENT 4 - 192.168.3.3] (14.4253s):Sent 12 bytes to 192.168.2.2 port 44400
+[CLIENT 4 - 192.168.3.3] (14.4253s):Sent 12 bytes to 192.168.3.2 port 44400
+[CLIENT 4 - 192.168.3.3] (14.4253s):Sent 12 bytes to 192.168.4.2 port 44400
+[CLIENT 4 - 192.168.3.3] (14.4253s):Sent 12 bytes to 192.168.5.2 port 44400
+[CLIENT 4 - 192.168.3.3] (14.4253s):** READ INVOKED: 4 at 14.4253s
+[SERVER 2 - 192.168.3.2] (14.4318s):Received 12 bytes from 192.168.3.3 port 49155 data 4 1 1 901 0 optimized 1
+[SERVER 2 - 192.168.3.2] (14.4318s):Sent 12 bytes to 192.168.3.3 port 49155 seen: {  192.168.1.3 192.168.3.3} data 4 1 2 902 901 2 0
+[CLIENT 4 - 192.168.3.3] (14.4339s):Received 18 bytes from 192.168.3.2 port 44400 data 4 1 2 902 901 2 0
+[CLIENT 4 - 192.168.3.3] (14.4339s):Updated local <ts,value> pair to: [2,902,901]
+[CLIENT 5 - 192.168.3.4] (14.4401s):Sent 12 bytes to 192.168.1.2 port 44400
+[CLIENT 5 - 192.168.3.4] (14.4401s):Sent 12 bytes to 192.168.2.2 port 44400
+[CLIENT 5 - 192.168.3.4] (14.4401s):Sent 12 bytes to 192.168.3.2 port 44400
+[CLIENT 5 - 192.168.3.4] (14.4401s):Sent 12 bytes to 192.168.4.2 port 44400
+[CLIENT 5 - 192.168.3.4] (14.4401s):Sent 12 bytes to 192.168.5.2 port 44400
+[CLIENT 5 - 192.168.3.4] (14.4401s):** READ INVOKED: 4 at 14.4401s
+[SERVER 1 - 192.168.2.2] (14.4421s):Received 12 bytes from 192.168.3.3 port 49154 data 4 1 1 901 0 optimized 1
+[SERVER 1 - 192.168.2.2] (14.4421s):Sent 12 bytes to 192.168.3.3 port 49154 seen: {  192.168.1.3 192.168.3.3} data 4 1 2 902 901 2 0
+[SERVER 2 - 192.168.3.2] (14.4474s):Received 12 bytes from 192.168.3.4 port 49155 data 4 1 1 901 0 optimized 1
+[SERVER 2 - 192.168.3.2] (14.4474s):Sent 12 bytes to 192.168.3.4 port 49155 seen: {  192.168.1.3 192.168.3.3 192.168.3.4} data 4 1 2 902 901 3 0
+[SERVER 3 - 192.168.4.2] (14.4489s):Received 12 bytes from 192.168.3.3 port 49156 data 4 1 1 901 0 optimized 1
+[SERVER 3 - 192.168.4.2] (14.4489s):Sent 12 bytes to 192.168.3.3 port 49156 seen: {  192.168.1.3 192.168.3.3} data 4 1 2 902 901 2 0
+[CLIENT 5 - 192.168.3.4] (14.4496s):Received 18 bytes from 192.168.3.2 port 44400 data 4 1 2 902 901 3 0
+[CLIENT 5 - 192.168.3.4] (14.4496s):Updated local <ts,value> pair to: [2,902,901]
+[SERVER 0 - 192.168.1.2] (14.4502s):Received 12 bytes from 192.168.3.3 port 49153 data 4 1 1 901 0 optimized 1
+[SERVER 0 - 192.168.1.2] (14.4502s):Sent 12 bytes to 192.168.3.3 port 49153 seen: {  192.168.1.3 192.168.3.3} data 4 1 2 902 901 2 0
+[CLIENT 4 - 192.168.3.3] (14.4568s):Received 18 bytes from 192.168.2.2 port 44400 data 4 1 2 902 901 2 0
+[SERVER 1 - 192.168.2.2] (14.4575s):Received 12 bytes from 192.168.3.4 port 49154 data 4 1 1 901 0 optimized 1
+[SERVER 1 - 192.168.2.2] (14.4575s):Sent 12 bytes to 192.168.3.4 port 49154 seen: {  192.168.1.3 192.168.3.3 192.168.3.4} data 4 1 2 902 901 3 0
+[SERVER 4 - 192.168.5.2] (14.4622s):Received 12 bytes from 192.168.3.3 port 49157 data 4 1 1 901 0 optimized 1
+[SERVER 4 - 192.168.5.2] (14.4622s):Sent 12 bytes to 192.168.3.3 port 49157 seen: {  192.168.1.3 192.168.3.3} data 4 1 2 902 901 2 0
+[CLIENT 4 - 192.168.3.3] (14.4636s):Received 18 bytes from 192.168.4.2 port 44400 data 4 1 2 902 901 2 0
+[SERVER 3 - 192.168.4.2] (14.4644s):Received 12 bytes from 192.168.3.4 port 49156 data 4 1 1 901 0 optimized 1
+[SERVER 3 - 192.168.4.2] (14.4644s):Sent 12 bytes to 192.168.3.4 port 49156 seen: {  192.168.1.3 192.168.3.3 192.168.3.4} data 4 1 2 902 901 3 0
+[SERVER 0 - 192.168.1.2] (14.4651s):Received 12 bytes from 192.168.3.4 port 49153 data 4 1 1 901 0 optimized 1
+[SERVER 0 - 192.168.1.2] (14.4651s):Sent 12 bytes to 192.168.3.4 port 49153 seen: {  192.168.1.3 192.168.3.3 192.168.3.4} data 4 1 2 902 901 3 0
+[CLIENT 5 - 192.168.3.4] (14.4722s):Received 18 bytes from 192.168.2.2 port 44400 data 4 1 2 902 901 3 0
+[CLIENT 4 - 192.168.3.3] (14.4753s):Received 18 bytes from 192.168.1.2 port 44400 data 4 1 2 902 901 2 0
+[CLIENT 4 - 192.168.3.3] (14.4753s):Waiting for 4 replies, received 4
+[CLIENT 4 - 192.168.3.3] (14.4753s):Checking the PREDICATE, maxViews 2, bound 3
+[CLIENT 4 - 192.168.3.3] (14.4753s):PREDICATE LOOP: a=3, b[a]=0, bound=2
+[CLIENT 4 - 192.168.3.3] (14.4753s):PREDICATE LOOP: a=2, b[a]=4, bound=3
+[CLIENT 4 - 192.168.3.3] (14.4753s):** READ COMPLETED: 4 in 0.050016s, Return Value: 902, <ts, value, pvalue>: [2,902,901] - @ 2 EXCH **
+[CLIENT 4 - 192.168.3.3] (14.4753s):** NEXT OPERATION: in 2.3s
+[SERVER 4 - 192.168.5.2] (14.4771s):Received 12 bytes from 192.168.3.4 port 49157 data 4 1 1 901 0 optimized 1
+[SERVER 4 - 192.168.5.2] (14.4771s):Sent 12 bytes to 192.168.3.4 port 49157 seen: {  192.168.1.3 192.168.3.3 192.168.3.4} data 4 1 2 902 901 3 0
+[CLIENT 5 - 192.168.3.4] (14.4791s):Received 18 bytes from 192.168.4.2 port 44400 data 4 1 2 902 901 3 0
+[CLIENT 4 - 192.168.3.3] (14.4872s):Received 18 bytes from 192.168.5.2 port 44400 data 4 1 2 902 901 2 0
+[CLIENT 5 - 192.168.3.4] (14.4901s):Received 18 bytes from 192.168.1.2 port 44400 data 4 1 2 902 901 3 0
+[CLIENT 5 - 192.168.3.4] (14.4901s):Waiting for 4 replies, received 4
+[CLIENT 5 - 192.168.3.4] (14.4901s):Checking the PREDICATE, maxViews 3, bound 3
+[CLIENT 5 - 192.168.3.4] (14.4901s):PREDICATE LOOP: a=3, b[a]=4, bound=2
+[CLIENT 5 - 192.168.3.4] (14.4901s):** READ COMPLETED: 4 in 0.050016s, Return Value: 902, <ts, value, pvalue>: [2,902,901] - @ 2 EXCH **
+[CLIENT 5 - 192.168.3.4] (14.4901s):** NEXT OPERATION: in 2.3s
+[CLIENT 5 - 192.168.3.4] (14.5021s):Received 18 bytes from 192.168.5.2 port 44400 data 4 1 2 902 901 3 0
+[CLIENT 2 - 192.168.2.3] (14.5848s):Sent 12 bytes to 192.168.1.2 port 44400
+[CLIENT 2 - 192.168.2.3] (14.5848s):Sent 12 bytes to 192.168.2.2 port 44400
+[CLIENT 2 - 192.168.2.3] (14.5848s):Sent 12 bytes to 192.168.3.2 port 44400
+[CLIENT 2 - 192.168.2.3] (14.5848s):Sent 12 bytes to 192.168.4.2 port 44400
+[CLIENT 2 - 192.168.2.3] (14.5848s):Sent 12 bytes to 192.168.5.2 port 44400
+[CLIENT 2 - 192.168.2.3] (14.5848s):** READ INVOKED: 4 at 14.5848s
+[SERVER 1 - 192.168.2.2] (14.5896s):Received 12 bytes from 192.168.2.3 port 49154 data 6 1 1 901 0 optimized 1
+[SERVER 1 - 192.168.2.2] (14.5896s):Sent 12 bytes to 192.168.2.3 port 49154 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 6 1 2 902 901 4 0
+[CLIENT 2 - 192.168.2.3] (14.5918s):Received 18 bytes from 192.168.2.2 port 44400 data 6 1 2 902 901 4 0
+[CLIENT 2 - 192.168.2.3] (14.5918s):Updated local <ts,value> pair to: [2,902,901]
+[SERVER 0 - 192.168.1.2] (14.5994s):Received 12 bytes from 192.168.2.3 port 49153 data 6 1 1 901 0 optimized 1
+[SERVER 0 - 192.168.1.2] (14.5994s):Sent 12 bytes to 192.168.2.3 port 49153 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 6 1 2 902 901 4 0
+[SERVER 2 - 192.168.3.2] (14.6069s):Received 12 bytes from 192.168.2.3 port 49155 data 6 1 1 901 0 optimized 1
+[SERVER 2 - 192.168.3.2] (14.6069s):Sent 12 bytes to 192.168.2.3 port 49155 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 6 1 2 902 901 4 0
+[CLIENT 2 - 192.168.2.3] (14.614s):Received 18 bytes from 192.168.1.2 port 44400 data 6 1 2 902 901 4 0
+[SERVER 3 - 192.168.4.2] (14.6197s):Received 12 bytes from 192.168.2.3 port 49156 data 6 1 1 901 0 optimized 1
+[SERVER 3 - 192.168.4.2] (14.6197s):Sent 12 bytes to 192.168.2.3 port 49156 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 6 1 2 902 901 4 0
+[CLIENT 2 - 192.168.2.3] (14.6216s):Received 18 bytes from 192.168.3.2 port 44400 data 6 1 2 902 901 4 0
+[SERVER 4 - 192.168.5.2] (14.6324s):Received 12 bytes from 192.168.2.3 port 49157 data 6 1 1 901 0 optimized 1
+[SERVER 4 - 192.168.5.2] (14.6324s):Sent 12 bytes to 192.168.2.3 port 49157 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 6 1 2 902 901 4 0
+[CLIENT 1 - 192.168.1.4] (14.6335s):Sent 12 bytes to 192.168.1.2 port 44400
+[CLIENT 1 - 192.168.1.4] (14.6335s):Sent 12 bytes to 192.168.2.2 port 44400
+[CLIENT 1 - 192.168.1.4] (14.6335s):Sent 12 bytes to 192.168.3.2 port 44400
+[CLIENT 1 - 192.168.1.4] (14.6335s):Sent 12 bytes to 192.168.4.2 port 44400
+[CLIENT 1 - 192.168.1.4] (14.6335s):Sent 12 bytes to 192.168.5.2 port 44400
+[CLIENT 1 - 192.168.1.4] (14.6335s):** READ INVOKED: 4 at 14.6335s
+[SERVER 0 - 192.168.1.2] (14.6357s):Received 12 bytes from 192.168.1.4 port 49153 data 5 1 1 901 0 optimized 1
+[SERVER 0 - 192.168.1.2] (14.6357s):Sent 12 bytes to 192.168.1.4 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 5 1 2 902 901 5 0
+[CLIENT 1 - 192.168.1.4] (14.6378s):Received 18 bytes from 192.168.1.2 port 44400 data 5 1 2 902 901 5 0
+[CLIENT 1 - 192.168.1.4] (14.6378s):Updated local <ts,value> pair to: [2,902,901]
+[CLIENT 2 - 192.168.2.3] (14.6447s):Received 18 bytes from 192.168.4.2 port 44400 data 6 1 2 902 901 4 0
+[CLIENT 2 - 192.168.2.3] (14.6447s):Waiting for 4 replies, received 4
+[CLIENT 2 - 192.168.2.3] (14.6447s):Proceeding to PHASE2, maxViews 4, bound 3
+[CLIENT 2 - 192.168.2.3] (14.6447s):Sent 14 bytes to 192.168.1.2 port 44400
+[CLIENT 2 - 192.168.2.3] (14.6447s):Sent 14 bytes to 192.168.2.2 port 44400
+[CLIENT 2 - 192.168.2.3] (14.6447s):Sent 14 bytes to 192.168.3.2 port 44400
+[CLIENT 2 - 192.168.2.3] (14.6447s):Sent 14 bytes to 192.168.4.2 port 44400
+[CLIENT 2 - 192.168.2.3] (14.6447s):Sent 14 bytes to 192.168.5.2 port 44400
+[SERVER 1 - 192.168.2.2] (14.6517s):Received 14 bytes from 192.168.2.3 port 49154 data 7 2 2 902 901 optimized 1
+[SERVER 1 - 192.168.2.2] (14.6517s):Sent 14 bytes to 192.168.2.3 port 49154 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 7 2 2 902 901 4 1
+[CLIENT 2 - 192.168.2.3] (14.6538s):Received 18 bytes from 192.168.2.2 port 44400 data 7 2 2 902 901 4 1
+[SERVER 1 - 192.168.2.2] (14.656s):Received 12 bytes from 192.168.1.4 port 49154 data 5 1 1 901 0 optimized 1
+[SERVER 1 - 192.168.2.2] (14.656s):Sent 12 bytes to 192.168.1.4 port 49154 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 5 1 2 902 901 5 1
+[SERVER 0 - 192.168.1.2] (14.6617s):Received 14 bytes from 192.168.2.3 port 49153 data 7 2 2 902 901 optimized 1
+[SERVER 0 - 192.168.1.2] (14.6617s):Sent 14 bytes to 192.168.2.3 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 7 2 2 902 901 5 1
+[CLIENT 2 - 192.168.2.3] (14.6679s):Received 18 bytes from 192.168.5.2 port 44400 data 6 1 2 902 901 4 0
+[SERVER 2 - 192.168.3.2] (14.6681s):Received 12 bytes from 192.168.1.4 port 49155 data 5 1 1 901 0 optimized 1
+[SERVER 2 - 192.168.3.2] (14.6681s):Sent 12 bytes to 192.168.1.4 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 5 1 2 902 901 5 0
+[SERVER 3 - 192.168.4.2] (14.6697s):Received 14 bytes from 192.168.2.3 port 49156 data 7 2 2 902 901 optimized 1
+[SERVER 3 - 192.168.4.2] (14.6697s):Sent 14 bytes to 192.168.2.3 port 49156 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 7 2 2 902 901 4 1
+[CLIENT 1 - 192.168.1.4] (14.6707s):Received 18 bytes from 192.168.2.2 port 44400 data 5 1 2 902 901 5 1
+[SERVER 2 - 192.168.3.2] (14.6729s):Received 14 bytes from 192.168.2.3 port 49155 data 7 2 2 902 901 optimized 1
+[SERVER 2 - 192.168.3.2] (14.6729s):Sent 14 bytes to 192.168.2.3 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 7 2 2 902 901 5 1
+[CLIENT 2 - 192.168.2.3] (14.6764s):Received 18 bytes from 192.168.1.2 port 44400 data 7 2 2 902 901 5 1
+[SERVER 3 - 192.168.4.2] (14.6811s):Received 12 bytes from 192.168.1.4 port 49156 data 5 1 1 901 0 optimized 1
+[SERVER 3 - 192.168.4.2] (14.6811s):Sent 12 bytes to 192.168.1.4 port 49156 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 5 1 2 902 901 5 1
+[CLIENT 2 - 192.168.2.3] (14.6875s):Received 18 bytes from 192.168.3.2 port 44400 data 7 2 2 902 901 5 1
+[SERVER 4 - 192.168.5.2] (14.6916s):Received 12 bytes from 192.168.1.4 port 49157 data 5 1 1 901 0 optimized 1
+[SERVER 4 - 192.168.5.2] (14.6916s):Sent 12 bytes to 192.168.1.4 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 5 1 2 902 901 5 0
+[CLIENT 1 - 192.168.1.4] (14.6932s):Received 18 bytes from 192.168.3.2 port 44400 data 5 1 2 902 901 5 0
+[CLIENT 2 - 192.168.2.3] (14.6948s):Received 18 bytes from 192.168.4.2 port 44400 data 7 2 2 902 901 4 1
+[CLIENT 2 - 192.168.2.3] (14.6948s):** NEXT OPERATION: in 2.3s
+[CLIENT 2 - 192.168.2.3] (14.6948s):** READ COMPLETED: 4 in 0.110011s, <ts, value>: [2,902] - @ 4 EXCH **
+[SERVER 4 - 192.168.5.2] (14.6961s):Received 14 bytes from 192.168.2.3 port 49157 data 7 2 2 902 901 optimized 1
+[SERVER 4 - 192.168.5.2] (14.6961s):Sent 14 bytes to 192.168.2.3 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 7 2 2 902 901 5 1
+[CLIENT 1 - 192.168.1.4] (14.7179s):Received 18 bytes from 192.168.4.2 port 44400 data 5 1 2 902 901 5 1
+[CLIENT 1 - 192.168.1.4] (14.7179s):Waiting for 4 replies, received 4
+[CLIENT 1 - 192.168.1.4] (14.7179s):Proceeding to PHASE2, maxViews 5, bound 3
+[CLIENT 1 - 192.168.1.4] (14.7179s):** READ COMPLETED: 4 in 0.0843421s, Prop Value: 902, <ts, value, pvalue>: [2,902,901] - @ 2 EXCH **
+[CLIENT 1 - 192.168.1.4] (14.7179s):** NEXT OPERATION: in 2.3s
+[CLIENT 2 - 192.168.2.3] (14.7315s):Received 18 bytes from 192.168.5.2 port 44400 data 7 2 2 902 901 5 1
+[CLIENT 1 - 192.168.1.4] (14.7374s):Received 18 bytes from 192.168.5.2 port 44400 data 5 1 2 902 901 5 0
+[CLIENT 3 - 192.168.2.4] (15.0991s):Sent 12 bytes to 192.168.1.2 port 44400
+[CLIENT 3 - 192.168.2.4] (15.0991s):Sent 12 bytes to 192.168.2.2 port 44400
+[CLIENT 3 - 192.168.2.4] (15.0991s):Sent 12 bytes to 192.168.3.2 port 44400
+[CLIENT 3 - 192.168.2.4] (15.0991s):Sent 12 bytes to 192.168.4.2 port 44400
+[CLIENT 3 - 192.168.2.4] (15.0991s):Sent 12 bytes to 192.168.5.2 port 44400
+[CLIENT 3 - 192.168.2.4] (15.0991s):** READ INVOKED: 3 at 15.0991s
+[SERVER 1 - 192.168.2.2] (15.1035s):Received 12 bytes from 192.168.2.4 port 49154 data 3 1 1 901 0 optimized 1
+[SERVER 1 - 192.168.2.2] (15.1035s):Sent 12 bytes to 192.168.2.4 port 49154 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 3 1 2 902 901 6 1
+[CLIENT 3 - 192.168.2.4] (15.1056s):Received 18 bytes from 192.168.2.2 port 44400 data 3 1 2 902 901 6 1
+[CLIENT 3 - 192.168.2.4] (15.1056s):Updated local <ts,value> pair to: [2,902,901]
+[SERVER 0 - 192.168.1.2] (15.1137s):Received 12 bytes from 192.168.2.4 port 49153 data 3 1 1 901 0 optimized 1
+[SERVER 0 - 192.168.1.2] (15.1137s):Sent 12 bytes to 192.168.2.4 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 3 1 2 902 901 6 1
+[SERVER 2 - 192.168.3.2] (15.1206s):Received 12 bytes from 192.168.2.4 port 49155 data 3 1 1 901 0 optimized 1
+[SERVER 2 - 192.168.3.2] (15.1206s):Sent 12 bytes to 192.168.2.4 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 3 1 2 902 901 6 1
+[CLIENT 3 - 192.168.2.4] (15.1283s):Received 18 bytes from 192.168.1.2 port 44400 data 3 1 2 902 901 6 1
+[SERVER 3 - 192.168.4.2] (15.1332s):Received 12 bytes from 192.168.2.4 port 49156 data 3 1 1 901 0 optimized 1
+[SERVER 3 - 192.168.4.2] (15.1332s):Sent 12 bytes to 192.168.2.4 port 49156 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 3 1 2 902 901 6 1
+[CLIENT 3 - 192.168.2.4] (15.1353s):Received 18 bytes from 192.168.3.2 port 44400 data 3 1 2 902 901 6 1
+[SERVER 4 - 192.168.5.2] (15.1464s):Received 12 bytes from 192.168.2.4 port 49157 data 3 1 1 901 0 optimized 1
+[SERVER 4 - 192.168.5.2] (15.1464s):Sent 12 bytes to 192.168.2.4 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 3 1 2 902 901 6 1
+[CLIENT 3 - 192.168.2.4] (15.1583s):Received 18 bytes from 192.168.4.2 port 44400 data 3 1 2 902 901 6 1
+[CLIENT 3 - 192.168.2.4] (15.1583s):Waiting for 4 replies, received 4
+[CLIENT 3 - 192.168.2.4] (15.1583s):Proceeding to PHASE2, maxViews 6, bound 3
+[CLIENT 3 - 192.168.2.4] (15.1583s):** READ COMPLETED: 3 in 0.0592172s, Prop Value: 902, <ts, value, pvalue>: [2,902,901] - @ 2 EXCH **
+[CLIENT 3 - 192.168.2.4] (15.1583s):** NEXT OPERATION: in 2.3s
+[CLIENT 3 - 192.168.2.4] (15.1819s):Received 18 bytes from 192.168.5.2 port 44400 data 3 1 2 902 901 6 1
+[CLIENT 4 - 192.168.3.3] (16.7753s):Sent 14 bytes to 192.168.1.2 port 44400
+[CLIENT 4 - 192.168.3.3] (16.7753s):Sent 14 bytes to 192.168.2.2 port 44400
+[CLIENT 4 - 192.168.3.3] (16.7753s):Sent 14 bytes to 192.168.3.2 port 44400
+[CLIENT 4 - 192.168.3.3] (16.7753s):Sent 14 bytes to 192.168.4.2 port 44400
+[CLIENT 4 - 192.168.3.3] (16.7753s):Sent 14 bytes to 192.168.5.2 port 44400
+[CLIENT 4 - 192.168.3.3] (16.7753s):** READ INVOKED: 5 at 16.7753s
+[SERVER 2 - 192.168.3.2] (16.7821s):Received 14 bytes from 192.168.3.3 port 49155 data 5 1 2 902 901 optimized 1
+[SERVER 2 - 192.168.3.2] (16.7821s):Sent 14 bytes to 192.168.3.3 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 5 1 2 902 901 6 1
+[CLIENT 4 - 192.168.3.3] (16.7842s):Received 18 bytes from 192.168.3.2 port 44400 data 5 1 2 902 901 6 1
+[CLIENT 5 - 192.168.3.4] (16.7901s):Sent 14 bytes to 192.168.1.2 port 44400
+[CLIENT 5 - 192.168.3.4] (16.7901s):Sent 14 bytes to 192.168.2.2 port 44400
+[CLIENT 5 - 192.168.3.4] (16.7901s):Sent 14 bytes to 192.168.3.2 port 44400
+[CLIENT 5 - 192.168.3.4] (16.7901s):Sent 14 bytes to 192.168.4.2 port 44400
+[CLIENT 5 - 192.168.3.4] (16.7901s):Sent 14 bytes to 192.168.5.2 port 44400
+[CLIENT 5 - 192.168.3.4] (16.7901s):** READ INVOKED: 5 at 16.7901s
+[SERVER 1 - 192.168.2.2] (16.7922s):Received 14 bytes from 192.168.3.3 port 49154 data 5 1 2 902 901 optimized 1
+[SERVER 1 - 192.168.2.2] (16.7922s):Sent 14 bytes to 192.168.3.3 port 49154 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 5 1 2 902 901 6 1
+[SERVER 2 - 192.168.3.2] (16.7967s):Received 14 bytes from 192.168.3.4 port 49155 data 5 1 2 902 901 optimized 1
+[SERVER 2 - 192.168.3.2] (16.7967s):Sent 14 bytes to 192.168.3.4 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 5 1 2 902 901 6 1
+[SERVER 3 - 192.168.4.2] (16.7988s):Received 14 bytes from 192.168.3.3 port 49156 data 5 1 2 902 901 optimized 1
+[SERVER 3 - 192.168.4.2] (16.7988s):Sent 14 bytes to 192.168.3.3 port 49156 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 5 1 2 902 901 6 1
+[CLIENT 5 - 192.168.3.4] (16.7989s):Received 18 bytes from 192.168.3.2 port 44400 data 5 1 2 902 901 6 1
+[SERVER 0 - 192.168.1.2] (16.8003s):Received 14 bytes from 192.168.3.3 port 49153 data 5 1 2 902 901 optimized 1
+[SERVER 0 - 192.168.1.2] (16.8003s):Sent 14 bytes to 192.168.3.3 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 5 1 2 902 901 6 1
+[CLIENT 4 - 192.168.3.3] (16.8069s):Received 18 bytes from 192.168.2.2 port 44400 data 5 1 2 902 901 6 1
+[SERVER 1 - 192.168.2.2] (16.8069s):Received 14 bytes from 192.168.3.4 port 49154 data 5 1 2 902 901 optimized 1
+[SERVER 1 - 192.168.2.2] (16.8069s):Sent 14 bytes to 192.168.3.4 port 49154 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 5 1 2 902 901 6 1
+[SERVER 4 - 192.168.5.2] (16.8116s):Received 14 bytes from 192.168.3.3 port 49157 data 5 1 2 902 901 optimized 1
+[SERVER 4 - 192.168.5.2] (16.8116s):Sent 14 bytes to 192.168.3.3 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 5 1 2 902 901 6 1
+[CLIENT 4 - 192.168.3.3] (16.8135s):Received 18 bytes from 192.168.4.2 port 44400 data 5 1 2 902 901 6 1
+[SERVER 3 - 192.168.4.2] (16.8136s):Received 14 bytes from 192.168.3.4 port 49156 data 5 1 2 902 901 optimized 1
+[SERVER 3 - 192.168.4.2] (16.8136s):Sent 14 bytes to 192.168.3.4 port 49156 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 5 1 2 902 901 6 1
+[SERVER 0 - 192.168.1.2] (16.8151s):Received 14 bytes from 192.168.3.4 port 49153 data 5 1 2 902 901 optimized 1
+[SERVER 0 - 192.168.1.2] (16.8151s):Sent 14 bytes to 192.168.3.4 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 5 1 2 902 901 6 1
+[CLIENT 5 - 192.168.3.4] (16.8216s):Received 18 bytes from 192.168.2.2 port 44400 data 5 1 2 902 901 6 1
+[CLIENT 4 - 192.168.3.3] (16.8253s):Received 18 bytes from 192.168.1.2 port 44400 data 5 1 2 902 901 6 1
+[CLIENT 4 - 192.168.3.3] (16.8253s):Waiting for 4 replies, received 4
+[CLIENT 4 - 192.168.3.3] (16.8253s):Proceeding to PHASE2, maxViews 6, bound 3
+[CLIENT 4 - 192.168.3.3] (16.8253s):** READ COMPLETED: 5 in 0.0500437s, Prop Value: 902, <ts, value, pvalue>: [2,902,901] - @ 2 EXCH **
+[CLIENT 4 - 192.168.3.3] (16.8253s):** NEXT OPERATION: in 2.3s
+[SERVER 4 - 192.168.5.2] (16.8263s):Received 14 bytes from 192.168.3.4 port 49157 data 5 1 2 902 901 optimized 1
+[SERVER 4 - 192.168.5.2] (16.8263s):Sent 14 bytes to 192.168.3.4 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 5 1 2 902 901 6 1
+[CLIENT 5 - 192.168.3.4] (16.8283s):Received 18 bytes from 192.168.4.2 port 44400 data 5 1 2 902 901 6 1
+[CLIENT 4 - 192.168.3.3] (16.8366s):Received 18 bytes from 192.168.5.2 port 44400 data 5 1 2 902 901 6 1
+[CLIENT 5 - 192.168.3.4] (16.8402s):Received 18 bytes from 192.168.1.2 port 44400 data 5 1 2 902 901 6 1
+[CLIENT 5 - 192.168.3.4] (16.8402s):Waiting for 4 replies, received 4
+[CLIENT 5 - 192.168.3.4] (16.8402s):Proceeding to PHASE2, maxViews 6, bound 3
+[CLIENT 5 - 192.168.3.4] (16.8402s):** READ COMPLETED: 5 in 0.0500437s, Prop Value: 902, <ts, value, pvalue>: [2,902,901] - @ 2 EXCH **
+[CLIENT 5 - 192.168.3.4] (16.8402s):** NEXT OPERATION: in 2.3s
+[CLIENT 5 - 192.168.3.4] (16.8513s):Received 18 bytes from 192.168.5.2 port 44400 data 5 1 2 902 901 6 1
+[CLIENT 2 - 192.168.2.3] (16.9948s):Sent 14 bytes to 192.168.1.2 port 44400
+[CLIENT 2 - 192.168.2.3] (16.9948s):Sent 14 bytes to 192.168.2.2 port 44400
+[CLIENT 2 - 192.168.2.3] (16.9948s):Sent 14 bytes to 192.168.3.2 port 44400
+[CLIENT 2 - 192.168.2.3] (16.9948s):Sent 14 bytes to 192.168.4.2 port 44400
+[CLIENT 2 - 192.168.2.3] (16.9948s):Sent 14 bytes to 192.168.5.2 port 44400
+[CLIENT 2 - 192.168.2.3] (16.9948s):** READ INVOKED: 5 at 16.9948s
+[SERVER 1 - 192.168.2.2] (16.9997s):Received 14 bytes from 192.168.2.3 port 49154 data 8 1 2 902 901 optimized 1
+[SERVER 1 - 192.168.2.2] (16.9997s):Sent 14 bytes to 192.168.2.3 port 49154 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 8 1 2 902 901 6 1
+[CLIENT 2 - 192.168.2.3] (17.0018s):Received 18 bytes from 192.168.2.2 port 44400 data 8 1 2 902 901 6 1
+[SERVER 0 - 192.168.1.2] (17.0094s):Received 14 bytes from 192.168.2.3 port 49153 data 8 1 2 902 901 optimized 1
+[SERVER 0 - 192.168.1.2] (17.0094s):Sent 14 bytes to 192.168.2.3 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 8 1 2 902 901 6 1
+[CLIENT 1 - 192.168.1.4] (17.0179s):Sent 14 bytes to 192.168.1.2 port 44400
+[CLIENT 1 - 192.168.1.4] (17.0179s):Sent 14 bytes to 192.168.2.2 port 44400
+[CLIENT 1 - 192.168.1.4] (17.0179s):Sent 14 bytes to 192.168.3.2 port 44400
+[CLIENT 1 - 192.168.1.4] (17.0179s):Sent 14 bytes to 192.168.4.2 port 44400
+[CLIENT 1 - 192.168.1.4] (17.0179s):Sent 14 bytes to 192.168.5.2 port 44400
+[CLIENT 1 - 192.168.1.4] (17.0179s):** READ INVOKED: 5 at 17.0179s
+[SERVER 2 - 192.168.3.2] (17.0181s):Received 14 bytes from 192.168.2.3 port 49155 data 8 1 2 902 901 optimized 1
+[SERVER 2 - 192.168.3.2] (17.0181s):Sent 14 bytes to 192.168.2.3 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 8 1 2 902 901 6 1
+[SERVER 0 - 192.168.1.2] (17.02s):Received 14 bytes from 192.168.1.4 port 49153 data 6 1 2 902 901 optimized 1
+[SERVER 0 - 192.168.1.2] (17.02s):Sent 14 bytes to 192.168.1.4 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 6 1 2 902 901 6 1
+[CLIENT 1 - 192.168.1.4] (17.0221s):Received 18 bytes from 192.168.1.2 port 44400 data 6 1 2 902 901 6 1
+[CLIENT 2 - 192.168.2.3] (17.0241s):Received 18 bytes from 192.168.1.2 port 44400 data 8 1 2 902 901 6 1
+[SERVER 3 - 192.168.4.2] (17.0302s):Received 14 bytes from 192.168.2.3 port 49156 data 8 1 2 902 901 optimized 1
+[SERVER 3 - 192.168.4.2] (17.0302s):Sent 14 bytes to 192.168.2.3 port 49156 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 8 1 2 902 901 6 1
+[CLIENT 2 - 192.168.2.3] (17.0328s):Received 18 bytes from 192.168.3.2 port 44400 data 8 1 2 902 901 6 1
+[SERVER 1 - 192.168.2.2] (17.0385s):Received 14 bytes from 192.168.1.4 port 49154 data 6 1 2 902 901 optimized 1
+[SERVER 1 - 192.168.2.2] (17.0385s):Sent 14 bytes to 192.168.1.4 port 49154 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 6 1 2 902 901 6 1
+[SERVER 4 - 192.168.5.2] (17.0423s):Received 14 bytes from 192.168.2.3 port 49157 data 8 1 2 902 901 optimized 1
+[SERVER 4 - 192.168.5.2] (17.0423s):Sent 14 bytes to 192.168.2.3 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 8 1 2 902 901 6 1
+[SERVER 2 - 192.168.3.2] (17.05s):Received 14 bytes from 192.168.1.4 port 49155 data 6 1 2 902 901 optimized 1
+[SERVER 2 - 192.168.3.2] (17.05s):Sent 14 bytes to 192.168.1.4 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 6 1 2 902 901 6 1
+[CLIENT 1 - 192.168.1.4] (17.0532s):Received 18 bytes from 192.168.2.2 port 44400 data 6 1 2 902 901 6 1
+[CLIENT 2 - 192.168.2.3] (17.0552s):Received 18 bytes from 192.168.4.2 port 44400 data 8 1 2 902 901 6 1
+[CLIENT 2 - 192.168.2.3] (17.0552s):Waiting for 4 replies, received 4
+[CLIENT 2 - 192.168.2.3] (17.0552s):Proceeding to PHASE2, maxViews 6, bound 3
+[CLIENT 2 - 192.168.2.3] (17.0552s):** READ COMPLETED: 5 in 0.0604755s, Prop Value: 902, <ts, value, pvalue>: [2,902,901] - @ 2 EXCH **
+[CLIENT 2 - 192.168.2.3] (17.0552s):** NEXT OPERATION: in 2.3s
+[SERVER 3 - 192.168.4.2] (17.0627s):Received 14 bytes from 192.168.1.4 port 49156 data 6 1 2 902 901 optimized 1
+[SERVER 3 - 192.168.4.2] (17.0627s):Sent 14 bytes to 192.168.1.4 port 49156 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 6 1 2 902 901 6 1
+[CLIENT 1 - 192.168.1.4] (17.0751s):Received 18 bytes from 192.168.3.2 port 44400 data 6 1 2 902 901 6 1
+[SERVER 4 - 192.168.5.2] (17.0757s):Received 14 bytes from 192.168.1.4 port 49157 data 6 1 2 902 901 optimized 1
+[SERVER 4 - 192.168.5.2] (17.0757s):Sent 14 bytes to 192.168.1.4 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 6 1 2 902 901 6 1
+[CLIENT 2 - 192.168.2.3] (17.0777s):Received 18 bytes from 192.168.5.2 port 44400 data 8 1 2 902 901 6 1
+[CLIENT 1 - 192.168.1.4] (17.0982s):Received 18 bytes from 192.168.4.2 port 44400 data 6 1 2 902 901 6 1
+[CLIENT 1 - 192.168.1.4] (17.0982s):Waiting for 4 replies, received 4
+[CLIENT 1 - 192.168.1.4] (17.0982s):Proceeding to PHASE2, maxViews 6, bound 3
+[CLIENT 1 - 192.168.1.4] (17.0982s):** READ COMPLETED: 5 in 0.0802902s, Prop Value: 902, <ts, value, pvalue>: [2,902,901] - @ 2 EXCH **
+[CLIENT 1 - 192.168.1.4] (17.0982s):** NEXT OPERATION: in 2.3s
+[CLIENT 1 - 192.168.1.4] (17.1215s):Received 18 bytes from 192.168.5.2 port 44400 data 6 1 2 902 901 6 1
+[CLIENT 0 - 192.168.1.3] (17.2634s):Sent 14 bytes to 192.168.1.2 port 44400
+[CLIENT 0 - 192.168.1.3] (17.2634s):Sent 14 bytes to 192.168.2.2 port 44400
+[CLIENT 0 - 192.168.1.3] (17.2634s):Sent 14 bytes to 192.168.3.2 port 44400
+[CLIENT 0 - 192.168.1.3] (17.2634s):Sent 14 bytes to 192.168.4.2 port 44400
+[CLIENT 0 - 192.168.1.3] (17.2634s):Sent 14 bytes to 192.168.5.2 port 44400
+[CLIENT 0 - 192.168.1.3] (17.2634s):** WRITE INVOKED: 3 at 17.2634s
+[SERVER 0 - 192.168.1.2] (17.2656s):Received 14 bytes from 192.168.1.3 port 49153 data 3 0 3 903 902 optimized 1
+[SERVER 0 - 192.168.1.2] (17.2656s):Sent 14 bytes to 192.168.1.3 port 49153 seen: {  192.168.1.3} data 3 0 3 903 902 1 0
+[CLIENT 0 - 192.168.1.3] (17.2677s):Received 18 bytes from 192.168.1.2 port 44400 data 3 0 3 903 902 1 0
+[SERVER 1 - 192.168.2.2] (17.2832s):Received 14 bytes from 192.168.1.3 port 49154 data 3 0 3 903 902 optimized 1
+[SERVER 1 - 192.168.2.2] (17.2832s):Sent 14 bytes to 192.168.1.3 port 49154 seen: {  192.168.1.3} data 3 0 3 903 902 1 0
+[SERVER 2 - 192.168.3.2] (17.2961s):Received 14 bytes from 192.168.1.3 port 49155 data 3 0 3 903 902 optimized 1
+[SERVER 2 - 192.168.3.2] (17.2961s):Sent 14 bytes to 192.168.1.3 port 49155 seen: {  192.168.1.3} data 3 0 3 903 902 1 0
+[CLIENT 0 - 192.168.1.3] (17.2979s):Received 18 bytes from 192.168.2.2 port 44400 data 3 0 3 903 902 1 0
+[SERVER 3 - 192.168.4.2] (17.3094s):Received 14 bytes from 192.168.1.3 port 49156 data 3 0 3 903 902 optimized 1
+[SERVER 3 - 192.168.4.2] (17.3094s):Sent 14 bytes to 192.168.1.3 port 49156 seen: {  192.168.1.3} data 3 0 3 903 902 1 0
+[CLIENT 0 - 192.168.1.3] (17.3212s):Received 18 bytes from 192.168.3.2 port 44400 data 3 0 3 903 902 1 0
+[SERVER 4 - 192.168.5.2] (17.3222s):Received 14 bytes from 192.168.1.3 port 49157 data 3 0 3 903 902 optimized 1
+[SERVER 4 - 192.168.5.2] (17.3222s):Sent 14 bytes to 192.168.1.3 port 49157 seen: {  192.168.1.3} data 3 0 3 903 902 1 0
+[CLIENT 0 - 192.168.1.3] (17.3449s):Received 18 bytes from 192.168.4.2 port 44400 data 3 0 3 903 902 1 0
+[CLIENT 0 - 192.168.1.3] (17.3449s):** NEXT OPERATION: in 4s
+[CLIENT 0 - 192.168.1.3] (17.3449s):** WRITE COMPLETED: 3 in 0.0814212s, <ts, value>: [3,903], @ 2 EXCH **
+[CLIENT 0 - 192.168.1.3] (17.368s):Received 18 bytes from 192.168.5.2 port 44400 data 3 0 3 903 902 1 0
+[CLIENT 3 - 192.168.2.4] (17.4583s):Sent 14 bytes to 192.168.1.2 port 44400
+[CLIENT 3 - 192.168.2.4] (17.4583s):Sent 14 bytes to 192.168.2.2 port 44400
+[CLIENT 3 - 192.168.2.4] (17.4583s):Sent 14 bytes to 192.168.3.2 port 44400
+[CLIENT 3 - 192.168.2.4] (17.4583s):Sent 14 bytes to 192.168.4.2 port 44400
+[CLIENT 3 - 192.168.2.4] (17.4583s):Sent 14 bytes to 192.168.5.2 port 44400
+[CLIENT 3 - 192.168.2.4] (17.4583s):** READ INVOKED: 4 at 17.4583s
+[SERVER 1 - 192.168.2.2] (17.4635s):Received 14 bytes from 192.168.2.4 port 49154 data 4 1 2 902 901 optimized 1
+[SERVER 1 - 192.168.2.2] (17.4635s):Sent 14 bytes to 192.168.2.4 port 49154 seen: {  192.168.1.3 192.168.2.4} data 4 1 3 903 902 2 0
+[CLIENT 3 - 192.168.2.4] (17.4656s):Received 18 bytes from 192.168.2.2 port 44400 data 4 1 3 903 902 2 0
+[CLIENT 3 - 192.168.2.4] (17.4656s):Updated local <ts,value> pair to: [3,903,902]
+[SERVER 0 - 192.168.1.2] (17.4729s):Received 14 bytes from 192.168.2.4 port 49153 data 4 1 2 902 901 optimized 1
+[SERVER 0 - 192.168.1.2] (17.4729s):Sent 14 bytes to 192.168.2.4 port 49153 seen: {  192.168.1.3 192.168.2.4} data 4 1 3 903 902 2 0
+[SERVER 2 - 192.168.3.2] (17.4803s):Received 14 bytes from 192.168.2.4 port 49155 data 4 1 2 902 901 optimized 1
+[SERVER 2 - 192.168.3.2] (17.4803s):Sent 14 bytes to 192.168.2.4 port 49155 seen: {  192.168.1.3 192.168.2.4} data 4 1 3 903 902 2 0
+[CLIENT 3 - 192.168.2.4] (17.4876s):Received 18 bytes from 192.168.1.2 port 44400 data 4 1 3 903 902 2 0
+[SERVER 3 - 192.168.4.2] (17.4929s):Received 14 bytes from 192.168.2.4 port 49156 data 4 1 2 902 901 optimized 1
+[SERVER 3 - 192.168.4.2] (17.4929s):Sent 14 bytes to 192.168.2.4 port 49156 seen: {  192.168.1.3 192.168.2.4} data 4 1 3 903 902 2 0
+[CLIENT 3 - 192.168.2.4] (17.495s):Received 18 bytes from 192.168.3.2 port 44400 data 4 1 3 903 902 2 0
+[SERVER 4 - 192.168.5.2] (17.5058s):Received 14 bytes from 192.168.2.4 port 49157 data 4 1 2 902 901 optimized 1
+[SERVER 4 - 192.168.5.2] (17.5058s):Sent 14 bytes to 192.168.2.4 port 49157 seen: {  192.168.1.3 192.168.2.4} data 4 1 3 903 902 2 0
+[CLIENT 3 - 192.168.2.4] (17.518s):Received 18 bytes from 192.168.4.2 port 44400 data 4 1 3 903 902 2 0
+[CLIENT 3 - 192.168.2.4] (17.518s):Waiting for 4 replies, received 4
+[CLIENT 3 - 192.168.2.4] (17.518s):Checking the PREDICATE, maxViews 2, bound 3
+[CLIENT 3 - 192.168.2.4] (17.518s):PREDICATE LOOP: a=3, b[a]=0, bound=2
+[CLIENT 3 - 192.168.2.4] (17.518s):PREDICATE LOOP: a=2, b[a]=4, bound=3
+[CLIENT 3 - 192.168.2.4] (17.518s):** READ COMPLETED: 4 in 0.0597275s, Return Value: 903, <ts, value, pvalue>: [3,903,902] - @ 2 EXCH **
+[CLIENT 3 - 192.168.2.4] (17.518s):** NEXT OPERATION: in 2.3s
+[CLIENT 3 - 192.168.2.4] (17.5412s):Received 18 bytes from 192.168.5.2 port 44400 data 4 1 3 903 902 2 0
+[CLIENT 4 - 192.168.3.3] (19.1253s):Sent 14 bytes to 192.168.1.2 port 44400
+[CLIENT 4 - 192.168.3.3] (19.1253s):Sent 14 bytes to 192.168.2.2 port 44400
+[CLIENT 4 - 192.168.3.3] (19.1253s):Sent 14 bytes to 192.168.3.2 port 44400
+[CLIENT 4 - 192.168.3.3] (19.1253s):Sent 14 bytes to 192.168.4.2 port 44400
+[CLIENT 4 - 192.168.3.3] (19.1253s):Sent 14 bytes to 192.168.5.2 port 44400
+[CLIENT 4 - 192.168.3.3] (19.1253s):** READ INVOKED: 6 at 19.1253s
+[SERVER 2 - 192.168.3.2] (19.1328s):Received 14 bytes from 192.168.3.3 port 49155 data 6 1 2 902 901 optimized 1
+[SERVER 2 - 192.168.3.2] (19.1328s):Sent 14 bytes to 192.168.3.3 port 49155 seen: {  192.168.1.3 192.168.2.4 192.168.3.3} data 6 1 3 903 902 3 0
+[CLIENT 4 - 192.168.3.3] (19.1349s):Received 18 bytes from 192.168.3.2 port 44400 data 6 1 3 903 902 3 0
+[CLIENT 4 - 192.168.3.3] (19.1349s):Updated local <ts,value> pair to: [3,903,902]
+[CLIENT 5 - 192.168.3.4] (19.1402s):Sent 14 bytes to 192.168.1.2 port 44400
+[CLIENT 5 - 192.168.3.4] (19.1402s):Sent 14 bytes to 192.168.2.2 port 44400
+[CLIENT 5 - 192.168.3.4] (19.1402s):Sent 14 bytes to 192.168.3.2 port 44400
+[CLIENT 5 - 192.168.3.4] (19.1402s):Sent 14 bytes to 192.168.4.2 port 44400
+[CLIENT 5 - 192.168.3.4] (19.1402s):Sent 14 bytes to 192.168.5.2 port 44400
+[CLIENT 5 - 192.168.3.4] (19.1402s):** READ INVOKED: 6 at 19.1402s
+[SERVER 1 - 192.168.2.2] (19.1425s):Received 14 bytes from 192.168.3.3 port 49154 data 6 1 2 902 901 optimized 1
+[SERVER 1 - 192.168.2.2] (19.1425s):Sent 14 bytes to 192.168.3.3 port 49154 seen: {  192.168.1.3 192.168.2.4 192.168.3.3} data 6 1 3 903 902 3 0
+[SERVER 2 - 192.168.3.2] (19.1467s):Received 14 bytes from 192.168.3.4 port 49155 data 6 1 2 902 901 optimized 1
+[SERVER 2 - 192.168.3.2] (19.1467s):Sent 14 bytes to 192.168.3.4 port 49155 seen: {  192.168.1.3 192.168.2.4 192.168.3.3 192.168.3.4} data 6 1 3 903 902 4 0
+[CLIENT 5 - 192.168.3.4] (19.1488s):Received 18 bytes from 192.168.3.2 port 44400 data 6 1 3 903 902 4 0
+[CLIENT 5 - 192.168.3.4] (19.1488s):Updated local <ts,value> pair to: [3,903,902]
+[SERVER 3 - 192.168.4.2] (19.1498s):Received 14 bytes from 192.168.3.3 port 49156 data 6 1 2 902 901 optimized 1
+[SERVER 3 - 192.168.4.2] (19.1498s):Sent 14 bytes to 192.168.3.3 port 49156 seen: {  192.168.1.3 192.168.2.4 192.168.3.3} data 6 1 3 903 902 3 0
+[SERVER 0 - 192.168.1.2] (19.1503s):Received 14 bytes from 192.168.3.3 port 49153 data 6 1 2 902 901 optimized 1
+[SERVER 0 - 192.168.1.2] (19.1503s):Sent 14 bytes to 192.168.3.3 port 49153 seen: {  192.168.1.3 192.168.2.4 192.168.3.3} data 6 1 3 903 902 3 0
+[SERVER 1 - 192.168.2.2] (19.1571s):Received 14 bytes from 192.168.3.4 port 49154 data 6 1 2 902 901 optimized 1
+[SERVER 1 - 192.168.2.2] (19.1571s):Sent 14 bytes to 192.168.3.4 port 49154 seen: {  192.168.1.3 192.168.2.4 192.168.3.3 192.168.3.4} data 6 1 3 903 902 4 0
+[CLIENT 4 - 192.168.3.3] (19.1572s):Received 18 bytes from 192.168.2.2 port 44400 data 6 1 3 903 902 3 0
+[SERVER 4 - 192.168.5.2] (19.1626s):Received 14 bytes from 192.168.3.3 port 49157 data 6 1 2 902 901 optimized 1
+[SERVER 4 - 192.168.5.2] (19.1626s):Sent 14 bytes to 192.168.3.3 port 49157 seen: {  192.168.1.3 192.168.2.4 192.168.3.3} data 6 1 3 903 902 3 0
+[SERVER 3 - 192.168.4.2] (19.1638s):Received 14 bytes from 192.168.3.4 port 49156 data 6 1 2 902 901 optimized 1
+[SERVER 3 - 192.168.4.2] (19.1638s):Sent 14 bytes to 192.168.3.4 port 49156 seen: {  192.168.1.3 192.168.2.4 192.168.3.3 192.168.3.4} data 6 1 3 903 902 4 0
+[CLIENT 4 - 192.168.3.3] (19.1645s):Received 18 bytes from 192.168.4.2 port 44400 data 6 1 3 903 902 3 0
+[SERVER 0 - 192.168.1.2] (19.1652s):Received 14 bytes from 192.168.3.4 port 49153 data 6 1 2 902 901 optimized 1
+[SERVER 0 - 192.168.1.2] (19.1652s):Sent 14 bytes to 192.168.3.4 port 49153 seen: {  192.168.1.3 192.168.2.4 192.168.3.3 192.168.3.4} data 6 1 3 903 902 4 0
+[CLIENT 5 - 192.168.3.4] (19.1717s):Received 18 bytes from 192.168.2.2 port 44400 data 6 1 3 903 902 4 0
+[CLIENT 4 - 192.168.3.3] (19.1754s):Received 18 bytes from 192.168.1.2 port 44400 data 6 1 3 903 902 3 0
+[CLIENT 4 - 192.168.3.3] (19.1754s):Waiting for 4 replies, received 4
+[CLIENT 4 - 192.168.3.3] (19.1754s):Checking the PREDICATE, maxViews 3, bound 3
+[CLIENT 4 - 192.168.3.3] (19.1754s):PREDICATE LOOP: a=3, b[a]=4, bound=2
+[CLIENT 4 - 192.168.3.3] (19.1754s):** READ COMPLETED: 6 in 0.0500437s, Return Value: 903, <ts, value, pvalue>: [3,903,902] - @ 2 EXCH **
+[CLIENT 4 - 192.168.3.3] (19.1754s):** NEXT OPERATION: in 2.3s
+[SERVER 4 - 192.168.5.2] (19.1768s):Received 14 bytes from 192.168.3.4 port 49157 data 6 1 2 902 901 optimized 1
+[SERVER 4 - 192.168.5.2] (19.1768s):Sent 14 bytes to 192.168.3.4 port 49157 seen: {  192.168.1.3 192.168.2.4 192.168.3.3 192.168.3.4} data 6 1 3 903 902 4 0
+[CLIENT 5 - 192.168.3.4] (19.1785s):Received 18 bytes from 192.168.4.2 port 44400 data 6 1 3 903 902 4 0
+[CLIENT 4 - 192.168.3.3] (19.1876s):Received 18 bytes from 192.168.5.2 port 44400 data 6 1 3 903 902 3 0
+[CLIENT 5 - 192.168.3.4] (19.1902s):Received 18 bytes from 192.168.1.2 port 44400 data 6 1 3 903 902 4 0
+[CLIENT 5 - 192.168.3.4] (19.1902s):Waiting for 4 replies, received 4
+[CLIENT 5 - 192.168.3.4] (19.1902s):Proceeding to PHASE2, maxViews 4, bound 3
+[CLIENT 5 - 192.168.3.4] (19.1902s):Sent 14 bytes to 192.168.1.2 port 44400
+[CLIENT 5 - 192.168.3.4] (19.1902s):Sent 14 bytes to 192.168.2.2 port 44400
+[CLIENT 5 - 192.168.3.4] (19.1902s):Sent 14 bytes to 192.168.3.2 port 44400
+[CLIENT 5 - 192.168.3.4] (19.1902s):Sent 14 bytes to 192.168.4.2 port 44400
+[CLIENT 5 - 192.168.3.4] (19.1902s):Sent 14 bytes to 192.168.5.2 port 44400
+[SERVER 2 - 192.168.3.2] (19.1972s):Received 14 bytes from 192.168.3.4 port 49155 data 7 2 3 903 902 optimized 1
+[SERVER 2 - 192.168.3.2] (19.1972s):Sent 14 bytes to 192.168.3.4 port 49155 seen: {  192.168.1.3 192.168.2.4 192.168.3.3 192.168.3.4} data 7 2 3 903 902 4 1
+[CLIENT 5 - 192.168.3.4] (19.1994s):Received 18 bytes from 192.168.3.2 port 44400 data 7 2 3 903 902 4 1
+[CLIENT 5 - 192.168.3.4] (19.2018s):Received 18 bytes from 192.168.5.2 port 44400 data 6 1 3 903 902 4 0
+[SERVER 1 - 192.168.2.2] (19.207s):Received 14 bytes from 192.168.3.4 port 49154 data 7 2 3 903 902 optimized 1
+[SERVER 1 - 192.168.2.2] (19.207s):Sent 14 bytes to 192.168.3.4 port 49154 seen: {  192.168.1.3 192.168.2.4 192.168.3.3 192.168.3.4} data 7 2 3 903 902 4 1
+[SERVER 0 - 192.168.1.2] (19.2152s):Received 14 bytes from 192.168.3.4 port 49153 data 7 2 3 903 902 optimized 1
+[SERVER 0 - 192.168.1.2] (19.2152s):Sent 14 bytes to 192.168.3.4 port 49153 seen: {  192.168.1.3 192.168.2.4 192.168.3.3 192.168.3.4} data 7 2 3 903 902 4 1
+[SERVER 3 - 192.168.4.2] (19.2171s):Received 14 bytes from 192.168.3.4 port 49156 data 7 2 3 903 902 optimized 1
+[SERVER 3 - 192.168.4.2] (19.2171s):Sent 14 bytes to 192.168.3.4 port 49156 seen: {  192.168.1.3 192.168.2.4 192.168.3.3 192.168.3.4} data 7 2 3 903 902 4 1
+[CLIENT 5 - 192.168.3.4] (19.2217s):Received 18 bytes from 192.168.2.2 port 44400 data 7 2 3 903 902 4 1
+[SERVER 4 - 192.168.5.2] (19.2297s):Received 14 bytes from 192.168.3.4 port 49157 data 7 2 3 903 902 optimized 1
+[SERVER 4 - 192.168.5.2] (19.2297s):Sent 14 bytes to 192.168.3.4 port 49157 seen: {  192.168.1.3 192.168.2.4 192.168.3.3 192.168.3.4} data 7 2 3 903 902 4 1
+[CLIENT 5 - 192.168.3.4] (19.2318s):Received 18 bytes from 192.168.4.2 port 44400 data 7 2 3 903 902 4 1
+[CLIENT 5 - 192.168.3.4] (19.2403s):Received 18 bytes from 192.168.1.2 port 44400 data 7 2 3 903 902 4 1
+[CLIENT 5 - 192.168.3.4] (19.2403s):** NEXT OPERATION: in 2.3s
+[CLIENT 5 - 192.168.3.4] (19.2403s):** READ COMPLETED: 6 in 0.100087s, <ts, value>: [3,903] - @ 4 EXCH **
+[CLIENT 5 - 192.168.3.4] (19.2547s):Received 18 bytes from 192.168.5.2 port 44400 data 7 2 3 903 902 4 1
+[CLIENT 2 - 192.168.2.3] (19.3552s):Sent 14 bytes to 192.168.1.2 port 44400
+[CLIENT 2 - 192.168.2.3] (19.3552s):Sent 14 bytes to 192.168.2.2 port 44400
+[CLIENT 2 - 192.168.2.3] (19.3552s):Sent 14 bytes to 192.168.3.2 port 44400
+[CLIENT 2 - 192.168.2.3] (19.3552s):Sent 14 bytes to 192.168.4.2 port 44400
+[CLIENT 2 - 192.168.2.3] (19.3552s):Sent 14 bytes to 192.168.5.2 port 44400
+[CLIENT 2 - 192.168.2.3] (19.3552s):** READ INVOKED: 6 at 19.3552s
+[SERVER 1 - 192.168.2.2] (19.3603s):Received 14 bytes from 192.168.2.3 port 49154 data 9 1 2 902 901 optimized 1
+[SERVER 1 - 192.168.2.2] (19.3603s):Sent 14 bytes to 192.168.2.3 port 49154 seen: {  192.168.1.3 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 9 1 3 903 902 5 1
+[CLIENT 2 - 192.168.2.3] (19.3624s):Received 18 bytes from 192.168.2.2 port 44400 data 9 1 3 903 902 5 1
+[CLIENT 2 - 192.168.2.3] (19.3624s):Updated local <ts,value> pair to: [3,903,902]
+[SERVER 0 - 192.168.1.2] (19.3699s):Received 14 bytes from 192.168.2.3 port 49153 data 9 1 2 902 901 optimized 1
+[SERVER 0 - 192.168.1.2] (19.3699s):Sent 14 bytes to 192.168.2.3 port 49153 seen: {  192.168.1.3 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 9 1 3 903 902 5 1
+[SERVER 2 - 192.168.3.2] (19.3798s):Received 14 bytes from 192.168.2.3 port 49155 data 9 1 2 902 901 optimized 1
+[SERVER 2 - 192.168.3.2] (19.3798s):Sent 14 bytes to 192.168.2.3 port 49155 seen: {  192.168.1.3 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 9 1 3 903 902 5 1
+[CLIENT 2 - 192.168.2.3] (19.3845s):Received 18 bytes from 192.168.1.2 port 44400 data 9 1 3 903 902 5 1
+[SERVER 3 - 192.168.4.2] (19.3907s):Received 14 bytes from 192.168.2.3 port 49156 data 9 1 2 902 901 optimized 1
+[SERVER 3 - 192.168.4.2] (19.3907s):Sent 14 bytes to 192.168.2.3 port 49156 seen: {  192.168.1.3 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 9 1 3 903 902 5 1
+[CLIENT 2 - 192.168.2.3] (19.3945s):Received 18 bytes from 192.168.3.2 port 44400 data 9 1 3 903 902 5 1
+[CLIENT 1 - 192.168.1.4] (19.3982s):Sent 14 bytes to 192.168.1.2 port 44400
+[CLIENT 1 - 192.168.1.4] (19.3982s):Sent 14 bytes to 192.168.2.2 port 44400
+[CLIENT 1 - 192.168.1.4] (19.3982s):Sent 14 bytes to 192.168.3.2 port 44400
+[CLIENT 1 - 192.168.1.4] (19.3982s):Sent 14 bytes to 192.168.4.2 port 44400
+[CLIENT 1 - 192.168.1.4] (19.3982s):Sent 14 bytes to 192.168.5.2 port 44400
+[CLIENT 1 - 192.168.1.4] (19.3982s):** READ INVOKED: 6 at 19.3982s
+[SERVER 0 - 192.168.1.2] (19.4024s):Received 14 bytes from 192.168.1.4 port 49153 data 7 1 2 902 901 optimized 1
+[SERVER 0 - 192.168.1.2] (19.4024s):Sent 14 bytes to 192.168.1.4 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 7 1 3 903 902 6 1
+[SERVER 4 - 192.168.5.2] (19.4035s):Received 14 bytes from 192.168.2.3 port 49157 data 9 1 2 902 901 optimized 1
+[SERVER 4 - 192.168.5.2] (19.4035s):Sent 14 bytes to 192.168.2.3 port 49157 seen: {  192.168.1.3 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 9 1 3 903 902 5 1
+[CLIENT 1 - 192.168.1.4] (19.4045s):Received 18 bytes from 192.168.1.2 port 44400 data 7 1 3 903 902 6 1
+[CLIENT 1 - 192.168.1.4] (19.4045s):Updated local <ts,value> pair to: [3,903,902]
+[CLIENT 2 - 192.168.2.3] (19.4157s):Received 18 bytes from 192.168.4.2 port 44400 data 9 1 3 903 902 5 1
+[CLIENT 2 - 192.168.2.3] (19.4157s):Waiting for 4 replies, received 4
+[CLIENT 2 - 192.168.2.3] (19.4157s):Proceeding to PHASE2, maxViews 5, bound 3
+[CLIENT 2 - 192.168.2.3] (19.4157s):** READ COMPLETED: 6 in 0.0605055s, Prop Value: 903, <ts, value, pvalue>: [3,903,902] - @ 2 EXCH **
+[CLIENT 2 - 192.168.2.3] (19.4157s):** NEXT OPERATION: in 2.3s
+[SERVER 1 - 192.168.2.2] (19.4195s):Received 14 bytes from 192.168.1.4 port 49154 data 7 1 2 902 901 optimized 1
+[SERVER 1 - 192.168.2.2] (19.4195s):Sent 14 bytes to 192.168.1.4 port 49154 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 7 1 3 903 902 6 1
+[SERVER 2 - 192.168.3.2] (19.4326s):Received 14 bytes from 192.168.1.4 port 49155 data 7 1 2 902 901 optimized 1
+[SERVER 2 - 192.168.3.2] (19.4326s):Sent 14 bytes to 192.168.1.4 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 7 1 3 903 902 6 1
+[CLIENT 1 - 192.168.1.4] (19.4341s):Received 18 bytes from 192.168.2.2 port 44400 data 7 1 3 903 902 6 1
+[CLIENT 2 - 192.168.2.3] (19.4389s):Received 18 bytes from 192.168.5.2 port 44400 data 9 1 3 903 902 5 1
+[SERVER 3 - 192.168.4.2] (19.4452s):Received 14 bytes from 192.168.1.4 port 49156 data 7 1 2 902 901 optimized 1
+[SERVER 3 - 192.168.4.2] (19.4452s):Sent 14 bytes to 192.168.1.4 port 49156 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 7 1 3 903 902 6 1
+[CLIENT 1 - 192.168.1.4] (19.4577s):Received 18 bytes from 192.168.3.2 port 44400 data 7 1 3 903 902 6 1
+[SERVER 4 - 192.168.5.2] (19.4578s):Received 14 bytes from 192.168.1.4 port 49157 data 7 1 2 902 901 optimized 1
+[SERVER 4 - 192.168.5.2] (19.4578s):Sent 14 bytes to 192.168.1.4 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 7 1 3 903 902 6 1
+[CLIENT 1 - 192.168.1.4] (19.4806s):Received 18 bytes from 192.168.4.2 port 44400 data 7 1 3 903 902 6 1
+[CLIENT 1 - 192.168.1.4] (19.4806s):Waiting for 4 replies, received 4
+[CLIENT 1 - 192.168.1.4] (19.4806s):Proceeding to PHASE2, maxViews 6, bound 3
+[CLIENT 1 - 192.168.1.4] (19.4806s):** READ COMPLETED: 6 in 0.0824462s, Prop Value: 903, <ts, value, pvalue>: [3,903,902] - @ 2 EXCH **
+[CLIENT 1 - 192.168.1.4] (19.4806s):** NEXT OPERATION: in 2.3s
+[CLIENT 1 - 192.168.1.4] (19.5036s):Received 18 bytes from 192.168.5.2 port 44400 data 7 1 3 903 902 6 1
+[CLIENT 3 - 192.168.2.4] (19.818s):Sent 14 bytes to 192.168.1.2 port 44400
+[CLIENT 3 - 192.168.2.4] (19.818s):Sent 14 bytes to 192.168.2.2 port 44400
+[CLIENT 3 - 192.168.2.4] (19.818s):Sent 14 bytes to 192.168.3.2 port 44400
+[CLIENT 3 - 192.168.2.4] (19.818s):Sent 14 bytes to 192.168.4.2 port 44400
+[CLIENT 3 - 192.168.2.4] (19.818s):Sent 14 bytes to 192.168.5.2 port 44400
+[CLIENT 3 - 192.168.2.4] (19.818s):** READ INVOKED: 5 at 19.818s
+[SERVER 1 - 192.168.2.2] (19.823s):Received 14 bytes from 192.168.2.4 port 49154 data 5 1 3 903 902 optimized 1
+[SERVER 1 - 192.168.2.2] (19.823s):Sent 14 bytes to 192.168.2.4 port 49154 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 5 1 3 903 902 6 1
+[CLIENT 3 - 192.168.2.4] (19.8251s):Received 18 bytes from 192.168.2.2 port 44400 data 5 1 3 903 902 6 1
+[SERVER 0 - 192.168.1.2] (19.8326s):Received 14 bytes from 192.168.2.4 port 49153 data 5 1 3 903 902 optimized 1
+[SERVER 0 - 192.168.1.2] (19.8326s):Sent 14 bytes to 192.168.2.4 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 5 1 3 903 902 6 1
+[SERVER 2 - 192.168.3.2] (19.8398s):Received 14 bytes from 192.168.2.4 port 49155 data 5 1 3 903 902 optimized 1
+[SERVER 2 - 192.168.3.2] (19.8398s):Sent 14 bytes to 192.168.2.4 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 5 1 3 903 902 6 1
+[CLIENT 3 - 192.168.2.4] (19.8473s):Received 18 bytes from 192.168.1.2 port 44400 data 5 1 3 903 902 6 1
+[SERVER 3 - 192.168.4.2] (19.8524s):Received 14 bytes from 192.168.2.4 port 49156 data 5 1 3 903 902 optimized 1
+[SERVER 3 - 192.168.4.2] (19.8524s):Sent 14 bytes to 192.168.2.4 port 49156 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 5 1 3 903 902 6 1
+[CLIENT 3 - 192.168.2.4] (19.8545s):Received 18 bytes from 192.168.3.2 port 44400 data 5 1 3 903 902 6 1
+[SERVER 4 - 192.168.5.2] (19.8649s):Received 14 bytes from 192.168.2.4 port 49157 data 5 1 3 903 902 optimized 1
+[SERVER 4 - 192.168.5.2] (19.8649s):Sent 14 bytes to 192.168.2.4 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 5 1 3 903 902 6 1
+[CLIENT 3 - 192.168.2.4] (19.8774s):Received 18 bytes from 192.168.4.2 port 44400 data 5 1 3 903 902 6 1
+[CLIENT 3 - 192.168.2.4] (19.8774s):Waiting for 4 replies, received 4
+[CLIENT 3 - 192.168.2.4] (19.8774s):Proceeding to PHASE2, maxViews 6, bound 3
+[CLIENT 3 - 192.168.2.4] (19.8774s):** READ COMPLETED: 5 in 0.0594175s, Prop Value: 903, <ts, value, pvalue>: [3,903,902] - @ 2 EXCH **
+[CLIENT 3 - 192.168.2.4] (19.8774s):** NEXT OPERATION: in 2.3s
+[CLIENT 3 - 192.168.2.4] (19.9004s):Received 18 bytes from 192.168.5.2 port 44400 data 5 1 3 903 902 6 1
+[CLIENT 0 - 192.168.1.3] (21.3449s):Sent 14 bytes to 192.168.1.2 port 44400
+[CLIENT 0 - 192.168.1.3] (21.3449s):Sent 14 bytes to 192.168.2.2 port 44400
+[CLIENT 0 - 192.168.1.3] (21.3449s):Sent 14 bytes to 192.168.3.2 port 44400
+[CLIENT 0 - 192.168.1.3] (21.3449s):Sent 14 bytes to 192.168.4.2 port 44400
+[CLIENT 0 - 192.168.1.3] (21.3449s):Sent 14 bytes to 192.168.5.2 port 44400
+[CLIENT 0 - 192.168.1.3] (21.3449s):** WRITE INVOKED: 4 at 21.3449s
+[SERVER 0 - 192.168.1.2] (21.347s):Received 14 bytes from 192.168.1.3 port 49153 data 4 0 4 904 903 optimized 1
+[SERVER 0 - 192.168.1.2] (21.347s):Sent 14 bytes to 192.168.1.3 port 49153 seen: {  192.168.1.3} data 4 0 4 904 903 1 0
+[CLIENT 0 - 192.168.1.3] (21.3491s):Received 18 bytes from 192.168.1.2 port 44400 data 4 0 4 904 903 1 0
+[SERVER 1 - 192.168.2.2] (21.364s):Received 14 bytes from 192.168.1.3 port 49154 data 4 0 4 904 903 optimized 1
+[SERVER 1 - 192.168.2.2] (21.364s):Sent 14 bytes to 192.168.1.3 port 49154 seen: {  192.168.1.3} data 4 0 4 904 903 1 0
+[SERVER 2 - 192.168.3.2] (21.3768s):Received 14 bytes from 192.168.1.3 port 49155 data 4 0 4 904 903 optimized 1
+[SERVER 2 - 192.168.3.2] (21.3768s):Sent 14 bytes to 192.168.1.3 port 49155 seen: {  192.168.1.3} data 4 0 4 904 903 1 0
+[CLIENT 0 - 192.168.1.3] (21.3786s):Received 18 bytes from 192.168.2.2 port 44400 data 4 0 4 904 903 1 0
+[SERVER 3 - 192.168.4.2] (21.3895s):Received 14 bytes from 192.168.1.3 port 49156 data 4 0 4 904 903 optimized 1
+[SERVER 3 - 192.168.4.2] (21.3895s):Sent 14 bytes to 192.168.1.3 port 49156 seen: {  192.168.1.3} data 4 0 4 904 903 1 0
+[CLIENT 0 - 192.168.1.3] (21.4019s):Received 18 bytes from 192.168.3.2 port 44400 data 4 0 4 904 903 1 0
+[SERVER 4 - 192.168.5.2] (21.4021s):Received 14 bytes from 192.168.1.3 port 49157 data 4 0 4 904 903 optimized 1
+[SERVER 4 - 192.168.5.2] (21.4021s):Sent 14 bytes to 192.168.1.3 port 49157 seen: {  192.168.1.3} data 4 0 4 904 903 1 0
+[CLIENT 0 - 192.168.1.3] (21.4249s):Received 18 bytes from 192.168.4.2 port 44400 data 4 0 4 904 903 1 0
+[CLIENT 0 - 192.168.1.3] (21.4249s):** NEXT OPERATION: in 4s
+[CLIENT 0 - 192.168.1.3] (21.4249s):** WRITE COMPLETED: 4 in 0.0800772s, <ts, value>: [4,904], @ 2 EXCH **
+[CLIENT 0 - 192.168.1.3] (21.4479s):Received 18 bytes from 192.168.5.2 port 44400 data 4 0 4 904 903 1 0
+[CLIENT 4 - 192.168.3.3] (21.4754s):Sent 14 bytes to 192.168.1.2 port 44400
+[CLIENT 4 - 192.168.3.3] (21.4754s):Sent 14 bytes to 192.168.2.2 port 44400
+[CLIENT 4 - 192.168.3.3] (21.4754s):Sent 14 bytes to 192.168.3.2 port 44400
+[CLIENT 4 - 192.168.3.3] (21.4754s):Sent 14 bytes to 192.168.4.2 port 44400
+[CLIENT 4 - 192.168.3.3] (21.4754s):Sent 14 bytes to 192.168.5.2 port 44400
+[CLIENT 4 - 192.168.3.3] (21.4754s):** READ INVOKED: 7 at 21.4754s
+[SERVER 2 - 192.168.3.2] (21.4821s):Received 14 bytes from 192.168.3.3 port 49155 data 7 1 3 903 902 optimized 1
+[SERVER 2 - 192.168.3.2] (21.4821s):Sent 14 bytes to 192.168.3.3 port 49155 seen: {  192.168.1.3 192.168.3.3} data 7 1 4 904 903 2 0
+[CLIENT 4 - 192.168.3.3] (21.4843s):Received 18 bytes from 192.168.3.2 port 44400 data 7 1 4 904 903 2 0
+[CLIENT 4 - 192.168.3.3] (21.4843s):Updated local <ts,value> pair to: [4,904,903]
+[SERVER 1 - 192.168.2.2] (21.4924s):Received 14 bytes from 192.168.3.3 port 49154 data 7 1 3 903 902 optimized 1
+[SERVER 1 - 192.168.2.2] (21.4924s):Sent 14 bytes to 192.168.3.3 port 49154 seen: {  192.168.1.3 192.168.3.3} data 7 1 4 904 903 2 0
+[SERVER 3 - 192.168.4.2] (21.499s):Received 14 bytes from 192.168.3.3 port 49156 data 7 1 3 903 902 optimized 1
+[SERVER 3 - 192.168.4.2] (21.499s):Sent 14 bytes to 192.168.3.3 port 49156 seen: {  192.168.1.3 192.168.3.3} data 7 1 4 904 903 2 0
+[SERVER 0 - 192.168.1.2] (21.5004s):Received 14 bytes from 192.168.3.3 port 49153 data 7 1 3 903 902 optimized 1
+[SERVER 0 - 192.168.1.2] (21.5004s):Sent 14 bytes to 192.168.3.3 port 49153 seen: {  192.168.1.3 192.168.3.3} data 7 1 4 904 903 2 0
+[CLIENT 4 - 192.168.3.3] (21.507s):Received 18 bytes from 192.168.2.2 port 44400 data 7 1 4 904 903 2 0
+[SERVER 4 - 192.168.5.2] (21.5119s):Received 14 bytes from 192.168.3.3 port 49157 data 7 1 3 903 902 optimized 1
+[SERVER 4 - 192.168.5.2] (21.5119s):Sent 14 bytes to 192.168.3.3 port 49157 seen: {  192.168.1.3 192.168.3.3} data 7 1 4 904 903 2 0
+[CLIENT 4 - 192.168.3.3] (21.5137s):Received 18 bytes from 192.168.4.2 port 44400 data 7 1 4 904 903 2 0
+[CLIENT 4 - 192.168.3.3] (21.5254s):Received 18 bytes from 192.168.1.2 port 44400 data 7 1 4 904 903 2 0
+[CLIENT 4 - 192.168.3.3] (21.5254s):Waiting for 4 replies, received 4
+[CLIENT 4 - 192.168.3.3] (21.5254s):Checking the PREDICATE, maxViews 2, bound 3
+[CLIENT 4 - 192.168.3.3] (21.5254s):PREDICATE LOOP: a=3, b[a]=0, bound=2
+[CLIENT 4 - 192.168.3.3] (21.5254s):PREDICATE LOOP: a=2, b[a]=4, bound=3
+[CLIENT 4 - 192.168.3.3] (21.5254s):** READ COMPLETED: 7 in 0.0500437s, Return Value: 904, <ts, value, pvalue>: [4,904,903] - @ 2 EXCH **
+[CLIENT 4 - 192.168.3.3] (21.5254s):** NEXT OPERATION: in 2.3s
+[CLIENT 4 - 192.168.3.3] (21.537s):Received 18 bytes from 192.168.5.2 port 44400 data 7 1 4 904 903 2 0
+[CLIENT 5 - 192.168.3.4] (21.5403s):Sent 14 bytes to 192.168.1.2 port 44400
+[CLIENT 5 - 192.168.3.4] (21.5403s):Sent 14 bytes to 192.168.2.2 port 44400
+[CLIENT 5 - 192.168.3.4] (21.5403s):Sent 14 bytes to 192.168.3.2 port 44400
+[CLIENT 5 - 192.168.3.4] (21.5403s):Sent 14 bytes to 192.168.4.2 port 44400
+[CLIENT 5 - 192.168.3.4] (21.5403s):Sent 14 bytes to 192.168.5.2 port 44400
+[CLIENT 5 - 192.168.3.4] (21.5403s):** READ INVOKED: 7 at 21.5403s
+[SERVER 2 - 192.168.3.2] (21.5472s):Received 14 bytes from 192.168.3.4 port 49155 data 8 1 3 903 902 optimized 1
+[SERVER 2 - 192.168.3.2] (21.5472s):Sent 14 bytes to 192.168.3.4 port 49155 seen: {  192.168.1.3 192.168.3.3 192.168.3.4} data 8 1 4 904 903 3 0
+[CLIENT 5 - 192.168.3.4] (21.5493s):Received 18 bytes from 192.168.3.2 port 44400 data 8 1 4 904 903 3 0
+[CLIENT 5 - 192.168.3.4] (21.5493s):Updated local <ts,value> pair to: [4,904,903]
+[SERVER 1 - 192.168.2.2] (21.5575s):Received 14 bytes from 192.168.3.4 port 49154 data 8 1 3 903 902 optimized 1
+[SERVER 1 - 192.168.2.2] (21.5575s):Sent 14 bytes to 192.168.3.4 port 49154 seen: {  192.168.1.3 192.168.3.3 192.168.3.4} data 8 1 4 904 903 3 0
+[SERVER 3 - 192.168.4.2] (21.5642s):Received 14 bytes from 192.168.3.4 port 49156 data 8 1 3 903 902 optimized 1
+[SERVER 3 - 192.168.4.2] (21.5642s):Sent 14 bytes to 192.168.3.4 port 49156 seen: {  192.168.1.3 192.168.3.3 192.168.3.4} data 8 1 4 904 903 3 0
+[SERVER 0 - 192.168.1.2] (21.5653s):Received 14 bytes from 192.168.3.4 port 49153 data 8 1 3 903 902 optimized 1
+[SERVER 0 - 192.168.1.2] (21.5653s):Sent 14 bytes to 192.168.3.4 port 49153 seen: {  192.168.1.3 192.168.3.3 192.168.3.4} data 8 1 4 904 903 3 0
+[CLIENT 5 - 192.168.3.4] (21.5722s):Received 18 bytes from 192.168.2.2 port 44400 data 8 1 4 904 903 3 0
+[SERVER 4 - 192.168.5.2] (21.5773s):Received 14 bytes from 192.168.3.4 port 49157 data 8 1 3 903 902 optimized 1
+[SERVER 4 - 192.168.5.2] (21.5773s):Sent 14 bytes to 192.168.3.4 port 49157 seen: {  192.168.1.3 192.168.3.3 192.168.3.4} data 8 1 4 904 903 3 0
+[CLIENT 5 - 192.168.3.4] (21.5789s):Received 18 bytes from 192.168.4.2 port 44400 data 8 1 4 904 903 3 0
+[CLIENT 5 - 192.168.3.4] (21.5903s):Received 18 bytes from 192.168.1.2 port 44400 data 8 1 4 904 903 3 0
+[CLIENT 5 - 192.168.3.4] (21.5903s):Waiting for 4 replies, received 4
+[CLIENT 5 - 192.168.3.4] (21.5903s):Checking the PREDICATE, maxViews 3, bound 3
+[CLIENT 5 - 192.168.3.4] (21.5903s):PREDICATE LOOP: a=3, b[a]=4, bound=2
+[CLIENT 5 - 192.168.3.4] (21.5903s):** READ COMPLETED: 7 in 0.0500437s, Return Value: 904, <ts, value, pvalue>: [4,904,903] - @ 2 EXCH **
+[CLIENT 5 - 192.168.3.4] (21.5903s):** NEXT OPERATION: in 2.3s
+[CLIENT 5 - 192.168.3.4] (21.6024s):Received 18 bytes from 192.168.5.2 port 44400 data 8 1 4 904 903 3 0
+[CLIENT 2 - 192.168.2.3] (21.7157s):Sent 15 bytes to 192.168.1.2 port 44400
+[CLIENT 2 - 192.168.2.3] (21.7157s):Sent 15 bytes to 192.168.2.2 port 44400
+[CLIENT 2 - 192.168.2.3] (21.7157s):Sent 15 bytes to 192.168.3.2 port 44400
+[CLIENT 2 - 192.168.2.3] (21.7157s):Sent 15 bytes to 192.168.4.2 port 44400
+[CLIENT 2 - 192.168.2.3] (21.7157s):Sent 15 bytes to 192.168.5.2 port 44400
+[CLIENT 2 - 192.168.2.3] (21.7157s):** READ INVOKED: 7 at 21.7157s
+[SERVER 1 - 192.168.2.2] (21.72s):Received 15 bytes from 192.168.2.3 port 49154 data 10 1 3 903 902 optimized 1
+[SERVER 1 - 192.168.2.2] (21.72s):Sent 15 bytes to 192.168.2.3 port 49154 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 10 1 4 904 903 4 0
+[CLIENT 2 - 192.168.2.3] (21.7222s):Received 19 bytes from 192.168.2.2 port 44400 data 10 1 4 904 903 4 0
+[CLIENT 2 - 192.168.2.3] (21.7222s):Updated local <ts,value> pair to: [4,904,903]
+[SERVER 0 - 192.168.1.2] (21.7304s):Received 15 bytes from 192.168.2.3 port 49153 data 10 1 3 903 902 optimized 1
+[SERVER 0 - 192.168.1.2] (21.7304s):Sent 15 bytes to 192.168.2.3 port 49153 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 10 1 4 904 903 4 0
+[SERVER 2 - 192.168.3.2] (21.7415s):Received 15 bytes from 192.168.2.3 port 49155 data 10 1 3 903 902 optimized 1
+[SERVER 2 - 192.168.3.2] (21.7415s):Sent 15 bytes to 192.168.2.3 port 49155 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 10 1 4 904 903 4 0
+[CLIENT 2 - 192.168.2.3] (21.7451s):Received 19 bytes from 192.168.1.2 port 44400 data 10 1 4 904 903 4 0
+[SERVER 3 - 192.168.4.2] (21.7528s):Received 15 bytes from 192.168.2.3 port 49156 data 10 1 3 903 902 optimized 1
+[SERVER 3 - 192.168.4.2] (21.7528s):Sent 15 bytes to 192.168.2.3 port 49156 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 10 1 4 904 903 4 0
+[CLIENT 2 - 192.168.2.3] (21.7562s):Received 19 bytes from 192.168.3.2 port 44400 data 10 1 4 904 903 4 0
+[SERVER 4 - 192.168.5.2] (21.7659s):Received 15 bytes from 192.168.2.3 port 49157 data 10 1 3 903 902 optimized 1
+[SERVER 4 - 192.168.5.2] (21.7659s):Sent 15 bytes to 192.168.2.3 port 49157 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 10 1 4 904 903 4 0
+[CLIENT 2 - 192.168.2.3] (21.7779s):Received 19 bytes from 192.168.4.2 port 44400 data 10 1 4 904 903 4 0
+[CLIENT 2 - 192.168.2.3] (21.7779s):Waiting for 4 replies, received 4
+[CLIENT 2 - 192.168.2.3] (21.7779s):Proceeding to PHASE2, maxViews 4, bound 3
+[CLIENT 2 - 192.168.2.3] (21.7779s):Sent 15 bytes to 192.168.1.2 port 44400
+[CLIENT 2 - 192.168.2.3] (21.7779s):Sent 15 bytes to 192.168.2.2 port 44400
+[CLIENT 2 - 192.168.2.3] (21.7779s):Sent 15 bytes to 192.168.3.2 port 44400
+[CLIENT 2 - 192.168.2.3] (21.7779s):Sent 15 bytes to 192.168.4.2 port 44400
+[CLIENT 2 - 192.168.2.3] (21.7779s):Sent 15 bytes to 192.168.5.2 port 44400
+[CLIENT 1 - 192.168.1.4] (21.7806s):Sent 14 bytes to 192.168.1.2 port 44400
+[CLIENT 1 - 192.168.1.4] (21.7806s):Sent 14 bytes to 192.168.2.2 port 44400
+[CLIENT 1 - 192.168.1.4] (21.7806s):Sent 14 bytes to 192.168.3.2 port 44400
+[CLIENT 1 - 192.168.1.4] (21.7806s):Sent 14 bytes to 192.168.4.2 port 44400
+[CLIENT 1 - 192.168.1.4] (21.7806s):Sent 14 bytes to 192.168.5.2 port 44400
+[CLIENT 1 - 192.168.1.4] (21.7806s):** READ INVOKED: 7 at 21.7806s
+[SERVER 0 - 192.168.1.2] (21.7827s):Received 14 bytes from 192.168.1.4 port 49153 data 8 1 3 903 902 optimized 1
+[SERVER 0 - 192.168.1.2] (21.7827s):Sent 14 bytes to 192.168.1.4 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 8 1 4 904 903 5 0
+[SERVER 1 - 192.168.2.2] (21.7845s):Received 15 bytes from 192.168.2.3 port 49154 data 11 2 4 904 903 optimized 1
+[SERVER 1 - 192.168.2.2] (21.7845s):Sent 15 bytes to 192.168.2.3 port 49154 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 11 2 4 904 903 4 1
+[CLIENT 1 - 192.168.1.4] (21.7849s):Received 18 bytes from 192.168.1.2 port 44400 data 8 1 4 904 903 5 0
+[CLIENT 1 - 192.168.1.4] (21.7849s):Updated local <ts,value> pair to: [4,904,903]
+[CLIENT 2 - 192.168.2.3] (21.7867s):Received 19 bytes from 192.168.2.2 port 44400 data 11 2 4 904 903 4 1
+[SERVER 0 - 192.168.1.2] (21.7948s):Received 15 bytes from 192.168.2.3 port 49153 data 11 2 4 904 903 optimized 1
+[SERVER 0 - 192.168.1.2] (21.7948s):Sent 15 bytes to 192.168.2.3 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 11 2 4 904 903 5 1
+[SERVER 1 - 192.168.2.2] (21.7996s):Received 14 bytes from 192.168.1.4 port 49154 data 8 1 3 903 902 optimized 1
+[SERVER 1 - 192.168.2.2] (21.7996s):Sent 14 bytes to 192.168.1.4 port 49154 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 8 1 4 904 903 5 1
+[SERVER 3 - 192.168.4.2] (21.8029s):Received 15 bytes from 192.168.2.3 port 49156 data 11 2 4 904 903 optimized 1
+[SERVER 3 - 192.168.4.2] (21.8029s):Sent 15 bytes to 192.168.2.3 port 49156 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 11 2 4 904 903 4 1
+[SERVER 2 - 192.168.3.2] (21.8036s):Received 15 bytes from 192.168.2.3 port 49155 data 11 2 4 904 903 optimized 1
+[SERVER 2 - 192.168.3.2] (21.8036s):Sent 15 bytes to 192.168.2.3 port 49155 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 11 2 4 904 903 4 1
+[CLIENT 2 - 192.168.2.3] (21.8042s):Received 19 bytes from 192.168.5.2 port 44400 data 10 1 4 904 903 4 0
+[CLIENT 2 - 192.168.2.3] (21.8094s):Received 19 bytes from 192.168.1.2 port 44400 data 11 2 4 904 903 5 1
+[SERVER 2 - 192.168.3.2] (21.8123s):Received 14 bytes from 192.168.1.4 port 49155 data 8 1 3 903 902 optimized 1
+[SERVER 2 - 192.168.3.2] (21.8123s):Sent 14 bytes to 192.168.1.4 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 8 1 4 904 903 5 1
+[CLIENT 1 - 192.168.1.4] (21.8142s):Received 18 bytes from 192.168.2.2 port 44400 data 8 1 4 904 903 5 1
+[CLIENT 2 - 192.168.2.3] (21.8182s):Received 19 bytes from 192.168.3.2 port 44400 data 11 2 4 904 903 4 1
+[SERVER 3 - 192.168.4.2] (21.8255s):Received 14 bytes from 192.168.1.4 port 49156 data 8 1 3 903 902 optimized 1
+[SERVER 3 - 192.168.4.2] (21.8255s):Sent 14 bytes to 192.168.1.4 port 49156 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 8 1 4 904 903 5 1
+[SERVER 4 - 192.168.5.2] (21.8267s):Received 15 bytes from 192.168.2.3 port 49157 data 11 2 4 904 903 optimized 1
+[SERVER 4 - 192.168.5.2] (21.8267s):Sent 15 bytes to 192.168.2.3 port 49157 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 11 2 4 904 903 4 1
+[CLIENT 2 - 192.168.2.3] (21.8279s):Received 19 bytes from 192.168.4.2 port 44400 data 11 2 4 904 903 4 1
+[CLIENT 2 - 192.168.2.3] (21.8279s):** NEXT OPERATION: in 2.3s
+[CLIENT 2 - 192.168.2.3] (21.8279s):** READ COMPLETED: 7 in 0.112181s, <ts, value>: [4,904] - @ 4 EXCH **
+[CLIENT 1 - 192.168.1.4] (21.8374s):Received 18 bytes from 192.168.3.2 port 44400 data 8 1 4 904 903 5 1
+[SERVER 4 - 192.168.5.2] (21.8429s):Received 14 bytes from 192.168.1.4 port 49157 data 8 1 3 903 902 optimized 1
+[SERVER 4 - 192.168.5.2] (21.8429s):Sent 14 bytes to 192.168.1.4 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 8 1 4 904 903 5 1
+[CLIENT 1 - 192.168.1.4] (21.8609s):Received 18 bytes from 192.168.4.2 port 44400 data 8 1 4 904 903 5 1
+[CLIENT 1 - 192.168.1.4] (21.8609s):Waiting for 4 replies, received 4
+[CLIENT 1 - 192.168.1.4] (21.8609s):Proceeding to PHASE2, maxViews 5, bound 3
+[CLIENT 1 - 192.168.1.4] (21.8609s):** READ COMPLETED: 7 in 0.0803342s, Prop Value: 904, <ts, value, pvalue>: [4,904,903] - @ 2 EXCH **
+[CLIENT 1 - 192.168.1.4] (21.8609s):** NEXT OPERATION: in 2.3s
+[CLIENT 2 - 192.168.2.3] (21.8621s):Received 19 bytes from 192.168.5.2 port 44400 data 11 2 4 904 903 4 1
+[CLIENT 1 - 192.168.1.4] (21.8887s):Received 18 bytes from 192.168.5.2 port 44400 data 8 1 4 904 903 5 1
+[CLIENT 3 - 192.168.2.4] (22.1774s):Sent 14 bytes to 192.168.1.2 port 44400
+[CLIENT 3 - 192.168.2.4] (22.1774s):Sent 14 bytes to 192.168.2.2 port 44400
+[CLIENT 3 - 192.168.2.4] (22.1774s):Sent 14 bytes to 192.168.3.2 port 44400
+[CLIENT 3 - 192.168.2.4] (22.1774s):Sent 14 bytes to 192.168.4.2 port 44400
+[CLIENT 3 - 192.168.2.4] (22.1774s):Sent 14 bytes to 192.168.5.2 port 44400
+[CLIENT 3 - 192.168.2.4] (22.1774s):** READ INVOKED: 6 at 22.1774s
+[SERVER 1 - 192.168.2.2] (22.1817s):Received 14 bytes from 192.168.2.4 port 49154 data 6 1 3 903 902 optimized 1
+[SERVER 1 - 192.168.2.2] (22.1817s):Sent 14 bytes to 192.168.2.4 port 49154 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 6 1 4 904 903 6 1
+[CLIENT 3 - 192.168.2.4] (22.1838s):Received 18 bytes from 192.168.2.2 port 44400 data 6 1 4 904 903 6 1
+[CLIENT 3 - 192.168.2.4] (22.1838s):Updated local <ts,value> pair to: [4,904,903]
+[SERVER 0 - 192.168.1.2] (22.192s):Received 14 bytes from 192.168.2.4 port 49153 data 6 1 3 903 902 optimized 1
+[SERVER 0 - 192.168.1.2] (22.192s):Sent 14 bytes to 192.168.2.4 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 6 1 4 904 903 6 1
+[SERVER 2 - 192.168.3.2] (22.1987s):Received 14 bytes from 192.168.2.4 port 49155 data 6 1 3 903 902 optimized 1
+[SERVER 2 - 192.168.3.2] (22.1987s):Sent 14 bytes to 192.168.2.4 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 6 1 4 904 903 6 1
+[CLIENT 3 - 192.168.2.4] (22.2067s):Received 18 bytes from 192.168.1.2 port 44400 data 6 1 4 904 903 6 1
+[SERVER 3 - 192.168.4.2] (22.2116s):Received 14 bytes from 192.168.2.4 port 49156 data 6 1 3 903 902 optimized 1
+[SERVER 3 - 192.168.4.2] (22.2116s):Sent 14 bytes to 192.168.2.4 port 49156 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 6 1 4 904 903 6 1
+[CLIENT 3 - 192.168.2.4] (22.2134s):Received 18 bytes from 192.168.3.2 port 44400 data 6 1 4 904 903 6 1
+[SERVER 4 - 192.168.5.2] (22.2242s):Received 14 bytes from 192.168.2.4 port 49157 data 6 1 3 903 902 optimized 1
+[SERVER 4 - 192.168.5.2] (22.2242s):Sent 14 bytes to 192.168.2.4 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 6 1 4 904 903 6 1
+[CLIENT 3 - 192.168.2.4] (22.2366s):Received 18 bytes from 192.168.4.2 port 44400 data 6 1 4 904 903 6 1
+[CLIENT 3 - 192.168.2.4] (22.2366s):Waiting for 4 replies, received 4
+[CLIENT 3 - 192.168.2.4] (22.2366s):Proceeding to PHASE2, maxViews 6, bound 3
+[CLIENT 3 - 192.168.2.4] (22.2366s):** READ COMPLETED: 6 in 0.0592295s, Prop Value: 904, <ts, value, pvalue>: [4,904,903] - @ 2 EXCH **
+[CLIENT 3 - 192.168.2.4] (22.2366s):** NEXT OPERATION: in 2.3s
+[CLIENT 3 - 192.168.2.4] (22.2596s):Received 18 bytes from 192.168.5.2 port 44400 data 6 1 4 904 903 6 1
+[CLIENT 4 - 192.168.3.3] (23.8254s):Sent 14 bytes to 192.168.1.2 port 44400
+[CLIENT 4 - 192.168.3.3] (23.8254s):Sent 14 bytes to 192.168.2.2 port 44400
+[CLIENT 4 - 192.168.3.3] (23.8254s):Sent 14 bytes to 192.168.3.2 port 44400
+[CLIENT 4 - 192.168.3.3] (23.8254s):Sent 14 bytes to 192.168.4.2 port 44400
+[CLIENT 4 - 192.168.3.3] (23.8254s):Sent 14 bytes to 192.168.5.2 port 44400
+[CLIENT 4 - 192.168.3.3] (23.8254s):** READ INVOKED: 8 at 23.8254s
+[SERVER 2 - 192.168.3.2] (23.8322s):Received 14 bytes from 192.168.3.3 port 49155 data 8 1 4 904 903 optimized 1
+[SERVER 2 - 192.168.3.2] (23.8322s):Sent 14 bytes to 192.168.3.3 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 8 1 4 904 903 6 1
+[CLIENT 4 - 192.168.3.3] (23.8344s):Received 18 bytes from 192.168.3.2 port 44400 data 8 1 4 904 903 6 1
+[SERVER 1 - 192.168.2.2] (23.8423s):Received 14 bytes from 192.168.3.3 port 49154 data 8 1 4 904 903 optimized 1
+[SERVER 1 - 192.168.2.2] (23.8423s):Sent 14 bytes to 192.168.3.3 port 49154 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 8 1 4 904 903 6 1
+[SERVER 3 - 192.168.4.2] (23.8498s):Received 14 bytes from 192.168.3.3 port 49156 data 8 1 4 904 903 optimized 1
+[SERVER 3 - 192.168.4.2] (23.8498s):Sent 14 bytes to 192.168.3.3 port 49156 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 8 1 4 904 903 6 1
+[SERVER 0 - 192.168.1.2] (23.8504s):Received 14 bytes from 192.168.3.3 port 49153 data 8 1 4 904 903 optimized 1
+[SERVER 0 - 192.168.1.2] (23.8504s):Sent 14 bytes to 192.168.3.3 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 8 1 4 904 903 6 1
+[CLIENT 4 - 192.168.3.3] (23.857s):Received 18 bytes from 192.168.2.2 port 44400 data 8 1 4 904 903 6 1
+[SERVER 4 - 192.168.5.2] (23.8628s):Received 14 bytes from 192.168.3.3 port 49157 data 8 1 4 904 903 optimized 1
+[SERVER 4 - 192.168.5.2] (23.8628s):Sent 14 bytes to 192.168.3.3 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 8 1 4 904 903 6 1
+[CLIENT 4 - 192.168.3.3] (23.8644s):Received 18 bytes from 192.168.4.2 port 44400 data 8 1 4 904 903 6 1
+[CLIENT 4 - 192.168.3.3] (23.8755s):Received 18 bytes from 192.168.1.2 port 44400 data 8 1 4 904 903 6 1
+[CLIENT 4 - 192.168.3.3] (23.8755s):Waiting for 4 replies, received 4
+[CLIENT 4 - 192.168.3.3] (23.8755s):Proceeding to PHASE2, maxViews 6, bound 3
+[CLIENT 4 - 192.168.3.3] (23.8755s):** READ COMPLETED: 8 in 0.0500437s, Prop Value: 904, <ts, value, pvalue>: [4,904,903] - @ 2 EXCH **
+[CLIENT 4 - 192.168.3.3] (23.8755s):** NEXT OPERATION: in 2.3s
+[CLIENT 4 - 192.168.3.3] (23.8879s):Received 18 bytes from 192.168.5.2 port 44400 data 8 1 4 904 903 6 1
+[CLIENT 5 - 192.168.3.4] (23.8903s):Sent 14 bytes to 192.168.1.2 port 44400
+[CLIENT 5 - 192.168.3.4] (23.8903s):Sent 14 bytes to 192.168.2.2 port 44400
+[CLIENT 5 - 192.168.3.4] (23.8903s):Sent 14 bytes to 192.168.3.2 port 44400
+[CLIENT 5 - 192.168.3.4] (23.8903s):Sent 14 bytes to 192.168.4.2 port 44400
+[CLIENT 5 - 192.168.3.4] (23.8903s):Sent 14 bytes to 192.168.5.2 port 44400
+[CLIENT 5 - 192.168.3.4] (23.8903s):** READ INVOKED: 8 at 23.8903s
+[SERVER 2 - 192.168.3.2] (23.8975s):Received 14 bytes from 192.168.3.4 port 49155 data 9 1 4 904 903 optimized 1
+[SERVER 2 - 192.168.3.2] (23.8975s):Sent 14 bytes to 192.168.3.4 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 9 1 4 904 903 6 1
+[CLIENT 5 - 192.168.3.4] (23.8997s):Received 18 bytes from 192.168.3.2 port 44400 data 9 1 4 904 903 6 1
+[SERVER 1 - 192.168.2.2] (23.9071s):Received 14 bytes from 192.168.3.4 port 49154 data 9 1 4 904 903 optimized 1
+[SERVER 1 - 192.168.2.2] (23.9071s):Sent 14 bytes to 192.168.3.4 port 49154 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 9 1 4 904 903 6 1
+[SERVER 3 - 192.168.4.2] (23.9146s):Received 14 bytes from 192.168.3.4 port 49156 data 9 1 4 904 903 optimized 1
+[SERVER 3 - 192.168.4.2] (23.9146s):Sent 14 bytes to 192.168.3.4 port 49156 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 9 1 4 904 903 6 1
+[SERVER 0 - 192.168.1.2] (23.9153s):Received 14 bytes from 192.168.3.4 port 49153 data 9 1 4 904 903 optimized 1
+[SERVER 0 - 192.168.1.2] (23.9153s):Sent 14 bytes to 192.168.3.4 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 9 1 4 904 903 6 1
+[CLIENT 5 - 192.168.3.4] (23.9218s):Received 18 bytes from 192.168.2.2 port 44400 data 9 1 4 904 903 6 1
+[SERVER 4 - 192.168.5.2] (23.9272s):Received 14 bytes from 192.168.3.4 port 49157 data 9 1 4 904 903 optimized 1
+[SERVER 4 - 192.168.5.2] (23.9272s):Sent 14 bytes to 192.168.3.4 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 9 1 4 904 903 6 1
+[CLIENT 5 - 192.168.3.4] (23.9293s):Received 18 bytes from 192.168.4.2 port 44400 data 9 1 4 904 903 6 1
+[CLIENT 5 - 192.168.3.4] (23.9404s):Received 18 bytes from 192.168.1.2 port 44400 data 9 1 4 904 903 6 1
+[CLIENT 5 - 192.168.3.4] (23.9404s):Waiting for 4 replies, received 4
+[CLIENT 5 - 192.168.3.4] (23.9404s):Proceeding to PHASE2, maxViews 6, bound 3
+[CLIENT 5 - 192.168.3.4] (23.9404s):** READ COMPLETED: 8 in 0.0500437s, Prop Value: 904, <ts, value, pvalue>: [4,904,903] - @ 2 EXCH **
+[CLIENT 5 - 192.168.3.4] (23.9404s):** NEXT OPERATION: in 2.3s
+[CLIENT 5 - 192.168.3.4] (23.9522s):Received 18 bytes from 192.168.5.2 port 44400 data 9 1 4 904 903 6 1
+[CLIENT 2 - 192.168.2.3] (24.1279s):Sent 15 bytes to 192.168.1.2 port 44400
+[CLIENT 2 - 192.168.2.3] (24.1279s):Sent 15 bytes to 192.168.2.2 port 44400
+[CLIENT 2 - 192.168.2.3] (24.1279s):Sent 15 bytes to 192.168.3.2 port 44400
+[CLIENT 2 - 192.168.2.3] (24.1279s):Sent 15 bytes to 192.168.4.2 port 44400
+[CLIENT 2 - 192.168.2.3] (24.1279s):Sent 15 bytes to 192.168.5.2 port 44400
+[CLIENT 2 - 192.168.2.3] (24.1279s):** READ INVOKED: 8 at 24.1279s
+[SERVER 1 - 192.168.2.2] (24.1323s):Received 15 bytes from 192.168.2.3 port 49154 data 12 1 4 904 903 optimized 1
+[SERVER 1 - 192.168.2.2] (24.1323s):Sent 15 bytes to 192.168.2.3 port 49154 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 12 1 4 904 903 6 1
+[CLIENT 2 - 192.168.2.3] (24.1344s):Received 19 bytes from 192.168.2.2 port 44400 data 12 1 4 904 903 6 1
+[SERVER 0 - 192.168.1.2] (24.1426s):Received 15 bytes from 192.168.2.3 port 49153 data 12 1 4 904 903 optimized 1
+[SERVER 0 - 192.168.1.2] (24.1426s):Sent 15 bytes to 192.168.2.3 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 12 1 4 904 903 6 1
+[SERVER 2 - 192.168.3.2] (24.1514s):Received 15 bytes from 192.168.2.3 port 49155 data 12 1 4 904 903 optimized 1
+[SERVER 2 - 192.168.3.2] (24.1514s):Sent 15 bytes to 192.168.2.3 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 12 1 4 904 903 6 1
+[CLIENT 2 - 192.168.2.3] (24.1572s):Received 19 bytes from 192.168.1.2 port 44400 data 12 1 4 904 903 6 1
+[CLIENT 1 - 192.168.1.4] (24.1609s):Sent 14 bytes to 192.168.1.2 port 44400
+[CLIENT 1 - 192.168.1.4] (24.1609s):Sent 14 bytes to 192.168.2.2 port 44400
+[CLIENT 1 - 192.168.1.4] (24.1609s):Sent 14 bytes to 192.168.3.2 port 44400
+[CLIENT 1 - 192.168.1.4] (24.1609s):Sent 14 bytes to 192.168.4.2 port 44400
+[CLIENT 1 - 192.168.1.4] (24.1609s):Sent 14 bytes to 192.168.5.2 port 44400
+[CLIENT 1 - 192.168.1.4] (24.1609s):** READ INVOKED: 8 at 24.1609s
+[SERVER 0 - 192.168.1.2] (24.1631s):Received 14 bytes from 192.168.1.4 port 49153 data 9 1 4 904 903 optimized 1
+[SERVER 0 - 192.168.1.2] (24.1631s):Sent 14 bytes to 192.168.1.4 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 9 1 4 904 903 6 1
+[SERVER 3 - 192.168.4.2] (24.1643s):Received 15 bytes from 192.168.2.3 port 49156 data 12 1 4 904 903 optimized 1
+[SERVER 3 - 192.168.4.2] (24.1643s):Sent 15 bytes to 192.168.2.3 port 49156 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 12 1 4 904 903 6 1
+[CLIENT 1 - 192.168.1.4] (24.1652s):Received 18 bytes from 192.168.1.2 port 44400 data 9 1 4 904 903 6 1
+[CLIENT 2 - 192.168.2.3] (24.166s):Received 19 bytes from 192.168.3.2 port 44400 data 12 1 4 904 903 6 1
+[SERVER 4 - 192.168.5.2] (24.1769s):Received 15 bytes from 192.168.2.3 port 49157 data 12 1 4 904 903 optimized 1
+[SERVER 4 - 192.168.5.2] (24.1769s):Sent 15 bytes to 192.168.2.3 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 12 1 4 904 903 6 1
+[SERVER 1 - 192.168.2.2] (24.18s):Received 14 bytes from 192.168.1.4 port 49154 data 9 1 4 904 903 optimized 1
+[SERVER 1 - 192.168.2.2] (24.18s):Sent 14 bytes to 192.168.1.4 port 49154 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 9 1 4 904 903 6 1
+[CLIENT 2 - 192.168.2.3] (24.1894s):Received 19 bytes from 192.168.4.2 port 44400 data 12 1 4 904 903 6 1
+[CLIENT 2 - 192.168.2.3] (24.1894s):Waiting for 4 replies, received 4
+[CLIENT 2 - 192.168.2.3] (24.1894s):Proceeding to PHASE2, maxViews 6, bound 3
+[CLIENT 2 - 192.168.2.3] (24.1894s):** READ COMPLETED: 8 in 0.0614241s, Prop Value: 904, <ts, value, pvalue>: [4,904,903] - @ 2 EXCH **
+[CLIENT 2 - 192.168.2.3] (24.1894s):** NEXT OPERATION: in 2.3s
+[SERVER 2 - 192.168.3.2] (24.1926s):Received 14 bytes from 192.168.1.4 port 49155 data 9 1 4 904 903 optimized 1
+[SERVER 2 - 192.168.3.2] (24.1926s):Sent 14 bytes to 192.168.1.4 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 9 1 4 904 903 6 1
+[CLIENT 1 - 192.168.1.4] (24.1946s):Received 18 bytes from 192.168.2.2 port 44400 data 9 1 4 904 903 6 1
+[SERVER 3 - 192.168.4.2] (24.2052s):Received 14 bytes from 192.168.1.4 port 49156 data 9 1 4 904 903 optimized 1
+[SERVER 3 - 192.168.4.2] (24.2052s):Sent 14 bytes to 192.168.1.4 port 49156 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 9 1 4 904 903 6 1
+[CLIENT 2 - 192.168.2.3] (24.2123s):Received 19 bytes from 192.168.5.2 port 44400 data 12 1 4 904 903 6 1
+[CLIENT 1 - 192.168.1.4] (24.2176s):Received 18 bytes from 192.168.3.2 port 44400 data 9 1 4 904 903 6 1
+[SERVER 4 - 192.168.5.2] (24.2177s):Received 14 bytes from 192.168.1.4 port 49157 data 9 1 4 904 903 optimized 1
+[SERVER 4 - 192.168.5.2] (24.2177s):Sent 14 bytes to 192.168.1.4 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 9 1 4 904 903 6 1
+[CLIENT 1 - 192.168.1.4] (24.2406s):Received 18 bytes from 192.168.4.2 port 44400 data 9 1 4 904 903 6 1
+[CLIENT 1 - 192.168.1.4] (24.2406s):Waiting for 4 replies, received 4
+[CLIENT 1 - 192.168.1.4] (24.2406s):Proceeding to PHASE2, maxViews 6, bound 3
+[CLIENT 1 - 192.168.1.4] (24.2406s):** READ COMPLETED: 8 in 0.0797022s, Prop Value: 904, <ts, value, pvalue>: [4,904,903] - @ 2 EXCH **
+[CLIENT 1 - 192.168.1.4] (24.2406s):** NEXT OPERATION: in 2.3s
+[CLIENT 1 - 192.168.1.4] (24.2636s):Received 18 bytes from 192.168.5.2 port 44400 data 9 1 4 904 903 6 1
+[CLIENT 3 - 192.168.2.4] (24.5366s):Sent 14 bytes to 192.168.1.2 port 44400
+[CLIENT 3 - 192.168.2.4] (24.5366s):Sent 14 bytes to 192.168.2.2 port 44400
+[CLIENT 3 - 192.168.2.4] (24.5366s):Sent 14 bytes to 192.168.3.2 port 44400
+[CLIENT 3 - 192.168.2.4] (24.5366s):Sent 14 bytes to 192.168.4.2 port 44400
+[CLIENT 3 - 192.168.2.4] (24.5366s):Sent 14 bytes to 192.168.5.2 port 44400
+[CLIENT 3 - 192.168.2.4] (24.5366s):** READ INVOKED: 7 at 24.5366s
+[SERVER 1 - 192.168.2.2] (24.5411s):Received 14 bytes from 192.168.2.4 port 49154 data 7 1 4 904 903 optimized 1
+[SERVER 1 - 192.168.2.2] (24.5411s):Sent 14 bytes to 192.168.2.4 port 49154 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 7 1 4 904 903 6 1
+[CLIENT 3 - 192.168.2.4] (24.5432s):Received 18 bytes from 192.168.2.2 port 44400 data 7 1 4 904 903 6 1
+[SERVER 0 - 192.168.1.2] (24.5513s):Received 14 bytes from 192.168.2.4 port 49153 data 7 1 4 904 903 optimized 1
+[SERVER 0 - 192.168.1.2] (24.5513s):Sent 14 bytes to 192.168.2.4 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 7 1 4 904 903 6 1
+[SERVER 2 - 192.168.3.2] (24.5587s):Received 14 bytes from 192.168.2.4 port 49155 data 7 1 4 904 903 optimized 1
+[SERVER 2 - 192.168.3.2] (24.5587s):Sent 14 bytes to 192.168.2.4 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 7 1 4 904 903 6 1
+[CLIENT 3 - 192.168.2.4] (24.5659s):Received 18 bytes from 192.168.1.2 port 44400 data 7 1 4 904 903 6 1
+[SERVER 3 - 192.168.4.2] (24.5719s):Received 14 bytes from 192.168.2.4 port 49156 data 7 1 4 904 903 optimized 1
+[SERVER 3 - 192.168.4.2] (24.5719s):Sent 14 bytes to 192.168.2.4 port 49156 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 7 1 4 904 903 6 1
+[CLIENT 3 - 192.168.2.4] (24.5734s):Received 18 bytes from 192.168.3.2 port 44400 data 7 1 4 904 903 6 1
+[SERVER 4 - 192.168.5.2] (24.5852s):Received 14 bytes from 192.168.2.4 port 49157 data 7 1 4 904 903 optimized 1
+[SERVER 4 - 192.168.5.2] (24.5852s):Sent 14 bytes to 192.168.2.4 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 7 1 4 904 903 6 1
+[CLIENT 3 - 192.168.2.4] (24.597s):Received 18 bytes from 192.168.4.2 port 44400 data 7 1 4 904 903 6 1
+[CLIENT 3 - 192.168.2.4] (24.597s):Waiting for 4 replies, received 4
+[CLIENT 3 - 192.168.2.4] (24.597s):Proceeding to PHASE2, maxViews 6, bound 3
+[CLIENT 3 - 192.168.2.4] (24.597s):** READ COMPLETED: 7 in 0.0603415s, Prop Value: 904, <ts, value, pvalue>: [4,904,903] - @ 2 EXCH **
+[CLIENT 3 - 192.168.2.4] (24.597s):** NEXT OPERATION: in 2.3s
+[CLIENT 3 - 192.168.2.4] (24.6206s):Received 18 bytes from 192.168.5.2 port 44400 data 7 1 4 904 903 6 1
+[CLIENT 0 - 192.168.1.3] (25.4249s):Sent 14 bytes to 192.168.1.2 port 44400
+[CLIENT 0 - 192.168.1.3] (25.4249s):Sent 14 bytes to 192.168.2.2 port 44400
+[CLIENT 0 - 192.168.1.3] (25.4249s):Sent 14 bytes to 192.168.3.2 port 44400
+[CLIENT 0 - 192.168.1.3] (25.4249s):Sent 14 bytes to 192.168.4.2 port 44400
+[CLIENT 0 - 192.168.1.3] (25.4249s):Sent 14 bytes to 192.168.5.2 port 44400
+[CLIENT 0 - 192.168.1.3] (25.4249s):** WRITE INVOKED: 5 at 25.4249s
+[SERVER 0 - 192.168.1.2] (25.4271s):Received 14 bytes from 192.168.1.3 port 49153 data 5 0 5 905 904 optimized 1
+[SERVER 0 - 192.168.1.2] (25.4271s):Sent 14 bytes to 192.168.1.3 port 49153 seen: {  192.168.1.3} data 5 0 5 905 904 1 0
+[CLIENT 0 - 192.168.1.3] (25.4292s):Received 18 bytes from 192.168.1.2 port 44400 data 5 0 5 905 904 1 0
+[SERVER 1 - 192.168.2.2] (25.4439s):Received 14 bytes from 192.168.1.3 port 49154 data 5 0 5 905 904 optimized 1
+[SERVER 1 - 192.168.2.2] (25.4439s):Sent 14 bytes to 192.168.1.3 port 49154 seen: {  192.168.1.3} data 5 0 5 905 904 1 0
+[SERVER 2 - 192.168.3.2] (25.4568s):Received 14 bytes from 192.168.1.3 port 49155 data 5 0 5 905 904 optimized 1
+[SERVER 2 - 192.168.3.2] (25.4568s):Sent 14 bytes to 192.168.1.3 port 49155 seen: {  192.168.1.3} data 5 0 5 905 904 1 0
+[CLIENT 0 - 192.168.1.3] (25.4586s):Received 18 bytes from 192.168.2.2 port 44400 data 5 0 5 905 904 1 0
+[SERVER 3 - 192.168.4.2] (25.4695s):Received 14 bytes from 192.168.1.3 port 49156 data 5 0 5 905 904 optimized 1
+[SERVER 3 - 192.168.4.2] (25.4695s):Sent 14 bytes to 192.168.1.3 port 49156 seen: {  192.168.1.3} data 5 0 5 905 904 1 0
+[CLIENT 0 - 192.168.1.3] (25.4819s):Received 18 bytes from 192.168.3.2 port 44400 data 5 0 5 905 904 1 0
+[SERVER 4 - 192.168.5.2] (25.4824s):Received 14 bytes from 192.168.1.3 port 49157 data 5 0 5 905 904 optimized 1
+[SERVER 4 - 192.168.5.2] (25.4824s):Sent 14 bytes to 192.168.1.3 port 49157 seen: {  192.168.1.3} data 5 0 5 905 904 1 0
+[CLIENT 0 - 192.168.1.3] (25.505s):Received 18 bytes from 192.168.4.2 port 44400 data 5 0 5 905 904 1 0
+[CLIENT 0 - 192.168.1.3] (25.505s):** NEXT OPERATION: in 4s
+[CLIENT 0 - 192.168.1.3] (25.505s):** WRITE COMPLETED: 5 in 0.0800142s, <ts, value>: [5,905], @ 2 EXCH **
+[CLIENT 0 - 192.168.1.3] (25.5282s):Received 18 bytes from 192.168.5.2 port 44400 data 5 0 5 905 904 1 0
+[CLIENT 4 - 192.168.3.3] (26.1755s):Sent 14 bytes to 192.168.1.2 port 44400
+[CLIENT 4 - 192.168.3.3] (26.1755s):Sent 14 bytes to 192.168.2.2 port 44400
+[CLIENT 4 - 192.168.3.3] (26.1755s):Sent 14 bytes to 192.168.3.2 port 44400
+[CLIENT 4 - 192.168.3.3] (26.1755s):Sent 14 bytes to 192.168.4.2 port 44400
+[CLIENT 4 - 192.168.3.3] (26.1755s):Sent 14 bytes to 192.168.5.2 port 44400
+[CLIENT 4 - 192.168.3.3] (26.1755s):** READ INVOKED: 9 at 26.1755s
+[SERVER 2 - 192.168.3.2] (26.1823s):Received 14 bytes from 192.168.3.3 port 49155 data 9 1 4 904 903 optimized 1
+[SERVER 2 - 192.168.3.2] (26.1823s):Sent 14 bytes to 192.168.3.3 port 49155 seen: {  192.168.1.3 192.168.3.3} data 9 1 5 905 904 2 0
+[CLIENT 4 - 192.168.3.3] (26.1844s):Received 18 bytes from 192.168.3.2 port 44400 data 9 1 5 905 904 2 0
+[CLIENT 4 - 192.168.3.3] (26.1844s):Updated local <ts,value> pair to: [5,905,904]
+[SERVER 1 - 192.168.2.2] (26.1926s):Received 14 bytes from 192.168.3.3 port 49154 data 9 1 4 904 903 optimized 1
+[SERVER 1 - 192.168.2.2] (26.1926s):Sent 14 bytes to 192.168.3.3 port 49154 seen: {  192.168.1.3 192.168.3.3} data 9 1 5 905 904 2 0
+[SERVER 3 - 192.168.4.2] (26.1993s):Received 14 bytes from 192.168.3.3 port 49156 data 9 1 4 904 903 optimized 1
+[SERVER 3 - 192.168.4.2] (26.1993s):Sent 14 bytes to 192.168.3.3 port 49156 seen: {  192.168.1.3 192.168.3.3} data 9 1 5 905 904 2 0
+[SERVER 0 - 192.168.1.2] (26.2005s):Received 14 bytes from 192.168.3.3 port 49153 data 9 1 4 904 903 optimized 1
+[SERVER 0 - 192.168.1.2] (26.2005s):Sent 14 bytes to 192.168.3.3 port 49153 seen: {  192.168.1.3 192.168.3.3} data 9 1 5 905 904 2 0
+[CLIENT 4 - 192.168.3.3] (26.2073s):Received 18 bytes from 192.168.2.2 port 44400 data 9 1 5 905 904 2 0
+[SERVER 4 - 192.168.5.2] (26.2122s):Received 14 bytes from 192.168.3.3 port 49157 data 9 1 4 904 903 optimized 1
+[SERVER 4 - 192.168.5.2] (26.2122s):Sent 14 bytes to 192.168.3.3 port 49157 seen: {  192.168.1.3 192.168.3.3} data 9 1 5 905 904 2 0
+[CLIENT 4 - 192.168.3.3] (26.214s):Received 18 bytes from 192.168.4.2 port 44400 data 9 1 5 905 904 2 0
+[CLIENT 4 - 192.168.3.3] (26.2255s):Received 18 bytes from 192.168.1.2 port 44400 data 9 1 5 905 904 2 0
+[CLIENT 4 - 192.168.3.3] (26.2255s):Waiting for 4 replies, received 4
+[CLIENT 4 - 192.168.3.3] (26.2255s):Checking the PREDICATE, maxViews 2, bound 3
+[CLIENT 4 - 192.168.3.3] (26.2255s):PREDICATE LOOP: a=3, b[a]=0, bound=2
+[CLIENT 4 - 192.168.3.3] (26.2255s):PREDICATE LOOP: a=2, b[a]=4, bound=3
+[CLIENT 4 - 192.168.3.3] (26.2255s):** READ COMPLETED: 9 in 0.0500437s, Return Value: 905, <ts, value, pvalue>: [5,905,904] - @ 2 EXCH **
+[CLIENT 4 - 192.168.3.3] (26.2255s):** NEXT OPERATION: in 2.3s
+[CLIENT 4 - 192.168.3.3] (26.2373s):Received 18 bytes from 192.168.5.2 port 44400 data 9 1 5 905 904 2 0
+[CLIENT 5 - 192.168.3.4] (26.2404s):Sent 15 bytes to 192.168.1.2 port 44400
+[CLIENT 5 - 192.168.3.4] (26.2404s):Sent 15 bytes to 192.168.2.2 port 44400
+[CLIENT 5 - 192.168.3.4] (26.2404s):Sent 15 bytes to 192.168.3.2 port 44400
+[CLIENT 5 - 192.168.3.4] (26.2404s):Sent 15 bytes to 192.168.4.2 port 44400
+[CLIENT 5 - 192.168.3.4] (26.2404s):Sent 15 bytes to 192.168.5.2 port 44400
+[CLIENT 5 - 192.168.3.4] (26.2404s):** READ INVOKED: 9 at 26.2404s
+[SERVER 2 - 192.168.3.2] (26.2483s):Received 15 bytes from 192.168.3.4 port 49155 data 10 1 4 904 903 optimized 1
+[SERVER 2 - 192.168.3.2] (26.2483s):Sent 15 bytes to 192.168.3.4 port 49155 seen: {  192.168.1.3 192.168.3.3 192.168.3.4} data 10 1 5 905 904 3 0
+[CLIENT 5 - 192.168.3.4] (26.2504s):Received 19 bytes from 192.168.3.2 port 44400 data 10 1 5 905 904 3 0
+[CLIENT 5 - 192.168.3.4] (26.2504s):Updated local <ts,value> pair to: [5,905,904]
+[SERVER 1 - 192.168.2.2] (26.2581s):Received 15 bytes from 192.168.3.4 port 49154 data 10 1 4 904 903 optimized 1
+[SERVER 1 - 192.168.2.2] (26.2581s):Sent 15 bytes to 192.168.3.4 port 49154 seen: {  192.168.1.3 192.168.3.3 192.168.3.4} data 10 1 5 905 904 3 0
+[SERVER 3 - 192.168.4.2] (26.2651s):Received 15 bytes from 192.168.3.4 port 49156 data 10 1 4 904 903 optimized 1
+[SERVER 3 - 192.168.4.2] (26.2651s):Sent 15 bytes to 192.168.3.4 port 49156 seen: {  192.168.1.3 192.168.3.3 192.168.3.4} data 10 1 5 905 904 3 0
+[SERVER 0 - 192.168.1.2] (26.2654s):Received 15 bytes from 192.168.3.4 port 49153 data 10 1 4 904 903 optimized 1
+[SERVER 0 - 192.168.1.2] (26.2654s):Sent 15 bytes to 192.168.3.4 port 49153 seen: {  192.168.1.3 192.168.3.3 192.168.3.4} data 10 1 5 905 904 3 0
+[CLIENT 5 - 192.168.3.4] (26.2727s):Received 19 bytes from 192.168.2.2 port 44400 data 10 1 5 905 904 3 0
+[SERVER 4 - 192.168.5.2] (26.2785s):Received 15 bytes from 192.168.3.4 port 49157 data 10 1 4 904 903 optimized 1
+[SERVER 4 - 192.168.5.2] (26.2785s):Sent 15 bytes to 192.168.3.4 port 49157 seen: {  192.168.1.3 192.168.3.3 192.168.3.4} data 10 1 5 905 904 3 0
+[CLIENT 5 - 192.168.3.4] (26.2798s):Received 19 bytes from 192.168.4.2 port 44400 data 10 1 5 905 904 3 0
+[CLIENT 5 - 192.168.3.4] (26.2904s):Received 19 bytes from 192.168.1.2 port 44400 data 10 1 5 905 904 3 0
+[CLIENT 5 - 192.168.3.4] (26.2904s):Waiting for 4 replies, received 4
+[CLIENT 5 - 192.168.3.4] (26.2904s):Checking the PREDICATE, maxViews 3, bound 3
+[CLIENT 5 - 192.168.3.4] (26.2904s):PREDICATE LOOP: a=3, b[a]=4, bound=2
+[CLIENT 5 - 192.168.3.4] (26.2904s):** READ COMPLETED: 9 in 0.0500715s, Return Value: 905, <ts, value, pvalue>: [5,905,904] - @ 2 EXCH **
+[CLIENT 5 - 192.168.3.4] (26.2904s):** NEXT OPERATION: in 2.3s
+[CLIENT 5 - 192.168.3.4] (26.3035s):Received 19 bytes from 192.168.5.2 port 44400 data 10 1 5 905 904 3 0
+[CLIENT 2 - 192.168.2.3] (26.4894s):Sent 15 bytes to 192.168.1.2 port 44400
+[CLIENT 2 - 192.168.2.3] (26.4894s):Sent 15 bytes to 192.168.2.2 port 44400
+[CLIENT 2 - 192.168.2.3] (26.4894s):Sent 15 bytes to 192.168.3.2 port 44400
+[CLIENT 2 - 192.168.2.3] (26.4894s):Sent 15 bytes to 192.168.4.2 port 44400
+[CLIENT 2 - 192.168.2.3] (26.4894s):Sent 15 bytes to 192.168.5.2 port 44400
+[CLIENT 2 - 192.168.2.3] (26.4894s):** READ INVOKED: 9 at 26.4894s
+[SERVER 1 - 192.168.2.2] (26.494s):Received 15 bytes from 192.168.2.3 port 49154 data 13 1 4 904 903 optimized 1
+[SERVER 1 - 192.168.2.2] (26.494s):Sent 15 bytes to 192.168.2.3 port 49154 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 13 1 5 905 904 4 0
+[CLIENT 2 - 192.168.2.3] (26.4962s):Received 19 bytes from 192.168.2.2 port 44400 data 13 1 5 905 904 4 0
+[CLIENT 2 - 192.168.2.3] (26.4962s):Updated local <ts,value> pair to: [5,905,904]
+[SERVER 0 - 192.168.1.2] (26.504s):Received 15 bytes from 192.168.2.3 port 49153 data 13 1 4 904 903 optimized 1
+[SERVER 0 - 192.168.1.2] (26.504s):Sent 15 bytes to 192.168.2.3 port 49153 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 13 1 5 905 904 4 0
+[SERVER 2 - 192.168.3.2] (26.5117s):Received 15 bytes from 192.168.2.3 port 49155 data 13 1 4 904 903 optimized 1
+[SERVER 2 - 192.168.3.2] (26.5117s):Sent 15 bytes to 192.168.2.3 port 49155 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 13 1 5 905 904 4 0
+[CLIENT 2 - 192.168.2.3] (26.5187s):Received 19 bytes from 192.168.1.2 port 44400 data 13 1 5 905 904 4 0
+[SERVER 3 - 192.168.4.2] (26.5248s):Received 15 bytes from 192.168.2.3 port 49156 data 13 1 4 904 903 optimized 1
+[SERVER 3 - 192.168.4.2] (26.5248s):Sent 15 bytes to 192.168.2.3 port 49156 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 13 1 5 905 904 4 0
+[CLIENT 2 - 192.168.2.3] (26.5263s):Received 19 bytes from 192.168.3.2 port 44400 data 13 1 5 905 904 4 0
+[SERVER 4 - 192.168.5.2] (26.5374s):Received 15 bytes from 192.168.2.3 port 49157 data 13 1 4 904 903 optimized 1
+[SERVER 4 - 192.168.5.2] (26.5374s):Sent 15 bytes to 192.168.2.3 port 49157 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 13 1 5 905 904 4 0
+[CLIENT 1 - 192.168.1.4] (26.5406s):Sent 15 bytes to 192.168.1.2 port 44400
+[CLIENT 1 - 192.168.1.4] (26.5406s):Sent 15 bytes to 192.168.2.2 port 44400
+[CLIENT 1 - 192.168.1.4] (26.5406s):Sent 15 bytes to 192.168.3.2 port 44400
+[CLIENT 1 - 192.168.1.4] (26.5406s):Sent 15 bytes to 192.168.4.2 port 44400
+[CLIENT 1 - 192.168.1.4] (26.5406s):Sent 15 bytes to 192.168.5.2 port 44400
+[CLIENT 1 - 192.168.1.4] (26.5406s):** READ INVOKED: 9 at 26.5406s
+[SERVER 0 - 192.168.1.2] (26.5428s):Received 15 bytes from 192.168.1.4 port 49153 data 10 1 4 904 903 optimized 1
+[SERVER 0 - 192.168.1.2] (26.5428s):Sent 15 bytes to 192.168.1.4 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 10 1 5 905 904 5 0
+[CLIENT 1 - 192.168.1.4] (26.5449s):Received 19 bytes from 192.168.1.2 port 44400 data 10 1 5 905 904 5 0
+[CLIENT 1 - 192.168.1.4] (26.5449s):Updated local <ts,value> pair to: [5,905,904]
+[CLIENT 2 - 192.168.2.3] (26.5499s):Received 19 bytes from 192.168.4.2 port 44400 data 13 1 5 905 904 4 0
+[CLIENT 2 - 192.168.2.3] (26.5499s):Waiting for 4 replies, received 4
+[CLIENT 2 - 192.168.2.3] (26.5499s):Proceeding to PHASE2, maxViews 4, bound 3
+[CLIENT 2 - 192.168.2.3] (26.5499s):Sent 15 bytes to 192.168.1.2 port 44400
+[CLIENT 2 - 192.168.2.3] (26.5499s):Sent 15 bytes to 192.168.2.2 port 44400
+[CLIENT 2 - 192.168.2.3] (26.5499s):Sent 15 bytes to 192.168.3.2 port 44400
+[CLIENT 2 - 192.168.2.3] (26.5499s):Sent 15 bytes to 192.168.4.2 port 44400
+[CLIENT 2 - 192.168.2.3] (26.5499s):Sent 15 bytes to 192.168.5.2 port 44400
+[SERVER 1 - 192.168.2.2] (26.557s):Received 15 bytes from 192.168.2.3 port 49154 data 14 2 5 905 904 optimized 1
+[SERVER 1 - 192.168.2.2] (26.557s):Sent 15 bytes to 192.168.2.3 port 49154 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 14 2 5 905 904 4 1
+[CLIENT 2 - 192.168.2.3] (26.5591s):Received 19 bytes from 192.168.2.2 port 44400 data 14 2 5 905 904 4 1
+[SERVER 1 - 192.168.2.2] (26.5613s):Received 15 bytes from 192.168.1.4 port 49154 data 10 1 4 904 903 optimized 1
+[SERVER 1 - 192.168.2.2] (26.5613s):Sent 15 bytes to 192.168.1.4 port 49154 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 10 1 5 905 904 5 1
+[SERVER 0 - 192.168.1.2] (26.5669s):Received 15 bytes from 192.168.2.3 port 49153 data 14 2 5 905 904 optimized 1
+[SERVER 0 - 192.168.1.2] (26.5669s):Sent 15 bytes to 192.168.2.3 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 14 2 5 905 904 5 1
+[SERVER 2 - 192.168.3.2] (26.5724s):Received 15 bytes from 192.168.1.4 port 49155 data 10 1 4 904 903 optimized 1
+[SERVER 2 - 192.168.3.2] (26.5724s):Sent 15 bytes to 192.168.1.4 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 10 1 5 905 904 5 0
+[CLIENT 2 - 192.168.2.3] (26.5728s):Received 19 bytes from 192.168.5.2 port 44400 data 13 1 5 905 904 4 0
+[SERVER 3 - 192.168.4.2] (26.5749s):Received 15 bytes from 192.168.2.3 port 49156 data 14 2 5 905 904 optimized 1
+[SERVER 3 - 192.168.4.2] (26.5749s):Sent 15 bytes to 192.168.2.3 port 49156 seen: {  192.168.1.3 192.168.2.3 192.168.3.3 192.168.3.4} data 14 2 5 905 904 4 1
+[CLIENT 1 - 192.168.1.4] (26.576s):Received 19 bytes from 192.168.2.2 port 44400 data 10 1 5 905 904 5 1
+[SERVER 2 - 192.168.3.2] (26.5784s):Received 15 bytes from 192.168.2.3 port 49155 data 14 2 5 905 904 optimized 1
+[SERVER 2 - 192.168.3.2] (26.5784s):Sent 15 bytes to 192.168.2.3 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 14 2 5 905 904 5 1
+[CLIENT 2 - 192.168.2.3] (26.5815s):Received 19 bytes from 192.168.1.2 port 44400 data 14 2 5 905 904 5 1
+[SERVER 3 - 192.168.4.2] (26.5853s):Received 15 bytes from 192.168.1.4 port 49156 data 10 1 4 904 903 optimized 1
+[SERVER 3 - 192.168.4.2] (26.5853s):Sent 15 bytes to 192.168.1.4 port 49156 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 10 1 5 905 904 5 1
+[CLIENT 2 - 192.168.2.3] (26.5931s):Received 19 bytes from 192.168.3.2 port 44400 data 14 2 5 905 904 5 1
+[CLIENT 1 - 192.168.1.4] (26.5974s):Received 19 bytes from 192.168.3.2 port 44400 data 10 1 5 905 904 5 0
+[SERVER 4 - 192.168.5.2] (26.5979s):Received 15 bytes from 192.168.1.4 port 49157 data 10 1 4 904 903 optimized 1
+[SERVER 4 - 192.168.5.2] (26.5979s):Sent 15 bytes to 192.168.1.4 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 10 1 5 905 904 5 0
+[CLIENT 2 - 192.168.2.3] (26.5999s):Received 19 bytes from 192.168.4.2 port 44400 data 14 2 5 905 904 4 1
+[CLIENT 2 - 192.168.2.3] (26.5999s):** NEXT OPERATION: in 2.3s
+[CLIENT 2 - 192.168.2.3] (26.5999s):** READ COMPLETED: 9 in 0.110574s, <ts, value>: [5,905] - @ 4 EXCH **
+[SERVER 4 - 192.168.5.2] (26.6025s):Received 15 bytes from 192.168.2.3 port 49157 data 14 2 5 905 904 optimized 1
+[SERVER 4 - 192.168.5.2] (26.6025s):Sent 15 bytes to 192.168.2.3 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.3.3 192.168.3.4} data 14 2 5 905 904 5 1
+[CLIENT 1 - 192.168.1.4] (26.6207s):Received 19 bytes from 192.168.4.2 port 44400 data 10 1 5 905 904 5 1
+[CLIENT 1 - 192.168.1.4] (26.6207s):Waiting for 4 replies, received 4
+[CLIENT 1 - 192.168.1.4] (26.6207s):Proceeding to PHASE2, maxViews 5, bound 3
+[CLIENT 1 - 192.168.1.4] (26.6207s):** READ COMPLETED: 9 in 0.0800824s, Prop Value: 905, <ts, value, pvalue>: [5,905,904] - @ 2 EXCH **
+[CLIENT 1 - 192.168.1.4] (26.6207s):** NEXT OPERATION: in 2.3s
+[CLIENT 2 - 192.168.2.3] (26.6379s):Received 19 bytes from 192.168.5.2 port 44400 data 14 2 5 905 904 5 1
+[CLIENT 1 - 192.168.1.4] (26.6437s):Received 19 bytes from 192.168.5.2 port 44400 data 10 1 5 905 904 5 0
+[CLIENT 3 - 192.168.2.4] (26.897s):Sent 14 bytes to 192.168.1.2 port 44400
+[CLIENT 3 - 192.168.2.4] (26.897s):Sent 14 bytes to 192.168.2.2 port 44400
+[CLIENT 3 - 192.168.2.4] (26.897s):Sent 14 bytes to 192.168.3.2 port 44400
+[CLIENT 3 - 192.168.2.4] (26.897s):Sent 14 bytes to 192.168.4.2 port 44400
+[CLIENT 3 - 192.168.2.4] (26.897s):Sent 14 bytes to 192.168.5.2 port 44400
+[CLIENT 3 - 192.168.2.4] (26.897s):** READ INVOKED: 8 at 26.897s
+[SERVER 1 - 192.168.2.2] (26.9015s):Received 14 bytes from 192.168.2.4 port 49154 data 8 1 4 904 903 optimized 1
+[SERVER 1 - 192.168.2.2] (26.9015s):Sent 14 bytes to 192.168.2.4 port 49154 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 8 1 5 905 904 6 1
+[CLIENT 3 - 192.168.2.4] (26.9036s):Received 18 bytes from 192.168.2.2 port 44400 data 8 1 5 905 904 6 1
+[CLIENT 3 - 192.168.2.4] (26.9036s):Updated local <ts,value> pair to: [5,905,904]
+[SERVER 0 - 192.168.1.2] (26.9116s):Received 14 bytes from 192.168.2.4 port 49153 data 8 1 4 904 903 optimized 1
+[SERVER 0 - 192.168.1.2] (26.9116s):Sent 14 bytes to 192.168.2.4 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 8 1 5 905 904 6 1
+[SERVER 2 - 192.168.3.2] (26.9186s):Received 14 bytes from 192.168.2.4 port 49155 data 8 1 4 904 903 optimized 1
+[SERVER 2 - 192.168.3.2] (26.9186s):Sent 14 bytes to 192.168.2.4 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 8 1 5 905 904 6 1
+[CLIENT 3 - 192.168.2.4] (26.9263s):Received 18 bytes from 192.168.1.2 port 44400 data 8 1 5 905 904 6 1
+[SERVER 3 - 192.168.4.2] (26.9316s):Received 14 bytes from 192.168.2.4 port 49156 data 8 1 4 904 903 optimized 1
+[SERVER 3 - 192.168.4.2] (26.9316s):Sent 14 bytes to 192.168.2.4 port 49156 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 8 1 5 905 904 6 1
+[CLIENT 3 - 192.168.2.4] (26.9332s):Received 18 bytes from 192.168.3.2 port 44400 data 8 1 5 905 904 6 1
+[SERVER 4 - 192.168.5.2] (26.9442s):Received 14 bytes from 192.168.2.4 port 49157 data 8 1 4 904 903 optimized 1
+[SERVER 4 - 192.168.5.2] (26.9442s):Sent 14 bytes to 192.168.2.4 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 8 1 5 905 904 6 1
+[CLIENT 3 - 192.168.2.4] (26.9567s):Received 18 bytes from 192.168.4.2 port 44400 data 8 1 5 905 904 6 1
+[CLIENT 3 - 192.168.2.4] (26.9567s):Waiting for 4 replies, received 4
+[CLIENT 3 - 192.168.2.4] (26.9567s):Proceeding to PHASE2, maxViews 6, bound 3
+[CLIENT 3 - 192.168.2.4] (26.9567s):** READ COMPLETED: 8 in 0.0596835s, Prop Value: 905, <ts, value, pvalue>: [5,905,904] - @ 2 EXCH **
+[CLIENT 3 - 192.168.2.4] (26.9567s):** NEXT OPERATION: in 2.3s
+[CLIENT 3 - 192.168.2.4] (26.9796s):Received 18 bytes from 192.168.5.2 port 44400 data 8 1 5 905 904 6 1
+[CLIENT 4 - 192.168.3.3] (28.5255s):Sent 15 bytes to 192.168.1.2 port 44400
+[CLIENT 4 - 192.168.3.3] (28.5255s):Sent 15 bytes to 192.168.2.2 port 44400
+[CLIENT 4 - 192.168.3.3] (28.5255s):Sent 15 bytes to 192.168.3.2 port 44400
+[CLIENT 4 - 192.168.3.3] (28.5255s):Sent 15 bytes to 192.168.4.2 port 44400
+[CLIENT 4 - 192.168.3.3] (28.5255s):Sent 15 bytes to 192.168.5.2 port 44400
+[CLIENT 4 - 192.168.3.3] (28.5255s):** READ INVOKED: 10 at 28.5255s
+[SERVER 2 - 192.168.3.2] (28.5325s):Received 15 bytes from 192.168.3.3 port 49155 data 10 1 5 905 904 optimized 1
+[SERVER 2 - 192.168.3.2] (28.5325s):Sent 15 bytes to 192.168.3.3 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 10 1 5 905 904 6 1
+[CLIENT 4 - 192.168.3.3] (28.5346s):Received 19 bytes from 192.168.3.2 port 44400 data 10 1 5 905 904 6 1
+[SERVER 1 - 192.168.2.2] (28.5423s):Received 15 bytes from 192.168.3.3 port 49154 data 10 1 5 905 904 optimized 1
+[SERVER 1 - 192.168.2.2] (28.5423s):Sent 15 bytes to 192.168.3.3 port 49154 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 10 1 5 905 904 6 1
+[SERVER 3 - 192.168.4.2] (28.5499s):Received 15 bytes from 192.168.3.3 port 49156 data 10 1 5 905 904 optimized 1
+[SERVER 3 - 192.168.4.2] (28.5499s):Sent 15 bytes to 192.168.3.3 port 49156 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 10 1 5 905 904 6 1
+[SERVER 0 - 192.168.1.2] (28.5505s):Received 15 bytes from 192.168.3.3 port 49153 data 10 1 5 905 904 optimized 1
+[SERVER 0 - 192.168.1.2] (28.5505s):Sent 15 bytes to 192.168.3.3 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 10 1 5 905 904 6 1
+[CLIENT 4 - 192.168.3.3] (28.557s):Received 19 bytes from 192.168.2.2 port 44400 data 10 1 5 905 904 6 1
+[SERVER 4 - 192.168.5.2] (28.5628s):Received 15 bytes from 192.168.3.3 port 49157 data 10 1 5 905 904 optimized 1
+[SERVER 4 - 192.168.5.2] (28.5628s):Sent 15 bytes to 192.168.3.3 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 10 1 5 905 904 6 1
+[CLIENT 4 - 192.168.3.3] (28.5646s):Received 19 bytes from 192.168.4.2 port 44400 data 10 1 5 905 904 6 1
+[CLIENT 4 - 192.168.3.3] (28.5756s):Received 19 bytes from 192.168.1.2 port 44400 data 10 1 5 905 904 6 1
+[CLIENT 4 - 192.168.3.3] (28.5756s):Waiting for 4 replies, received 4
+[CLIENT 4 - 192.168.3.3] (28.5756s):Proceeding to PHASE2, maxViews 6, bound 3
+[CLIENT 4 - 192.168.3.3] (28.5756s):** READ COMPLETED: 10 in 0.0500715s, Prop Value: 905, <ts, value, pvalue>: [5,905,904] - @ 2 EXCH **
+[CLIENT 4 - 192.168.3.3] (28.5756s):** NEXT OPERATION: in 2.3s
+[CLIENT 4 - 192.168.3.3] (28.5878s):Received 19 bytes from 192.168.5.2 port 44400 data 10 1 5 905 904 6 1
+[CLIENT 5 - 192.168.3.4] (28.5904s):Sent 15 bytes to 192.168.1.2 port 44400
+[CLIENT 5 - 192.168.3.4] (28.5904s):Sent 15 bytes to 192.168.2.2 port 44400
+[CLIENT 5 - 192.168.3.4] (28.5904s):Sent 15 bytes to 192.168.3.2 port 44400
+[CLIENT 5 - 192.168.3.4] (28.5904s):Sent 15 bytes to 192.168.4.2 port 44400
+[CLIENT 5 - 192.168.3.4] (28.5904s):Sent 15 bytes to 192.168.5.2 port 44400
+[CLIENT 5 - 192.168.3.4] (28.5904s):** READ INVOKED: 10 at 28.5904s
+[SERVER 2 - 192.168.3.2] (28.5975s):Received 15 bytes from 192.168.3.4 port 49155 data 11 1 5 905 904 optimized 1
+[SERVER 2 - 192.168.3.2] (28.5975s):Sent 15 bytes to 192.168.3.4 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 11 1 5 905 904 6 1
+[CLIENT 5 - 192.168.3.4] (28.5996s):Received 19 bytes from 192.168.3.2 port 44400 data 11 1 5 905 904 6 1
+[SERVER 1 - 192.168.2.2] (28.6073s):Received 15 bytes from 192.168.3.4 port 49154 data 11 1 5 905 904 optimized 1
+[SERVER 1 - 192.168.2.2] (28.6073s):Sent 15 bytes to 192.168.3.4 port 49154 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 11 1 5 905 904 6 1
+[SERVER 3 - 192.168.4.2] (28.6148s):Received 15 bytes from 192.168.3.4 port 49156 data 11 1 5 905 904 optimized 1
+[SERVER 3 - 192.168.4.2] (28.6148s):Sent 15 bytes to 192.168.3.4 port 49156 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 11 1 5 905 904 6 1
+[SERVER 0 - 192.168.1.2] (28.6154s):Received 15 bytes from 192.168.3.4 port 49153 data 11 1 5 905 904 optimized 1
+[SERVER 0 - 192.168.1.2] (28.6154s):Sent 15 bytes to 192.168.3.4 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 11 1 5 905 904 6 1
+[CLIENT 5 - 192.168.3.4] (28.622s):Received 19 bytes from 192.168.2.2 port 44400 data 11 1 5 905 904 6 1
+[SERVER 4 - 192.168.5.2] (28.6275s):Received 15 bytes from 192.168.3.4 port 49157 data 11 1 5 905 904 optimized 1
+[SERVER 4 - 192.168.5.2] (28.6275s):Sent 15 bytes to 192.168.3.4 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 11 1 5 905 904 6 1
+[CLIENT 5 - 192.168.3.4] (28.6295s):Received 19 bytes from 192.168.4.2 port 44400 data 11 1 5 905 904 6 1
+[CLIENT 5 - 192.168.3.4] (28.6405s):Received 19 bytes from 192.168.1.2 port 44400 data 11 1 5 905 904 6 1
+[CLIENT 5 - 192.168.3.4] (28.6405s):Waiting for 4 replies, received 4
+[CLIENT 5 - 192.168.3.4] (28.6405s):Proceeding to PHASE2, maxViews 6, bound 3
+[CLIENT 5 - 192.168.3.4] (28.6405s):** READ COMPLETED: 10 in 0.0500715s, Prop Value: 905, <ts, value, pvalue>: [5,905,904] - @ 2 EXCH **
+[CLIENT 5 - 192.168.3.4] (28.6405s):** NEXT OPERATION: in 2.3s
+[CLIENT 5 - 192.168.3.4] (28.6526s):Received 19 bytes from 192.168.5.2 port 44400 data 11 1 5 905 904 6 1
+[CLIENT 2 - 192.168.2.3] (28.8999s):Sent 15 bytes to 192.168.1.2 port 44400
+[CLIENT 2 - 192.168.2.3] (28.8999s):Sent 15 bytes to 192.168.2.2 port 44400
+[CLIENT 2 - 192.168.2.3] (28.8999s):Sent 15 bytes to 192.168.3.2 port 44400
+[CLIENT 2 - 192.168.2.3] (28.8999s):Sent 15 bytes to 192.168.4.2 port 44400
+[CLIENT 2 - 192.168.2.3] (28.8999s):Sent 15 bytes to 192.168.5.2 port 44400
+[CLIENT 2 - 192.168.2.3] (28.8999s):** READ INVOKED: 10 at 28.8999s
+[SERVER 1 - 192.168.2.2] (28.9042s):Received 15 bytes from 192.168.2.3 port 49154 data 15 1 5 905 904 optimized 1
+[SERVER 1 - 192.168.2.2] (28.9042s):Sent 15 bytes to 192.168.2.3 port 49154 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 15 1 5 905 904 6 1
+[CLIENT 2 - 192.168.2.3] (28.9064s):Received 19 bytes from 192.168.2.2 port 44400 data 15 1 5 905 904 6 1
+[SERVER 0 - 192.168.1.2] (28.9146s):Received 15 bytes from 192.168.2.3 port 49153 data 15 1 5 905 904 optimized 1
+[SERVER 0 - 192.168.1.2] (28.9146s):Sent 15 bytes to 192.168.2.3 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 15 1 5 905 904 6 1
+[CLIENT 1 - 192.168.1.4] (28.9207s):Sent 15 bytes to 192.168.1.2 port 44400
+[CLIENT 1 - 192.168.1.4] (28.9207s):Sent 15 bytes to 192.168.2.2 port 44400
+[CLIENT 1 - 192.168.1.4] (28.9207s):Sent 15 bytes to 192.168.3.2 port 44400
+[CLIENT 1 - 192.168.1.4] (28.9207s):Sent 15 bytes to 192.168.4.2 port 44400
+[CLIENT 1 - 192.168.1.4] (28.9207s):Sent 15 bytes to 192.168.5.2 port 44400
+[CLIENT 1 - 192.168.1.4] (28.9207s):** READ INVOKED: 10 at 28.9207s
+[SERVER 2 - 192.168.3.2] (28.921s):Received 15 bytes from 192.168.2.3 port 49155 data 15 1 5 905 904 optimized 1
+[SERVER 2 - 192.168.3.2] (28.921s):Sent 15 bytes to 192.168.2.3 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 15 1 5 905 904 6 1
+[SERVER 0 - 192.168.1.2] (28.9229s):Received 15 bytes from 192.168.1.4 port 49153 data 11 1 5 905 904 optimized 1
+[SERVER 0 - 192.168.1.2] (28.9229s):Sent 15 bytes to 192.168.1.4 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 11 1 5 905 904 6 1
+[CLIENT 1 - 192.168.1.4] (28.925s):Received 19 bytes from 192.168.1.2 port 44400 data 11 1 5 905 904 6 1
+[CLIENT 2 - 192.168.2.3] (28.9292s):Received 19 bytes from 192.168.1.2 port 44400 data 15 1 5 905 904 6 1
+[SERVER 3 - 192.168.4.2] (28.9336s):Received 15 bytes from 192.168.2.3 port 49156 data 15 1 5 905 904 optimized 1
+[SERVER 3 - 192.168.4.2] (28.9336s):Sent 15 bytes to 192.168.2.3 port 49156 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 15 1 5 905 904 6 1
+[CLIENT 2 - 192.168.2.3] (28.9357s):Received 19 bytes from 192.168.3.2 port 44400 data 15 1 5 905 904 6 1
+[SERVER 1 - 192.168.2.2] (28.9401s):Received 15 bytes from 192.168.1.4 port 49154 data 11 1 5 905 904 optimized 1
+[SERVER 1 - 192.168.2.2] (28.9401s):Sent 15 bytes to 192.168.1.4 port 49154 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 11 1 5 905 904 6 1
+[SERVER 4 - 192.168.5.2] (28.9461s):Received 15 bytes from 192.168.2.3 port 49157 data 15 1 5 905 904 optimized 1
+[SERVER 4 - 192.168.5.2] (28.9461s):Sent 15 bytes to 192.168.2.3 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 15 1 5 905 904 6 1
+[SERVER 2 - 192.168.3.2] (28.9526s):Received 15 bytes from 192.168.1.4 port 49155 data 11 1 5 905 904 optimized 1
+[SERVER 2 - 192.168.3.2] (28.9526s):Sent 15 bytes to 192.168.1.4 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 11 1 5 905 904 6 1
+[CLIENT 1 - 192.168.1.4] (28.9548s):Received 19 bytes from 192.168.2.2 port 44400 data 11 1 5 905 904 6 1
+[CLIENT 2 - 192.168.2.3] (28.9586s):Received 19 bytes from 192.168.4.2 port 44400 data 15 1 5 905 904 6 1
+[CLIENT 2 - 192.168.2.3] (28.9586s):Waiting for 4 replies, received 4
+[CLIENT 2 - 192.168.2.3] (28.9586s):Proceeding to PHASE2, maxViews 6, bound 3
+[CLIENT 2 - 192.168.2.3] (28.9586s):** READ COMPLETED: 10 in 0.0587181s, Prop Value: 905, <ts, value, pvalue>: [5,905,904] - @ 2 EXCH **
+[CLIENT 2 - 192.168.2.3] (28.9586s):** NEXT OPERATION: in 2.3s
+[SERVER 3 - 192.168.4.2] (28.9652s):Received 15 bytes from 192.168.1.4 port 49156 data 11 1 5 905 904 optimized 1
+[SERVER 3 - 192.168.4.2] (28.9652s):Sent 15 bytes to 192.168.1.4 port 49156 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 11 1 5 905 904 6 1
+[CLIENT 1 - 192.168.1.4] (28.9777s):Received 19 bytes from 192.168.3.2 port 44400 data 11 1 5 905 904 6 1
+[SERVER 4 - 192.168.5.2] (28.9777s):Received 15 bytes from 192.168.1.4 port 49157 data 11 1 5 905 904 optimized 1
+[SERVER 4 - 192.168.5.2] (28.9777s):Sent 15 bytes to 192.168.1.4 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 11 1 5 905 904 6 1
+[CLIENT 2 - 192.168.2.3] (28.9816s):Received 19 bytes from 192.168.5.2 port 44400 data 15 1 5 905 904 6 1
+[CLIENT 1 - 192.168.1.4] (29.0006s):Received 19 bytes from 192.168.4.2 port 44400 data 11 1 5 905 904 6 1
+[CLIENT 1 - 192.168.1.4] (29.0006s):Waiting for 4 replies, received 4
+[CLIENT 1 - 192.168.1.4] (29.0006s):Proceeding to PHASE2, maxViews 6, bound 3
+[CLIENT 1 - 192.168.1.4] (29.0006s):** READ COMPLETED: 10 in 0.0799214s, Prop Value: 905, <ts, value, pvalue>: [5,905,904] - @ 2 EXCH **
+[CLIENT 1 - 192.168.1.4] (29.0006s):** NEXT OPERATION: in 2.3s
+[CLIENT 1 - 192.168.1.4] (29.0236s):Received 19 bytes from 192.168.5.2 port 44400 data 11 1 5 905 904 6 1
+[CLIENT 3 - 192.168.2.4] (29.2567s):Sent 14 bytes to 192.168.1.2 port 44400
+[CLIENT 3 - 192.168.2.4] (29.2567s):Sent 14 bytes to 192.168.2.2 port 44400
+[CLIENT 3 - 192.168.2.4] (29.2567s):Sent 14 bytes to 192.168.3.2 port 44400
+[CLIENT 3 - 192.168.2.4] (29.2567s):Sent 14 bytes to 192.168.4.2 port 44400
+[CLIENT 3 - 192.168.2.4] (29.2567s):Sent 14 bytes to 192.168.5.2 port 44400
+[CLIENT 3 - 192.168.2.4] (29.2567s):** READ INVOKED: 9 at 29.2567s
+[SERVER 1 - 192.168.2.2] (29.2612s):Received 14 bytes from 192.168.2.4 port 49154 data 9 1 5 905 904 optimized 1
+[SERVER 1 - 192.168.2.2] (29.2612s):Sent 14 bytes to 192.168.2.4 port 49154 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 9 1 5 905 904 6 1
+[CLIENT 3 - 192.168.2.4] (29.2633s):Received 18 bytes from 192.168.2.2 port 44400 data 9 1 5 905 904 6 1
+[SERVER 0 - 192.168.1.2] (29.2713s):Received 14 bytes from 192.168.2.4 port 49153 data 9 1 5 905 904 optimized 1
+[SERVER 0 - 192.168.1.2] (29.2713s):Sent 14 bytes to 192.168.2.4 port 49153 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 9 1 5 905 904 6 1
+[SERVER 2 - 192.168.3.2] (29.2783s):Received 14 bytes from 192.168.2.4 port 49155 data 9 1 5 905 904 optimized 1
+[SERVER 2 - 192.168.3.2] (29.2783s):Sent 14 bytes to 192.168.2.4 port 49155 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 9 1 5 905 904 6 1
+[CLIENT 3 - 192.168.2.4] (29.286s):Received 18 bytes from 192.168.1.2 port 44400 data 9 1 5 905 904 6 1
+[SERVER 3 - 192.168.4.2] (29.2911s):Received 14 bytes from 192.168.2.4 port 49156 data 9 1 5 905 904 optimized 1
+[SERVER 3 - 192.168.4.2] (29.2911s):Sent 14 bytes to 192.168.2.4 port 49156 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 9 1 5 905 904 6 1
+[CLIENT 3 - 192.168.2.4] (29.2929s):Received 18 bytes from 192.168.3.2 port 44400 data 9 1 5 905 904 6 1
+[SERVER 4 - 192.168.5.2] (29.3041s):Received 14 bytes from 192.168.2.4 port 49157 data 9 1 5 905 904 optimized 1
+[SERVER 4 - 192.168.5.2] (29.3041s):Sent 14 bytes to 192.168.2.4 port 49157 seen: {  192.168.1.3 192.168.1.4 192.168.2.3 192.168.2.4 192.168.3.3 192.168.3.4} data 9 1 5 905 904 6 1
+[CLIENT 3 - 192.168.2.4] (29.3162s):Received 18 bytes from 192.168.4.2 port 44400 data 9 1 5 905 904 6 1
+[CLIENT 3 - 192.168.2.4] (29.3162s):Waiting for 4 replies, received 4
+[CLIENT 3 - 192.168.2.4] (29.3162s):Proceeding to PHASE2, maxViews 6, bound 3
+[CLIENT 3 - 192.168.2.4] (29.3162s):** READ COMPLETED: 9 in 0.0594965s, Prop Value: 905, <ts, value, pvalue>: [5,905,904] - @ 2 EXCH **
+[CLIENT 3 - 192.168.2.4] (29.3162s):** NEXT OPERATION: in 2.3s
+[CLIENT 3 - 192.168.2.4] (29.3396s):Received 18 bytes from 192.168.5.2 port 44400 data 9 1 5 905 904 6 1
+[CLIENT 0 - 192.168.1.3] (29.505s):Sent 14 bytes to 192.168.1.2 port 44400
+[CLIENT 0 - 192.168.1.3] (29.505s):Sent 14 bytes to 192.168.2.2 port 44400
+[CLIENT 0 - 192.168.1.3] (29.505s):Sent 14 bytes to 192.168.3.2 port 44400
+[CLIENT 0 - 192.168.1.3] (29.505s):Sent 14 bytes to 192.168.4.2 port 44400
+[CLIENT 0 - 192.168.1.3] (29.505s):Sent 14 bytes to 192.168.5.2 port 44400
+[CLIENT 0 - 192.168.1.3] (29.505s):** WRITE INVOKED: 6 at 29.505s
+[SERVER 0 - 192.168.1.2] (29.5071s):Received 14 bytes from 192.168.1.3 port 49153 data 6 0 6 906 905 optimized 1
+[SERVER 0 - 192.168.1.2] (29.5071s):Sent 14 bytes to 192.168.1.3 port 49153 seen: {  192.168.1.3} data 6 0 6 906 905 1 0
+[CLIENT 0 - 192.168.1.3] (29.5092s):Received 18 bytes from 192.168.1.2 port 44400 data 6 0 6 906 905 1 0
+[SERVER 1 - 192.168.2.2] (29.5246s):Received 14 bytes from 192.168.1.3 port 49154 data 6 0 6 906 905 optimized 1
+[SERVER 1 - 192.168.2.2] (29.5246s):Sent 14 bytes to 192.168.1.3 port 49154 seen: {  192.168.1.3} data 6 0 6 906 905 1 0
+[SERVER 2 - 192.168.3.2] (29.5373s):Received 14 bytes from 192.168.1.3 port 49155 data 6 0 6 906 905 optimized 1
+[SERVER 2 - 192.168.3.2] (29.5373s):Sent 14 bytes to 192.168.1.3 port 49155 seen: {  192.168.1.3} data 6 0 6 906 905 1 0
+[CLIENT 0 - 192.168.1.3] (29.5392s):Received 18 bytes from 192.168.2.2 port 44400 data 6 0 6 906 905 1 0
+[SERVER 3 - 192.168.4.2] (29.5499s):Received 14 bytes from 192.168.1.3 port 49156 data 6 0 6 906 905 optimized 1
+[SERVER 3 - 192.168.4.2] (29.5499s):Sent 14 bytes to 192.168.1.3 port 49156 seen: {  192.168.1.3} data 6 0 6 906 905 1 0
+[CLIENT 0 - 192.168.1.3] (29.5624s):Received 18 bytes from 192.168.3.2 port 44400 data 6 0 6 906 905 1 0
+[SERVER 4 - 192.168.5.2] (29.5633s):Received 14 bytes from 192.168.1.3 port 49157 data 6 0 6 906 905 optimized 1
+[SERVER 4 - 192.168.5.2] (29.5633s):Sent 14 bytes to 192.168.1.3 port 49157 seen: {  192.168.1.3} data 6 0 6 906 905 1 0
+[CLIENT 0 - 192.168.1.3] (29.5854s):Received 18 bytes from 192.168.4.2 port 44400 data 6 0 6 906 905 1 0
+[CLIENT 0 - 192.168.1.3] (29.5854s):** NEXT OPERATION: in 4s
+[CLIENT 0 - 192.168.1.3] (29.5854s):** WRITE COMPLETED: 6 in 0.0804102s, <ts, value>: [6,906], @ 2 EXCH **
+[CLIENT 0 - 192.168.1.3] (29.6091s):Received 18 bytes from 192.168.5.2 port 44400 data 6 0 6 906 905 1 0
+[SERVER 0 - 192.168.1.2] (30s):** SERVER_0 LOG: #sentMsgs=62 **
+[SERVER 1 - 192.168.2.2] (30s):** SERVER_1 LOG: #sentMsgs=62 **
+[SERVER 2 - 192.168.3.2] (30s):** SERVER_2 LOG: #sentMsgs=62 **
+[SERVER 3 - 192.168.4.2] (30s):** SERVER_3 LOG: #sentMsgs=62 **
+[SERVER 4 - 192.168.5.2] (30s):** SERVER_4 LOG: #sentMsgs=62 **
+[CLIENT 0 - 192.168.1.3] (30s):** WRITER_0 LOG: #sentMsgs=6, #InvokedWrites=6, #CompletedWrites=6, AveOpTime=0.0812582s **
+[CLIENT 1 - 192.168.1.4] (30s):** READER_1 LOG: #sentMsgs=11, #InvokedReads=10, #CompletedReads=10, #4EXCH_reads=1, #2EXCH_reads=9, AveOpTime=0.0898408s **
+[CLIENT 2 - 192.168.2.3] (30s):** READER_2 LOG: #sentMsgs=15, #InvokedReads=10, #CompletedReads=10, #4EXCH_reads=5, #2EXCH_reads=5, AveOpTime=0.0873452s **
+[CLIENT 3 - 192.168.2.4] (30s):** READER_3 LOG: #sentMsgs=9, #InvokedReads=9, #CompletedReads=9, #4EXCH_reads=0, #2EXCH_reads=9, AveOpTime=0.0602114s **
+[CLIENT 4 - 192.168.3.3] (30s):** READER_4 LOG: #sentMsgs=10, #InvokedReads=10, #CompletedReads=10, #4EXCH_reads=0, #2EXCH_reads=10, AveOpTime=0.0507398s **
+[CLIENT 5 - 192.168.3.4] (30s):** READER_5 LOG: #sentMsgs=11, #InvokedReads=10, #CompletedReads=10, #4EXCH_reads=1, #2EXCH_reads=9, AveOpTime=0.0567829s **
+>>>> ccHybrid Scenario - Servers:5, Readers:5, Writers:1, Failures:1, ReadInterval:2.3, WriteInterval:4, <<<<
+Scenario Succesfully completed.
+Exiting...
