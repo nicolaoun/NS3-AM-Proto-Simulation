@@ -46,12 +46,6 @@ ohSamServerHelper::SetServers (Ptr<Application> app, std::vector<Address> server
   app->GetObject<ohSamServer>()->SetServers (serverIps);
 }
 
-void
-ohSamServerHelper::SetClients (Ptr<Application> app, std::vector<Address> clientIps)
-{
-  app->GetObject<ohSamServer>()->SetClients (clientIps);
-}
-
 ApplicationContainer
 ohSamServerHelper::Install (Ptr<Node> node) const
 {

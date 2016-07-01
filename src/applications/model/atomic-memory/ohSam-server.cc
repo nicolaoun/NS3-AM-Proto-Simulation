@@ -121,19 +121,6 @@ ohSamServer::SetServers (std::vector<Address> ip)
 	}
 }
 
-void
-ohSamServer::SetClients (std::vector<Address> ip)
-{
-	m_clntAddress = ip;
-	m_numClients = m_clntAddress.size();
-
-	for (unsigned i=0; i<m_clntAddress.size(); i++)
-	{
-		NS_LOG_FUNCTION (this << "server" << Ipv4Address::ConvertFrom(m_clntAddress[i]));
-	}
-}
-
-
 void 
 ohSamServer::StartApplication (void)
 {
@@ -205,7 +192,7 @@ ohSamServer::StartApplication (void)
 
 		}
 	}
-
+	/*
 	//connect to the other servers
 	if ( m_clntSocket.empty() )
 	{
@@ -233,6 +220,7 @@ ohSamServer::StartApplication (void)
 					MakeCallback (&ohSamServer::ConnectionFailed, this));
 		}
 	}
+	*/
 }
 
 
@@ -293,8 +281,42 @@ void ohSamServer::HandlePeerError (Ptr<Socket> socket)
 void ohSamServer::HandleAccept (Ptr<Socket> s, const Address& from)
 {
 	NS_LOG_FUNCTION (this << s << from);
+	//Address from;
+	bool isServer = false;
+	std::stringstream sstm;
+
 	s->SetRecvCallback (MakeCallback (&ohSamServer::HandleRead, this));
-	m_socketList.push_back (s);
+	//s->GetPeerName(from);
+
+	for (uint32_t i=0; i < m_serverAddress.size(); i++)
+	{
+		if ( InetSocketAddress::ConvertFrom(from).GetIpv4() == m_serverAddress[i] )
+		{
+			isServer = true;
+		}
+	}
+
+	if( !isServer )
+	{
+		m_clntAddress.push_back(from);
+		m_clntSocket.push_back(s);
+		m_numClients++;
+
+		m_operations.resize(m_numClients);
+		m_relays.resize(m_numClients);
+
+		AsmCommon::Reset(sstm);
+		sstm << "ACCEPTED CLIENT " << m_clntAddress.size() << ": " << InetSocketAddress::ConvertFrom(from).GetIpv4();
+		LogInfo(sstm);
+	}
+	else
+	{
+		m_socketList.push_back (s);
+
+		AsmCommon::Reset(sstm);
+		sstm << "ACCEPTED SERVER " << m_socketList.size() << ": " << InetSocketAddress::ConvertFrom(from).GetIpv4();
+		LogInfo(sstm);
+	}
 }
 
  void ohSamServer::ConnectionSucceeded (Ptr<Socket> socket)
@@ -354,17 +376,9 @@ ohSamServer::HandleRead (Ptr<Socket> socket)
 
 	Ptr<Packet> packet;
 	Address from;
-
-
-	Address msgAddr;
-	uint32_t msgT, msgTs, msgV, msgOp, msgSenderID, reply_type;
+	uint32_t msgT;
 	std::stringstream sstm;
 	std::string message_type = "";
-	std::string message_response_type = "";
-	std::stringstream pkts;
-	AsmCommon::Reset(pkts);
-	AsmCommon::Reset(sstm);
-
 
 
 	while ((packet = socket->RecvFrom (from)))
@@ -376,177 +390,265 @@ ohSamServer::HandleRead (Ptr<Socket> socket)
 		std::stringbuf sb;
 		sb.str(std::string((char*) buf));
 		std::istream istm(&sb);
+
 		istm >> msgT;
 
 
 		if (msgT==WRITE){
 			message_type = "write";
-			istm >> msgTs >> msgV;
 		}else if (msgT==READ){
 			message_type = "read";
-			istm >> msgSenderID >> msgOp;
-		}else{
+		}else{ if (msgT==READRELAY)
 			message_type = "readRelay";
-			istm >> msgTs >> msgV >> msgSenderID >> msgOp;
 		}
 		
+		AsmCommon::Reset(sstm);
+		sstm << "Received " << message_type <<" "<< packet->GetSize () << " bytes from " <<
+				InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
+				InetSocketAddress::ConvertFrom (from).GetPort () << " data " << buf;
+		LogInfo(sstm);
+
+		if ( msgT == WRITE || msgT == READ )
+		{
+			HandleRecvMsg(istm, socket, (MessageType) msgT);
+		}
+		else if ( msgT == READRELAY)
+		{
+			HandleRelay(istm, socket);
+		}
+	}
+}
+
+void
+ohSamServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType msgT)
+{
+	Address from;
+	uint32_t msgTs, msgV, msgOp;
+	int msgSenderID = -1;
+	std::stringstream sstm;
+	std::string message_response_type = "";
+	std::stringstream pkts;
+
+	socket->GetPeerName(from);
+
+	//find if the socket that client is connected to
+	for (uint32_t i=0; i < m_clntAddress.size(); i++)
+	{
+		if ( InetSocketAddress::ConvertFrom(from).GetIpv4() == InetSocketAddress::ConvertFrom(m_clntAddress[i]).GetIpv4() )
+		{
+			msgSenderID = i;
+			break;	//stop at the first client we find
+		}
+	}
+
+
+	// if not sender detected - drop the package
+	if ( ( msgSenderID >= 0 && msgSenderID <m_clntAddress.size() ))
+	{
+
 		//// CASE WRITE
 		if (msgT==WRITE){
-			
-			AsmCommon::Reset(sstm);
-					sstm << "Received " << message_type <<" "<< packet->GetSize () << " bytes from " <<
-							InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
-							InetSocketAddress::ConvertFrom (from).GetPort () << " data " << buf;
-					LogInfo(sstm);
 
-			NS_LOG_LOGIC ("Updating Local Info");
+			istm >> msgTs >> msgV;
 
 			if (m_ts < msgTs)
 			{
+				NS_LOG_LOGIC ("Updating Local Info");
+
 				m_ts = msgTs;
 				m_value = msgV;
 				message_response_type = "writeAck";
-				reply_type = WRITEACK;
 			}
-			NS_LOG_LOGIC ("Echoing packet");
 
 			AsmCommon::Reset(pkts);
-			pkts << reply_type << " " << m_ts << " " << m_value;
+			pkts << WRITEACK << " " << m_ts << " " << m_value;
 			SetFill(pkts.str());
 
 			Ptr<Packet> p;
-		  		if (m_dataSize)
-		    	{
-		      		NS_ASSERT_MSG (m_dataSize == m_size, "ohSamServer::HandleSend(): m_size and m_dataSize inconsistent");
-		      		NS_ASSERT_MSG (m_data, "ohSamServer::HandleSend(): m_dataSize but no m_data");
-		      		p = Create<Packet> (m_data, m_dataSize);
-		    	}
-		  		else
-		   		{
-		    		p = Create<Packet> (m_size);
-		    	}
+			if (m_dataSize)
+			{
+				NS_ASSERT_MSG (m_dataSize == m_size, "ohSamServer::HandleSend(): m_size and m_dataSize inconsistent");
+				NS_ASSERT_MSG (m_data, "ohSamServer::HandleSend(): m_dataSize but no m_data");
+				p = Create<Packet> (m_data, m_dataSize);
+			}
+			else
+			{
+				p = Create<Packet> (m_size);
+			}
 
-			
-		  	socket->Send (p);
-		  	m_sent++; //count the sent messages
+
+			socket->Send (p);
+			m_sent++; //count the sent messages
+
 			AsmCommon::Reset(sstm);
 			sstm << "Sent "<< message_response_type <<" " << p->GetSize () << " bytes to " <<
-				InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
-				InetSocketAddress::ConvertFrom (from).GetPort ();
+					InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
+					InetSocketAddress::ConvertFrom (from).GetPort ();
 			LogInfo(sstm);
+
 			p->RemoveAllPacketTags ();
 			p->RemoveAllByteTags ();
 		}
 		else if (msgT == READ)
 		{
-			
-			AsmCommon::Reset(sstm);
-					sstm << "Received " << message_type <<" "<< packet->GetSize () << " bytes from " <<
-							InetSocketAddress::ConvertFrom (from).GetIpv4 () << "port " <<
-							InetSocketAddress::ConvertFrom (from).GetPort () << " data " << buf;
-					LogInfo(sstm);
+			istm >> msgOp;
 
-			
 			message_response_type = "readRelay";
-			msgT = READRELAY;
+
+			int ipSize = from.GetSerializedSize();
+			uint8_t ipBuffer[ipSize];
+			from.CopyTo(ipBuffer);
+
+
 			AsmCommon::Reset(pkts);
-			pkts << msgT << " " << m_ts << " " << m_value << " " << msgSenderID << " " << msgOp;
+
+			pkts << READRELAY << " " << m_ts << " " << m_value << " " << ipSize << " " << ipBuffer << " " << msgOp;
+
 			SetFill(pkts.str());
 
 			Ptr<Packet> pc;
-		  		if (m_dataSize)
-		    	{
-		      		NS_ASSERT_MSG (m_dataSize == m_size, "ohSamServer::HandleSend(): m_size and m_dataSize inconsistent");
-		      		NS_ASSERT_MSG (m_data, "ohSamServer::HandleSend(): m_dataSize but no m_data");
-		      		pc = Create<Packet> (m_data, m_dataSize);
-		    	}
-		  		else
-		   		{
-		    		pc = Create<Packet> (m_size);
-		    	}
+			if (m_dataSize)
+			{
+				NS_ASSERT_MSG (m_dataSize == m_size, "ohSamServer::HandleSend(): m_size and m_dataSize inconsistent");
+				NS_ASSERT_MSG (m_data, "ohSamServer::HandleSend(): m_dataSize but no m_data");
+				pc = Create<Packet> (m_data, m_dataSize);
+			}
+			else
+			{
+				pc = Create<Packet> (m_size);
+			}
 
 			//Send a single packet to each server
-  			for (uint32_t i=0; i<m_serverAddress.size(); i++)
-  			{
-	  			m_sent++; //increase here to count also "our" never sent to ourselves message :) 
-  				if (m_serverAddress[i] != m_myAddress)
-  				{
-  					m_srvSocket[i]->Send(pc);
+			for (uint32_t i=0; i<m_serverAddress.size(); i++)
+			{
+				m_sent++; //increase here to count also "our" never sent to ourselves message :)
 
-  					AsmCommon::Reset(sstm);
-  					sstm << "Sent "<< message_response_type << " " << pc->GetSize () << " bytes to " << Ipv4Address::ConvertFrom (m_serverAddress[i]);
-  					LogInfo ( sstm );
-  				}
-  			}
-  			pc->RemoveAllPacketTags ();
+				AsmCommon::Reset(sstm);
+				sstm << "Sending ReadRelay to " << Ipv4Address::ConvertFrom (m_serverAddress[i]);
+				LogInfo ( sstm );
+
+				if (m_serverAddress[i] != m_myAddress)
+				{
+					m_srvSocket[i]->Send(pc);
+
+					AsmCommon::Reset(sstm);
+					sstm << "Sent "<< message_response_type << " " << pc->GetSize () << " bytes to " << Ipv4Address::ConvertFrom (m_serverAddress[i]);
+					LogInfo ( sstm );
+				}
+			}
+
+			pc->RemoveAllPacketTags ();
 			pc->RemoveAllByteTags ();
 		}
-		else{
-			/////////////////////////////////
-			////////// READ RELAY ///////////
-			/////////////////////////////////
+	}
+}
 
-			AsmCommon::Reset(sstm);
-			sstm << "Received " << message_type <<" "<< packet->GetSize () << " bytes from " <<
-					InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
-					InetSocketAddress::ConvertFrom (from).GetPort () << " data " << buf;
-			LogInfo(sstm);
+void
+ohSamServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
+{
+	uint32_t msgT, msgTs, msgV, msgOp, msgIpSize;
+	int msgSenderID = -1;
+	Address senderIp;
+	//uint8_t msgSenderIp[Address::MAX_SIZE];
+	std::string msgSenderIp;
+	std::stringstream sstm;
+	std::string message_type = "";
+	std::string message_response_type = "";
+	std::stringstream pkts;
+	Address from;
 
+	socket->GetPeerName(from);
+
+	istm >> msgTs >> msgV >> msgIpSize;
+
+	char ipBuffer[msgIpSize];
+	uint8_t ipBuffer2[msgIpSize];
+	istm.read(ipBuffer, 1);	// flush the space
+	istm.read(ipBuffer, msgIpSize-1);
+
+	memcpy(ipBuffer2, ipBuffer, msgIpSize-1);
+
+	istm >> msgOp;
+	senderIp.CopyFrom(ipBuffer2, msgIpSize-1);
+	//senderIp = new Ipv4Address(msgSenderIp.c_str());
+
+	//find if the socket that client is connected to
+	for (uint32_t i=0; i < m_clntAddress.size(); i++)
+	{
+		if ( Ipv4Address::ConvertFrom(senderIp) == InetSocketAddress::ConvertFrom(m_clntAddress[i]).GetIpv4() )
+		{
+			msgSenderID = i;
+			break;	//stop at the first client we find
+		}
+	}
+
+	AsmCommon::Reset(sstm);
+	sstm << "Processing ReadRelay from " << InetSocketAddress::ConvertFrom(from).GetIpv4() <<": InitiatorIp= "
+			<< Ipv4Address::ConvertFrom(senderIp) << " RawIp=" << ipBuffer2 << " InitiatorID=" << msgSenderID << ", msgOp=" << msgOp;
+	// << ", relayTs=" << m_relayTs[msgSenderID] << ", msgTs=" << msgTs << ", #RelaysRcved=" << m_relays[msgSenderID];
+	LogInfo(sstm );
+
+	if ( msgSenderID >= 0 && msgSenderID < m_clntAddress.size() )
+	{
+
+		if (m_ts < msgTs)
+		{
 			NS_LOG_LOGIC ("Updating Local Info");
 
-
-			if (m_ts < msgTs)
-			{
-				m_ts = msgTs;
-				m_value = msgV;
-			}
-
-			if (m_operations[msgSenderID] < msgOp)
-			{
-				m_operations[msgSenderID] = msgOp;
-				m_relays[msgSenderID] = 1;
-			}
-
-			if (m_operations[msgSenderID] == msgOp)
-			{
-				m_relays[msgSenderID] ++;
-			}
-
-			if (m_relays[msgSenderID] >= (m_numServers - m_fail))
-			{
-				// REPLY back to the reader
-				message_response_type = "readAck";
-				msgT = READACK;
-				AsmCommon::Reset(pkts);
-				pkts << msgT << " " << m_ts << " " << m_value << " " << msgOp;
-				SetFill(pkts.str());
-
-				Ptr<Packet> pk;
-				if (m_dataSize)
-				{
-					NS_ASSERT_MSG (m_dataSize == m_size, "ohSamServer::HandleSend(): m_size and m_dataSize inconsistent");
-					NS_ASSERT_MSG (m_data, "ohSamServer::HandleSend(): m_dataSize but no m_data");
-					pk = Create<Packet> (m_data, m_dataSize);
-				}
-				else
-				{
-					pk = Create<Packet> (m_size);
-				}
-
-				//Send to the corresponding client (from the info of the message is msgSenderId)
-				m_clntSocket[msgSenderID]->Send(pk);
-				m_sent++;
-				AsmCommon::Reset(sstm);
-				sstm << "Sent " << message_response_type <<" "<< pk->GetSize () << " bytes to " << Ipv4Address::ConvertFrom (m_clntAddress[msgSenderID]);
-				LogInfo ( sstm );
-				pk->RemoveAllPacketTags ();
-				pk->RemoveAllByteTags ();
-
-				//reset the replies for that reader to one (to count ours)
-				m_relays[msgSenderID] =1;
-			}
+			m_ts = msgTs;
+			m_value = msgV;
 		}
 
+		if (m_operations[msgSenderID] < msgOp)
+		{
+			m_operations[msgSenderID] = msgOp;
+			m_relays[msgSenderID] = 1;
+		}
+
+		if (m_operations[msgSenderID] == msgOp)
+		{
+			m_relays[msgSenderID] ++;
+		}
+
+		AsmCommon::Reset(sstm);
+		sstm << "Relays: " << m_relays[msgSenderID] << " Need:" << (m_numServers - m_fail) << ", RelayOp: " << m_operations[msgSenderID];
+		LogInfo(sstm );
+
+		if (m_relays[msgSenderID] >= (m_numServers - m_fail))
+		{
+			// REPLY back to the reader
+			message_response_type = "readAck";
+			msgT = READACK;
+			AsmCommon::Reset(pkts);
+			pkts << msgT << " " << m_ts << " " << m_value << " " << msgOp;
+			SetFill(pkts.str());
+
+			Ptr<Packet> pk;
+			if (m_dataSize)
+			{
+				NS_ASSERT_MSG (m_dataSize == m_size, "ohSamServer::HandleSend(): m_size and m_dataSize inconsistent");
+				NS_ASSERT_MSG (m_data, "ohSamServer::HandleSend(): m_dataSize but no m_data");
+				pk = Create<Packet> (m_data, m_dataSize);
+			}
+			else
+			{
+				pk = Create<Packet> (m_size);
+			}
+
+			//Send to the corresponding client (from the info of the message is msgSenderId)
+			m_clntSocket[msgSenderID]->Send(pk);
+			m_sent++;
+
+			AsmCommon::Reset(sstm);
+			sstm << "Sent " << message_response_type <<" "<< pk->GetSize () << " bytes to " << InetSocketAddress::ConvertFrom (m_clntAddress[msgSenderID]).GetIpv4();
+			LogInfo ( sstm );
+
+			pk->RemoveAllPacketTags ();
+			pk->RemoveAllByteTags ();
+
+			//reset the replies for that reader to one (to count ours)
+			m_relays[msgSenderID] =1;
+		}
 	}
 }
 

@@ -45,12 +45,6 @@ OhFastServerHelper::SetServers (Ptr<Application> app, std::vector<Address> serve
   app->GetObject<OhFastServer>()->SetServers (serverIps);
 }
 
-void
-OhFastServerHelper::SetClients (Ptr<Application> app, std::vector<Address> clientIps)
-{
-  app->GetObject<OhFastServer>()->SetClients (clientIps);
-}
-
 ApplicationContainer
 OhFastServerHelper::Install (Ptr<Node> node) const
 {

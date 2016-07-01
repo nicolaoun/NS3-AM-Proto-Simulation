@@ -54,8 +54,6 @@ public:
 
   void SetServers (std::vector<Address> ip);
 
-  void SetClients (std::vector<Address> ip);
-
 protected:
   virtual void DoDispose (void);
 

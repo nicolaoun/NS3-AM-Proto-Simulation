@@ -129,20 +129,6 @@ OhFastServer::SetServers (std::vector<Address> ip)
 	}
 }
 
-void
-OhFastServer::SetClients (std::vector<Address> ip)
-{
-	/*
-	m_clntAddress = ip;
-	m_numClients = m_clntAddress.size();
-
-	for (unsigned i=0; i<m_clntAddress.size(); i++)
-	{
-		NS_LOG_FUNCTION (this << "server" << Ipv4Address::ConvertFrom(m_clntAddress[i]));
-	}
-	*/
-}
-
 
 void 
 OhFastServer::StartApplication (void)
@@ -215,39 +201,6 @@ OhFastServer::StartApplication (void)
 
 		}
 	}
-
-	//Set the number of sockets we need
-	//m_clntSocket.resize( m_clntAddress.size() );
-
-	//connect to clients
-	/*
-	if ( m_clntSocket.empty() )
-	{
-		//Set the number of sockets we need
-		m_clntSocket.resize( m_clntAddress.size() );
-
-		for (uint32_t i = 0; i < m_clntAddress.size(); i++ )
-		{
-			AsmCommon::Reset(sstm);
-			sstm << "Connecting to CLIENT (" << Ipv4Address::ConvertFrom(m_clntAddress[i]) << ")";
-			Log(DEBUG, sstm);
-
-			TypeId tid = TypeId::LookupByName ("ns3::TcpSocketFactory");
-			m_clntSocket[i] = Socket::CreateSocket (GetNode (), tid);
-
-			m_clntSocket[i]->Bind();
-			m_clntSocket[i]->Listen();
-			m_clntSocket[i]->Connect (InetSocketAddress (Ipv4Address::ConvertFrom(m_clntAddress[i]), m_port));
-
-			m_clntSocket[i]->SetRecvCallback (MakeCallback (&OhFastServer::HandleRead, this));
-			m_clntSocket[i]->SetAllowBroadcast (false);
-
-			m_clntSocket[i]->SetConnectCallback (
-					MakeCallback (&OhFastServer::ConnectionSucceeded, this),
-					MakeCallback (&OhFastServer::ConnectionFailed, this));
-		}
-	}
-	*/
 }
 
 
@@ -520,13 +473,14 @@ OhFastServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType 
 			m_relayTs[msgSenderID] = m_ts;
 			m_relays[msgSenderID] = 1;
 
-			uint8_t ipBuffer[from.GetSerializedSize()];
+			int ipSize = from.GetSerializedSize();
+			uint8_t ipBuffer[ipSize];
 			from.CopyTo(ipBuffer);
 
 			// prepare and send packet to all servers
 			AsmCommon::Reset(pkts);
 			// <msgType, <ts,v,vp>, q, counter>
-			pkts << READRELAY << " " << m_ts << " " << m_value << " " << m_pvalue << " "<< ipBuffer << " " << msgOp;
+			pkts << READRELAY << " " << m_ts << " " << m_value << " " << m_pvalue << " "<< ipSize << " " << ipBuffer << " " << msgOp;
 
 			SetFill(pkts.str());
 
@@ -602,10 +556,9 @@ OhFastServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 	/////////////////////////////////
 	////////// READ RELAY ///////////
 	/////////////////////////////////
-	uint32_t msgTs, msgV, msgVp, msgOp;
+	uint32_t msgTs, msgV, msgVp, msgOp, msgIpSize;
 	int msgSenderID = -1;
 	Address senderIp;
-	uint8_t msgSenderIp[Address::MAX_SIZE];
 	std::stringstream sstm;
 	std::string message_type = "";
 	std::string message_response_type = "";
@@ -616,8 +569,17 @@ OhFastServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 
 	socket->GetPeerName(from);
 
-	istm >> msgTs >> msgV >> msgVp >> msgSenderIp >> msgOp;
-	senderIp.CopyFrom(msgSenderIp, Address::MAX_SIZE);
+	istm >> msgTs >> msgV >> msgVp >> msgIpSize;
+
+	char ipBuffer[msgIpSize];
+	uint8_t ipBuffer2[msgIpSize];
+	istm.read(ipBuffer, 1);	// flush the space
+	istm.read(ipBuffer, msgIpSize-1);
+
+	memcpy(ipBuffer2, ipBuffer, msgIpSize-1);
+
+	istm >> msgOp;
+	senderIp.CopyFrom(ipBuffer2, msgIpSize-1);
 
 	//find if the socket that client is connected to
 	for (uint32_t i=0; i < m_clntAddress.size(); i++)
@@ -708,12 +670,13 @@ OhFastServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 			// someone else relayed this ts - echo his msg
 			message_response_type = "readRelay";
 
-			uint8_t ipBuffer[from.GetSerializedSize()];
-			senderIp.CopyTo(ipBuffer);
+			int ipSize = senderIp.GetSerializedSize();
+			uint8_t ipBuffer3[ipSize];
+			senderIp.CopyTo(ipBuffer3);
 
 			AsmCommon::Reset(pkts);
 			// serialize <msgType, <ts,v,vp>, q, counter>
-			pkts << READRELAY << " " << msgTs << " " << msgV << " " << msgVp <<" "<< ipBuffer << " " << msgOp;
+			pkts << READRELAY << " " << msgTs << " " << msgV << " " << msgVp <<" "<< ipSize << " "<< ipBuffer3 << " " << msgOp;
 
 			SetFill(pkts.str());
 
