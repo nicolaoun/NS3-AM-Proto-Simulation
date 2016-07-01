@@ -245,44 +245,6 @@ main (int argc, char *argv[])
   uint32_t maxPacketCount = 10;
   ApplicationContainer c_apps;
 
-  /*
-  // Create the writer process
-  NS_LOG_INFO ("Create the Writer.");
-
-  interPacketInterval = Seconds (writeInterval);
-  CCHybridClientHelper client (Address(ipIn.GetAddress (0)), port);
-  client.SetAttribute ("MaxOperations", UintegerValue (maxPacketCount));
-  client.SetAttribute ("ID", UintegerValue (0));
-  client.SetAttribute ("MaxFailures", UintegerValue (numFail));
-  client.SetAttribute ("Interval", TimeValue (interPacketInterval));
-  client.SetAttribute ("PacketSize", UintegerValue (packetSize));
-  client.SetAttribute ("SetRole", UintegerValue(WRITER));				//set writer role
-  client.SetAttribute ("RandomInterval", UintegerValue(1));
-  client.SetAttribute ("Seed", UintegerValue(19));
-  Ptr<Application> app = (client.Install (nodes.Get (0))).Get(0);
-  client.SetServers(app, serverAddress);
-  c_apps.Add(app);
-
-  // Create the reader processes
-  NS_LOG_INFO ("Create Readers.");
-
-  for (int i=numServers+1; i<=numServers+numReaders; i++)
-  {
-	  interPacketInterval = Seconds (readInterval);
-	  CCHybridClientHelper client (Address(ipIn.GetAddress (i)), port);
-	  client.SetAttribute ("MaxOperations", UintegerValue (maxPacketCount));
-	  client.SetAttribute ("ID", UintegerValue (i-numServers));
-	  client.SetAttribute ("MaxFailures", UintegerValue (numFail));
-	  client.SetAttribute ("Interval", TimeValue (interPacketInterval));
-	  client.SetAttribute ("PacketSize", UintegerValue (packetSize));
-	  client.SetAttribute ("SetRole", UintegerValue(READER));				//set reader role
-	  client.SetAttribute ("RandomInterval", UintegerValue(1));
-	  client.SetAttribute ("Seed", UintegerValue(10));
-	  Ptr<Application> app = (client.Install (nodes.Get (i))).Get(0);
-	  client.SetServers(app, serverAddress);
-	  c_apps.Add(app);
-  }
-  */
 
   // Create the writer+reader processes
   	NS_LOG_INFO ("Create Clients (Writer+Readers).");

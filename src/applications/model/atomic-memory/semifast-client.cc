@@ -174,7 +174,7 @@ SemifastClient::StartApplication (void)
 	std::stringstream sstm;
 
 	// seed pseudo-randomness
-	srand(m_seed);
+	srand(time(NULL));
 
 	if ( m_socket.empty() )
 	{
@@ -751,12 +751,13 @@ SemifastClient::IsPredicateValid()
 		for(int i=0; i<combinations; i++)
 		{
 			maxSet = SetOperation< std::pair< Address, std::set<uint32_t> > >::IthSubsetSizeK(m_maxAckSet, msSize, i);
+			intersection.clear();
 
 			AsmCommon::Reset(sstm);
 			sstm << "MAX SET:{ ";
 			for ( it = maxSet.begin(); it != maxSet.end(); it++)
 			{
-				sstm << (*it).first << " ";
+				sstm << InetSocketAddress::ConvertFrom((*it).first).GetIpv4() << " ";
 			}
 			sstm << "}";
 			LogInfo(sstm);
