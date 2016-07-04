@@ -240,7 +240,7 @@ main (int argc, char *argv[])
 	}
 
 	s_apps.Start (Seconds (1.0));
-	s_apps.Stop (Seconds (60.0));
+	s_apps.Stop (Seconds (30.0));
 
 
 	//
@@ -305,7 +305,7 @@ main (int argc, char *argv[])
 	}
 
 	c_apps.Start (Seconds (1.0));
-	c_apps.Stop (Seconds (60.0));
+	c_apps.Stop (Seconds (30.0));
 
 
 	// AsciiTraceHelper ascii;
