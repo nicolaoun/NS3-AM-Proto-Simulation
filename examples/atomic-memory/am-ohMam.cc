@@ -47,7 +47,7 @@ main (int argc, char *argv[])
 	int numFail = -1;
 	float readInterval = 2;	//read interval in seconds
 	float writeInterval = 3;	//read interval in seconds
-  int numClients = 0;
+  //int numClients = 0;
   int version=1;
 
 //
