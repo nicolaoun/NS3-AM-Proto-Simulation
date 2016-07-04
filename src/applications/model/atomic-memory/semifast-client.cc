@@ -181,7 +181,7 @@ SemifastClient::StartApplication (void)
 		//Set the number of sockets we need
 		m_socket.resize( m_serverAddress.size() );
 
-		for (int i = 0; i < m_serverAddress.size(); i++ )
+		for (uint32_t i = 0; i < m_serverAddress.size(); i++ )
 		{
 			AsmCommon::Reset(sstm);
 			sstm << "Connecting to SERVER (" << Ipv4Address::ConvertFrom(m_serverAddress[i]) << ")";
@@ -217,7 +217,7 @@ SemifastClient::StopApplication ()
 
   if ( !m_socket.empty() )
     {
-	  for(int i=0; i< m_socket.size(); i++ )
+	  for(uint32_t i=0; i< m_socket.size(); i++ )
 	  {
 		  m_socket[i]->Close ();
 		  m_socket[i]->SetRecvCallback (MakeNullCallback<void, Ptr<Socket> > ());
@@ -499,7 +499,7 @@ SemifastClient::HandleSend (void)
 
 
   //Send a single packet to each server
-  for (int i=0; i<m_serverAddress.size(); i++)
+  for (uint32_t i=0; i<m_serverAddress.size(); i++)
   {
 	  ++m_sent;
 
@@ -587,7 +587,7 @@ SemifastClient::ProcessReply(std::istream& istm, Address sender)
 		{
 		case PHASE1:
 			// deserialize the seen set of the message
-			for (int i=0; i<msgViews; i++)
+			for (uint32_t i=0; i<msgViews; i++)
 			{
 				istm >> vId;
 				msgSeen.insert(vId);
@@ -723,7 +723,8 @@ SemifastClient::IsPredicateValid()
 {
 	NS_LOG_FUNCTION (this);
 
-	int a, msSize, combinations;
+	int msSize, combinations;
+	uint32_t a;
 	std::stringstream sstm;
 	//int f1,f2,f3;
 	std::set< std::pair< Address, std::set<uint32_t> > > maxSet;
