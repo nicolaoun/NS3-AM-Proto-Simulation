@@ -442,7 +442,7 @@ OhFastServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType 
 
 
 	// if not sender detected - drop the package
-	if ( ( msgSenderID >= 0 && msgSenderID <m_clntAddress.size() )|| m_fail == 0)
+	if ( ( msgSenderID >= 0 && msgSenderID < (int) m_clntAddress.size() )|| m_fail == 0)
 	{
 		if ( m_ts < msgTs )
 		{
@@ -595,7 +595,7 @@ OhFastServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 	sstm << "Processing ReadRelay: InitiatorIp= " << Ipv4Address::ConvertFrom(senderIp) << " InitiatorID=" << msgSenderID;// << ", relayTs=" << m_relayTs[msgSenderID] << ", msgTs=" << msgTs << ", #RelaysRcved=" << m_relays[msgSenderID];
 	Log(DEBUG,  sstm );
 
-	if ( msgSenderID >= 0 && msgSenderID < m_clntAddress.size() )
+	if ( msgSenderID >= 0 && msgSenderID < (int) m_clntAddress.size() )
 	{
 		if ( m_ts < msgTs )
 		{

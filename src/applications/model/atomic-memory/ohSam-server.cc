@@ -443,7 +443,7 @@ ohSamServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType m
 
 
 	// if not sender detected - drop the package
-	if ( ( msgSenderID >= 0 && msgSenderID <m_clntAddress.size() ))
+	if ( ( msgSenderID >= 0 && msgSenderID < (int) m_clntAddress.size() ))
 	{
 
 		//// CASE WRITE
@@ -588,7 +588,7 @@ ohSamServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 	// << ", relayTs=" << m_relayTs[msgSenderID] << ", msgTs=" << msgTs << ", #RelaysRcved=" << m_relays[msgSenderID];
 	LogInfo(sstm );
 
-	if ( msgSenderID >= 0 && msgSenderID < m_clntAddress.size() )
+	if ( msgSenderID >= 0 && msgSenderID < (int) m_clntAddress.size() )
 	{
 
 		if (m_ts < msgTs)
