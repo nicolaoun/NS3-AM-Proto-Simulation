@@ -129,10 +129,10 @@ main (int argc, char *argv[])
 	NS_LOG_INFO ("Clients per lan: "<< clientsPerLan);
 
 	// Create one lan around each server
-	for ( uint32_t i=0; i<numServers; i++)
+	for ( int i=0; i<numServers; i++)
 	{
 		NodeContainer lanClients;
-		for ( uint32_t j=i*clientsPerLan; j < numClients && j < (i+1)*clientsPerLan; j++ )
+		for ( int j=i*clientsPerLan; j < numClients && j < (i+1)*clientsPerLan; j++ )
 		{
 			lanClients.Add ( clientNodes.Get(j) );
 		}
@@ -144,7 +144,7 @@ main (int argc, char *argv[])
 	std::vector<NodeContainer> routerAdjacencyList;
 
 	//connect the routers with p2p
-	for(uint32_t i=0; i<numServers-1; ++i)
+	for(int i=0; i<numServers-1; ++i)
 	{
 		routerAdjacencyList.push_back ( NodeContainer (routers.Get(i), routers.Get(i+1)) );
 	}
