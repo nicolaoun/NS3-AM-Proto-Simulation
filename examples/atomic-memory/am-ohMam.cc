@@ -43,12 +43,12 @@ main (int argc, char *argv[])
 {
 	int numServers = 3;
 	int numReaders = 2;
-  int numWriters = 1;
+	int numWriters = 1;
 	int numFail = -1;
 	float readInterval = 2;	//read interval in seconds
 	float writeInterval = 3;	//read interval in seconds
-  //int numClients = 0;
-  int version=1;
+	int numClients = 0;
+	int version=1;
 
 //
 // Users may find it convenient to turn on explicit debugging
@@ -89,7 +89,7 @@ main (int argc, char *argv[])
   NS_LOG_INFO ("Create nodes.");
   NodeContainer nodes;
   //nodes.Create (numServers+numReaders+1);
-  nodes.Create (numServers+numReaders+numWriters);
+  nodes.Create (numServers+numClients);
   //TO - DO
 
   NS_LOG_INFO ("Create channels for " << nodes.GetN() << " nodes.");
