@@ -61,6 +61,7 @@ main (int argc, char *argv[])
 	float readInterval = 2;	//read interval in seconds
 	float writeInterval = 3;	//read interval in seconds
 	int version=0;
+	int seed = 0;
 
 	//
 	// Users may find it convenient to turn on explicit debugging
@@ -83,6 +84,7 @@ main (int argc, char *argv[])
 	cmd.AddValue ("rInterval", "Read interval in seconds", readInterval);
 	cmd.AddValue ("wInterval", "Write interval in seconds", writeInterval);
 	cmd.AddValue ("version", "Version 0 for FixInt, 1 for randInt", version);
+	cmd.AddValue ("seed", "Randomness Seed", seed);
 	cmd.Parse (argc, argv);
 
 	// By default set the failures equal to the minority
@@ -275,7 +277,8 @@ main (int argc, char *argv[])
 		client.SetAttribute ("MaxFailures", UintegerValue (numFail));
 		client.SetAttribute ("Interval", TimeValue (interPacketInterval));
 		client.SetAttribute ("PacketSize", UintegerValue (packetSize));
-		client.SetAttribute("RandomInterval", UintegerValue (version));
+		client.SetAttribute ("RandomInterval", UintegerValue (version));
+		client.SetAttribute ("Seed", UintegerValue (seed));
 		Ptr<Application> app = (client.Install (clientNodes.Get (i))).Get(0);
 		client.SetServers(app, serverAddress);
 		c_apps.Add(app);

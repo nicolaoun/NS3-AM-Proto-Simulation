@@ -370,7 +370,7 @@ CCHybridClient::ScheduleOperation (Time dt)
   // if rndomness is set - choose a random interval
   if ( m_randInt )
   {
-	  dt = Time::From( ((int) rand() % (int) dt.GetSeconds())+1 );
+	  dt = Time::From( (rand() % (m_interval.GetMilliSeconds()-1000))+1000, Time::MS );
   }
 
   AsmCommon::Reset(sstm);
