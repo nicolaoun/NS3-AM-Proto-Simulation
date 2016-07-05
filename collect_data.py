@@ -83,6 +83,8 @@ def execute():
 	main_avg_rdrMsgs=0
 	main_avg_wrtMsgs=0
 	main_avg_srvMsgs=0
+	seed=0
+
 	# for each test (count for 1 to 6) - 6 not included
 	for t in range(1,tests+1):
 		#those variables will be used to write back to the main file
@@ -90,9 +92,9 @@ def execute():
 		
 
 		#create a file for each test
-		scc_directory = create_output_file_for_scenario("output/logs_for_fails_"+str(fail)+"/servers_equal_"+str(numServers)+"/"+str(alg)+"/readers_"+str(numReaders)+"/version_"+str(Version)+"/read_interval_"+str(rInterval)+"_write_interval_"+str(wInterval)+"_/#test_"+str(t)+".txt", 1)
+		scc_directory = create_output_file_for_scenario("output/logs_for_fails_"+str(fail)+"/servers_equal_"+str(numServers)+"/"+str(alg)+"/readers_"+str(numReaders)+"/version_"+str(Version)+"/read_interval_"+str(rInterval)+"_write_interval_"+str(wInterval)+"_/test_"+str(t)+".txt", 1)
 		#create a commad and redirection of the output
-		command = "./waf --run '"+str(executable)+" --version="+str(version)+" --failures="+str(fail)+" --servers="+str(numServers)+" --readers="+str(numReaders)+" --rInterval="+str(rInterval)+" --wInterval="+str(wInterval)+"' >> "+str(scc_directory)+" 2>&1"
+		command = "./waf --run '"+str(executable)+" --version="+str(version)+" --failures="+str(fail)+" --servers="+str(numServers)+" --readers="+str(numReaders)+" --rInterval="+str(rInterval)+" --wInterval="+str(wInterval)+" --version="+str(version)+" --seed="+str(seed)+"' >> "+str(scc_directory)+" 2>&1"
 		#execute the command
 		os.system(command)
 		# open the file of the result
@@ -119,6 +121,7 @@ def execute():
 		main_avg_rdrMsgs += avgs_list[5]
 		main_avg_wrtMsgs += avgs_list[6]
 		main_avg_srvMsgs += avgs_list[7]
+		seed += 19
 	
 	# Once all the tests finish now we have to AVG_ALL the test and write them to the main file!!!
 	# Process them here!
@@ -147,7 +150,7 @@ hybridfast = "HybridFast"
 oh_fast = "oh-Fast"
 alg =""
 executable=""
-tests = 5
+tests = 1
 Version="fixInt"# "randInt"
 
 #############################################################################
@@ -161,7 +164,7 @@ Version="fixInt"# "randInt"
 # wInterval_stop = 40
 # wInterval_step = 10
 # rInterval_start = 23 #(means 2.3)
-# rInterval_stop = 46
+# rInterval_stop = 69
 # rInterval_step = 23
 # rdrs_start = 10 
 # rdrs_stop=100
@@ -190,16 +193,16 @@ rInterval_start = 23 #(means 2.3)
 rInterval_stop = 46  #(means 4.6)
 rInterval_step = 23  #(means 2.3)
 rdrs_start = 10      #number of readers to start
-rdrs_stop=10 		 #number of readers to stop (all will be 100)
+rdrs_stop=100 		 #number of readers to stop (all will be 100)
 rds_step=10  		 #No worries we will end up doing 10,20,40,80,100 if stop = 100
-vrsn_start=1         #All versions = 2 (1-fixInt, 2-randInt)
+vrsn_start=0         #All versions = 2 (0-fixInt, 1-randInt)
 vrsn_stop=1          #for the moment do only the fixInt
 vrsn_step=1
 prtcl_start = 1      #All protocols = 5, ABD, ohSam, Semifast, Hybrid, ohFast 
-prtcl_stop = 1       #For the moment do only ABD. Use vale 2,3,4,5 to do also OhSam and others..
+prtcl_stop = 5       #For the moment do only ABD. Use vale 2,3,4,5 to do also OhSam and others..
 prtcl_step=1
 srvrs_start=10       #Number of Servers
-srvrs_stop=10        #Number of Servers in the final should be 30
+srvrs_stop=30        #Number of Servers in the final should be 30
 srvrs_step=5
 fail_start=1         #Number of failures. For the moment do only one. 
 fail_stop=1
@@ -242,7 +245,7 @@ for fail in range(fail_start,fail_stop+1,fail_step):
 				if (numReaders==10) or (numReaders==20) or (numReaders==40) or (numReaders==80) or (numReaders==100):
 					print "    For Readers="+str(numReaders)+":"
 					for version in range(vrsn_start, vrsn_stop+1, vrsn_step):
-						if(version==1):
+						if(version==0):
 							Version="fixInt"
 						else:
 							Version = "randInt"
