@@ -142,7 +142,7 @@ OhFastServer::StartApplication (void)
 	
 	std::stringstream sstm;
 	sstm << "Debug Mode="<<m_verbose;
-	LogInfo(sstm);
+	Log(DEBUG, sstm);
 	
 	if (m_socket == 0)
 	{
