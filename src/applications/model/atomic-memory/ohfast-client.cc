@@ -250,7 +250,7 @@ OhFastClient::StartApplication (void)
 
 	
 	AsmCommon::Reset(sstm);
-	sstm << "Started Successfully: #S=" << m_numServers <<", #F=" << m_fail << ", opInt=" << m_interval;
+	sstm << "Started Succesfully: #S=" << m_numServers <<", #F=" << m_fail << ", opInt=" << m_interval << ",debug="<<m_verbose;
 	Log(DEBUG, sstm);
 
 }

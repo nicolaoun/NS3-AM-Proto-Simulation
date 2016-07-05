@@ -141,6 +141,8 @@ OhFastServer::StartApplication (void)
 	NS_LOG_FUNCTION (this);
 	
 	std::stringstream sstm;
+	sstm << "Debug Mode="<<m_verbose;
+	LogInfo(sstm);
 	
 	if (m_socket == 0)
 	{

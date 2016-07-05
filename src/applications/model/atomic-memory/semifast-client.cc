@@ -207,7 +207,7 @@ SemifastClient::StartApplication (void)
 	}
 
 	AsmCommon::Reset(sstm);
-	sstm << "Started Succesfully: #S=" << m_numServers <<", #F=" << m_fail << " #vNodes= "<< m_numVNodes <<", Vid=" << m_virtualId << ", opInt=" << m_interval;
+	sstm << "Started Succesfully: #S=" << m_numServers <<", #F=" << m_fail << " #vNodes= "<< m_numVNodes <<", Vid=" << m_virtualId << ", opInt=" << m_interval<<", debug="<<m_verbose;
 	LogInfo(sstm);
 
 }

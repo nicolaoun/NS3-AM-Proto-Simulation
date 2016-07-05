@@ -107,6 +107,9 @@ void
 AbdServer::StartApplication (void)
 {
 	NS_LOG_FUNCTION (this);
+	std::stringstream sstm;
+	sstm << "Debug Mode="<<m_verbose;
+	LogInfo(sstm);
 
 	if (m_socket == 0)
 	{
@@ -141,12 +144,14 @@ AbdServer::StartApplication (void)
 	m_socket->SetCloseCallbacks (
 			MakeCallback (&AbdServer::HandlePeerClose, this),
 			MakeCallback (&AbdServer::HandlePeerError, this));
+
 }
 
 void 
 AbdServer::StopApplication ()
 {
 	NS_LOG_FUNCTION (this);
+
 
 	if (m_socket != 0)
 	{
