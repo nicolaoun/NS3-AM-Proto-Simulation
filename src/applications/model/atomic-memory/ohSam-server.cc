@@ -427,6 +427,12 @@ ohSamServer::HandleRead (Ptr<Socket> socket)
 		{
 			HandleRelay(istm, socket);
 		}
+		else
+		{
+			AsmCommon::Reset(sstm);
+			sstm << "Invalid message type! Message from " << InetSocketAddress::ConvertFrom (from).GetIpv4 () << " dropped.";
+			LogInfo(sstm );
+		}
 	}
 }
 
@@ -535,7 +541,7 @@ ohSamServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType m
 				m_sent++; //increase here to count also "our" never sent to ourselves message :)
 
 				AsmCommon::Reset(sstm);
-				sstm << "Sending ReadRelay to " << Ipv4Address::ConvertFrom (m_serverAddress[i]);
+				sstm << "Sending ReadRelay to " << Ipv4Address::ConvertFrom (m_serverAddress[i]) << ", Read from: " << InetSocketAddress::ConvertFrom(from).GetIpv4();
 				LogInfo ( sstm );
 
 				if (m_serverAddress[i] != m_myAddress)
@@ -543,7 +549,7 @@ ohSamServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType m
 					m_srvSocket[i]->Send(pc);
 
 					AsmCommon::Reset(sstm);
-					sstm << "Sent "<< message_response_type << " " << pc->GetSize () << " bytes to " << Ipv4Address::ConvertFrom (m_serverAddress[i]);
+					sstm << "Sent "<< message_response_type << " " << pc->GetSize () << " bytes to " << Ipv4Address::ConvertFrom (m_serverAddress[i]) << " data " << pkts.str();
 					LogInfo ( sstm );
 				}
 			}
@@ -571,6 +577,15 @@ ohSamServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 	socket->GetPeerName(from);
 
 	istm >> msgTs >> msgV >> msgIpSize;
+
+	if ( msgIpSize < 8 || msgIpSize-1 >= Address::MAX_SIZE )
+	{
+		AsmCommon::Reset(sstm);
+		sstm << "Invalid Ipsize: " << msgIpSize;
+		LogInfo(sstm );
+
+		return;
+	}
 
 	char ipBuffer[msgIpSize];
 	uint8_t ipBuffer2[msgIpSize];
