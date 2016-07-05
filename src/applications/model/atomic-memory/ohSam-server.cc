@@ -516,10 +516,16 @@ ohSamServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType m
 			uint8_t ipBuffer[ipSize];
 			from.CopyTo(ipBuffer);
 
-
 			AsmCommon::Reset(pkts);
 
-			pkts << READRELAY << " " << m_ts << " " << m_value << " " << ipSize << " " << ipBuffer << " " << msgOp;
+			pkts << READRELAY << " " << m_ts << " " << m_value << " " << ipSize << " " << InetSocketAddress::ConvertFrom(from).GetIpv4() << " " << msgOp;
+
+			/*
+			for( int k=0; k<ipSize; k++)
+				pkts << (char) ipBuffer[k];
+
+			pkts << " " << msgOp;
+			*/
 
 			SetFill(pkts.str());
 
@@ -565,8 +571,9 @@ ohSamServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 {
 	uint32_t msgT, msgTs, msgV, msgOp, msgIpSize;
 	int msgSenderID = -1;
-	Address senderIp;
-	//uint8_t msgSenderIp[Address::MAX_SIZE];
+	//Address senderIp;
+	Ipv4Address senderIpv4;
+	//char msgSenderIp[Address::MAX_SIZE];
 	std::string msgSenderIp;
 	std::stringstream sstm;
 	std::string message_type = "";
@@ -576,8 +583,17 @@ ohSamServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 
 	socket->GetPeerName(from);
 
-	istm >> msgTs >> msgV >> msgIpSize;
+	istm >> msgTs >> msgV >> msgIpSize >> msgSenderIp >> msgOp;
 
+	if ( msgSenderIp == "" )
+	{
+		AsmCommon::Reset(sstm);
+		sstm << "Invalid Ipsize: " << msgIpSize;
+		LogInfo(sstm );
+
+		return;
+	}
+	/*
 	if ( msgIpSize < 8 || msgIpSize-1 >= Address::MAX_SIZE )
 	{
 		AsmCommon::Reset(sstm);
@@ -597,11 +613,14 @@ ohSamServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 	istm >> msgOp;
 	senderIp.CopyFrom(ipBuffer2, msgIpSize-1);
 	//senderIp = new Ipv4Address(msgSenderIp.c_str());
+	*/
+
+	senderIpv4.Set(msgSenderIp.c_str());
 
 	//find if the socket that client is connected to
 	for (uint32_t i=0; i < m_clntAddress.size(); i++)
 	{
-		if ( Ipv4Address::ConvertFrom(senderIp) == InetSocketAddress::ConvertFrom(m_clntAddress[i]).GetIpv4() )
+		if ( Ipv4Address::ConvertFrom(senderIpv4) == InetSocketAddress::ConvertFrom(m_clntAddress[i]).GetIpv4() )
 		{
 			msgSenderID = i;
 			break;	//stop at the first client we find
@@ -610,7 +629,7 @@ ohSamServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 
 	AsmCommon::Reset(sstm);
 	sstm << "Processing ReadRelay from " << InetSocketAddress::ConvertFrom(from).GetIpv4() <<": InitiatorIp= "
-			<< Ipv4Address::ConvertFrom(senderIp) << " RawIp=" << ipBuffer2 << " InitiatorID=" << msgSenderID << ", msgOp=" << msgOp;
+			<< Ipv4Address::ConvertFrom(senderIpv4) << " RawIp=" << msgSenderIp.c_str() << " InitiatorID=" << msgSenderID << ", msgOp=" << msgOp;
 	// << ", relayTs=" << m_relayTs[msgSenderID] << ", msgTs=" << msgTs << ", #RelaysRcved=" << m_relays[msgSenderID];
 	LogInfo(sstm );
 
