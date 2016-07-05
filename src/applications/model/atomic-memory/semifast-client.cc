@@ -110,7 +110,11 @@ SemifastClient::GetTypeId (void)
 					 UintegerValue (0),
 					 MakeUintegerAccessor (&SemifastClient::m_seed),
 					 MakeUintegerChecker<uint16_t> ())
-					 ;
+	.AddAttribute ("Verbose",
+					 "Verbose for debug mode",
+					 UintegerValue (0),
+					 MakeUintegerAccessor (&SemifastClient::m_verbose),
+					 MakeUintegerChecker<uint16_t> ())
   ;
   return tid;
 }

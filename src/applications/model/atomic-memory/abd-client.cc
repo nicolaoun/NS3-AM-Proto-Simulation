@@ -112,7 +112,11 @@ AbdClient::GetTypeId (void)
 					 UintegerValue (0),
 					 MakeUintegerAccessor (&AbdClient::m_seed),
 					 MakeUintegerChecker<uint16_t> ())
-					 ;
+	.AddAttribute ("Verbose",
+					 "Verbose for debug mode",
+					 UintegerValue (0),
+					 MakeUintegerAccessor (&AbdClient::m_verbose),
+					 MakeUintegerChecker<uint16_t> ())
   ;
   return tid;
 }

@@ -143,6 +143,7 @@ private:
   uint32_t m_ts; 				//!< latest timestamp
   uint32_t m_value;			//!< value associated with m_ts
   uint32_t m_sent;    //!< Counter for sent msgs
+  uint16_t m_verbose;   //!< Debug mode
   //std::vector<uint32_t> m_writeop;     // Now its a single writer! just check ts
   std::vector<uint32_t> m_operations;
   std::vector<uint32_t> m_relays;

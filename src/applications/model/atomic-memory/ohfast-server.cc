@@ -82,6 +82,11 @@ OhFastServer::GetTypeId (void)
 					  		UintegerValue (100),
 					  		MakeUintegerAccessor (&OhFastServer::m_fail),
 					  		MakeUintegerChecker<uint32_t> ())
+					.AddAttribute ("Verbose",
+					 "Verbose for debug mode",
+					 UintegerValue (0),
+					 MakeUintegerAccessor (&OhFastServer::m_verbose),
+					 MakeUintegerChecker<uint16_t> ())
 	;
 	return tid;
 }

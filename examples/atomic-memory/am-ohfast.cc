@@ -63,6 +63,7 @@ main (int argc, char *argv[])
 	int numClients = 0;
 	int version=0;
 	int seed = 0;
+	int verbose = 0;
 
 	//
 	// Users may find it convenient to turn on explicit debugging
@@ -86,6 +87,7 @@ main (int argc, char *argv[])
 	cmd.AddValue ("wInterval", "Write interval in seconds", writeInterval);
 	cmd.AddValue ("version", "Version 0 for FixInt, 1 for randInt", version);
 	cmd.AddValue ("seed", "Randomness Seed", seed);
+	cmd.AddValue ("verbose", "Debug Mode", verbose);
 	cmd.Parse (argc, argv);
 
 	// By default set the failures equal to the minority
@@ -231,6 +233,7 @@ main (int argc, char *argv[])
 		OhFastServerHelper server (port);
 		server.SetAttribute("PacketSize", UintegerValue (1024) );
 		server.SetAttribute ("ID", UintegerValue (i));
+		server.SetAttribute ("Verbose", UintegerValue (verbose));
 		server.SetAttribute("LocalAddress", AddressValue (csmaInterfaceAdjacencyList[i].GetAddress(1)) );
 		//server.SetAttribute("LocalAddress", AddressValue ("0.0.0.0") );
 		server.SetAttribute ("MaxFailures", UintegerValue (numFail));
@@ -302,6 +305,7 @@ main (int argc, char *argv[])
 		client.SetAttribute ("PacketSize", UintegerValue (packetSize));
 		client.SetAttribute("RandomInterval", UintegerValue (version));
 		client.SetAttribute("Seed", UintegerValue (seed));
+		client.SetAttribute ("Verbose", UintegerValue (verbose));
 		Ptr<Application> app = (client.Install (clientNodes.Get (i))).Get(0);
 		client.SetServers(app, serverAddress);
 		c_apps.Add(app);

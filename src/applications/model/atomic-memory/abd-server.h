@@ -106,6 +106,7 @@ private:
   uint32_t m_ts; 				//!< latest timestamp
   uint32_t m_value;			//!< value associated with m_ts
   uint32_t m_sent;     //!< sent messages counter
+  uint16_t m_verbose;   //!< Debug mode
 };
 
 } // namespace ns3

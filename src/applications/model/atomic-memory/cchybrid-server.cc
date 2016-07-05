@@ -76,7 +76,12 @@ CCHybridServer::GetTypeId (void)
                    	 UintegerValue (100),
                   	 MakeUintegerAccessor (&CCHybridServer::m_personalID),
                   	 MakeUintegerChecker<uint32_t> ())
-					;
+					.AddAttribute ("Verbose",
+					 "Verbose for debug mode",
+					 UintegerValue (0),
+					 MakeUintegerAccessor (&CCHybridServer::m_verbose),
+					 MakeUintegerChecker<uint16_t> ())
+	;
 	return tid;
 }
 

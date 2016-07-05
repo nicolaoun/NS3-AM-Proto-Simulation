@@ -75,6 +75,11 @@ ohSamServer::GetTypeId (void)
 					  		UintegerValue (100),
 					  		MakeUintegerAccessor (&ohSamServer::m_fail),
 					  		MakeUintegerChecker<uint32_t> ())
+					.AddAttribute ("Verbose",
+					 "Verbose for debug mode",
+					 UintegerValue (0),
+					 MakeUintegerAccessor (&ohSamServer::m_verbose),
+					 MakeUintegerChecker<uint16_t> ())
 	;
 	return tid;
 }

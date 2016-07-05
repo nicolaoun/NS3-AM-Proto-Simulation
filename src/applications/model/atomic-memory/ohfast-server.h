@@ -147,6 +147,7 @@ private:
   bool m_tsSecured;
 
   uint32_t m_sent;    //!< Counter for sent msgs
+  uint16_t m_verbose;   //!< Debug mode
   //std::vector<uint32_t> m_writeop;     // Now its a single writer! just check ts
   std::vector<uint32_t> m_relayTs;
   std::vector<uint32_t> m_relays;

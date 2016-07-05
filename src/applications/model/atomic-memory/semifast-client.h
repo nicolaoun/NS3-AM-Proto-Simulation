@@ -233,6 +233,7 @@ private:
 	//randomness
 	uint16_t m_randInt;		//!< Flag indicating the choose of a random interval for each op invocation
 	uint16_t m_seed;		//!< Randomness seed
+	uint16_t m_verbose;		//!< Debug mode
 
 	/// Callbacks for tracing the packet Tx events
 	TracedCallback<Ptr<const Packet> > m_txTrace;

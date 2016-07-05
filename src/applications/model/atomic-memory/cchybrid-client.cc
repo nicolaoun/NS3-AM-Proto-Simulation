@@ -110,7 +110,12 @@ CCHybridClient::GetTypeId (void)
 					 UintegerValue (0),
 					 MakeUintegerAccessor (&CCHybridClient::m_seed),
 					 MakeUintegerChecker<uint16_t> ())
-					 ;
+	.AddAttribute ("Verbose",
+					 "Verbose for debug mode",
+					 UintegerValue (0),
+					 MakeUintegerAccessor (&CCHybridClient::m_verbose),
+					 MakeUintegerChecker<uint16_t> ())
+	;
   return tid;
 }
 

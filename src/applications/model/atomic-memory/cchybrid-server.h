@@ -113,6 +113,7 @@ private:
   //uint32_t m_opCount;
   //uint32_t m_completeOps;
   uint32_t m_sent;    //!< Counter for sent packets
+  uint16_t m_verbose;   //!< Debug mode
 };
 
 } // namespace ns3
