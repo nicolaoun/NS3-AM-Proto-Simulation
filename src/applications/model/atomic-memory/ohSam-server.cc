@@ -170,7 +170,7 @@ ohSamServer::StartApplication (void)
 		//Set the number of sockets we need
 		m_srvSocket.resize( m_serverAddress.size() );
 
-		for (uint32_t i = 0; i < m_serverAddress.size(); i++ )
+		for (uint32_t i = m_personalID; i < m_serverAddress.size(); i++ )
 		{
 			AsmCommon::Reset(sstm);
 			sstm << "Connecting to SERVER (" << Ipv4Address::ConvertFrom(m_serverAddress[i]) << ")";
@@ -283,6 +283,7 @@ void ohSamServer::HandleAccept (Ptr<Socket> s, const Address& from)
 	NS_LOG_FUNCTION (this << s << from);
 	//Address from;
 	bool isServer = false;
+	int serverId = -1;
 	std::stringstream sstm;
 
 	s->SetRecvCallback (MakeCallback (&ohSamServer::HandleRead, this));
@@ -293,6 +294,8 @@ void ohSamServer::HandleAccept (Ptr<Socket> s, const Address& from)
 		if ( InetSocketAddress::ConvertFrom(from).GetIpv4() == m_serverAddress[i] )
 		{
 			isServer = true;
+			serverId = i;
+			break; //stop on the first server
 		}
 	}
 
@@ -311,10 +314,11 @@ void ohSamServer::HandleAccept (Ptr<Socket> s, const Address& from)
 	}
 	else
 	{
-		m_socketList.push_back (s);
+		//m_socketList.push_back (s);
+		m_srvSocket[serverId] = s;
 
 		AsmCommon::Reset(sstm);
-		sstm << "ACCEPTED SERVER " << m_socketList.size() << ": " << InetSocketAddress::ConvertFrom(from).GetIpv4();
+		sstm << "ACCEPTED SERVER " << serverId << ": " << InetSocketAddress::ConvertFrom(from).GetIpv4();
 		LogInfo(sstm);
 	}
 }

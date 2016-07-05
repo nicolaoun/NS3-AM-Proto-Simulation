@@ -456,10 +456,7 @@ OhFastClient::InvokeRead (void)
 	NS_LOG_FUNCTION (this);
 	std::stringstream sstm;
 
-	
 	m_opStart = Now();
-
-	
 
 	//check if we still have operations to perfrom
 	if ( m_opCount <  m_count )
@@ -745,10 +742,14 @@ OhFastClient::IsPredicateValid()
 {
 	NS_LOG_FUNCTION (this);
 
-	std::vector<uint16_t> buckets;
+	std::vector<uint32_t> buckets;
 	std::vector< std::pair<Address, uint32_t> >::iterator it;
 	int a;
 	std::stringstream sstm;
+
+	AsmCommon::Reset(sstm);
+	sstm << "Checking the predicate.";
+	Log(DEBUG, sstm);
 
 	buckets.resize((int) ((m_numServers/m_fail) - 1));
 

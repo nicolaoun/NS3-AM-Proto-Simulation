@@ -179,7 +179,7 @@ OhFastServer::StartApplication (void)
 		//Set the number of sockets we need
 		m_srvSocket.resize( m_serverAddress.size() );
 
-		for (uint32_t i = 0; i < m_serverAddress.size(); i++ )
+		for (uint32_t i = m_personalID; i < m_serverAddress.size(); i++ )
 		{
 			AsmCommon::Reset(sstm);
 			sstm << "Connecting to SERVER (" << Ipv4Address::ConvertFrom(m_serverAddress[i]) << ")";
@@ -263,16 +263,20 @@ void OhFastServer::HandleAccept (Ptr<Socket> s, const Address& from)
 	NS_LOG_FUNCTION (this << s << from);
 	//Address from;
 	bool isServer = false;
+	int serverId = -1;
 	std::stringstream sstm;
 
 	s->SetRecvCallback (MakeCallback (&OhFastServer::HandleRead, this));
 	//s->GetPeerName(from);
 
+	//check if server
 	for (uint32_t i=0; i < m_serverAddress.size(); i++)
 	{
 		if ( InetSocketAddress::ConvertFrom(from).GetIpv4() == m_serverAddress[i] )
 		{
 			isServer = true;
+			serverId = i;
+			break;	//stop on the first server we find
 		}
 	}
 
@@ -291,10 +295,11 @@ void OhFastServer::HandleAccept (Ptr<Socket> s, const Address& from)
 	}
 	else
 	{
-		m_socketList.push_back (s);
+		//m_socketList.push_back (s);
+		m_srvSocket[serverId] = s;
 
 		AsmCommon::Reset(sstm);
-		sstm << "ACCEPTED SERVER " << m_socketList.size() << ": " << InetSocketAddress::ConvertFrom(from).GetIpv4();
+		sstm << "ACCEPTED SERVER " << serverId << ": " << InetSocketAddress::ConvertFrom(from).GetIpv4();
 		Log(DEBUG, sstm);
 	}
 }
@@ -407,6 +412,8 @@ OhFastServer::HandleRead (Ptr<Socket> socket)
 void
 OhFastServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType replyT)
 {
+	NS_LOG_FUNCTION (this << socket);
+
 	uint32_t msgTs, msgV, msgVp, msgOp;
 	int msgSenderID = -1;
 	std::stringstream sstm;
@@ -553,6 +560,8 @@ OhFastServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType 
 void
 OhFastServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 {
+	NS_LOG_FUNCTION (this << socket);
+
 	/////////////////////////////////
 	////////// READ RELAY ///////////
 	/////////////////////////////////
@@ -570,6 +579,15 @@ OhFastServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 	socket->GetPeerName(from);
 
 	istm >> msgTs >> msgV >> msgVp >> msgIpSize;
+
+	if ( msgIpSize < 8 || msgIpSize-1 >= Address::MAX_SIZE )
+	{
+		AsmCommon::Reset(sstm);
+		sstm << "Invalid Ipsize: " << msgIpSize;
+		Log(DEBUG,  sstm );
+
+		return;
+	}
 
 	char ipBuffer[msgIpSize];
 	uint8_t ipBuffer2[msgIpSize];
@@ -619,6 +637,7 @@ OhFastServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 
 		if (m_relayTs[msgSenderID] == msgTs)
 		{
+
 			m_relays[msgSenderID] ++;
 
 			if (m_relays[msgSenderID] >= (m_numServers - m_fail))
@@ -696,7 +715,7 @@ OhFastServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 			socket->Send(pk);
 			m_sent++;
 			AsmCommon::Reset(sstm);
-			sstm << "Echo  " << message_response_type <<" "<< pk->GetSize () << " bytes to " << InetSocketAddress::ConvertFrom (from).GetIpv4() << " data " << pkts.str();
+			sstm << "Echo " << message_response_type <<" "<< pk->GetSize () << " bytes to " << InetSocketAddress::ConvertFrom (from).GetIpv4() << " data " << pkts.str();
 			Log(DEBUG,  sstm );
 		}
 	}
