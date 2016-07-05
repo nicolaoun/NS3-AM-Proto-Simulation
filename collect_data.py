@@ -49,11 +49,10 @@ def get_single_test_avg_results(filename,numR):
 	# To be sure not to divide by 0 at any time and break everything
 	ratio=0;
 	percent=0;
-	if(r_slowReads!=0):
-		ratio=r_fastReads/r_slowReads 
 	if(r_slowReads+r_fastReads!=0):
+		ratio=r_fastReads/(r_slowReads+r_fastReads)
 		percent=(r_slowReads/(r_fastReads+r_slowReads))*100
-
+	
 	# we have to return this: "fastOps slowOps readRatio readPrcnt readAvgT rdrMsgs wtMsgs srvMsgs\n"
 	return r_fastReads , r_slowReads , ratio , percent , r_avgtime/numR , r_sentMsgs , w_sentMsgs, srv_msgs
 
