@@ -228,9 +228,12 @@ OhFastClient::StartApplication (void)
 
 		for (uint32_t i = 0; i < m_serverAddress.size(); i++ )
 		{
-			AsmCommon::Reset(sstm);
-			sstm << "Connecting to SERVER (" << Ipv4Address::ConvertFrom(m_serverAddress[i]) << ")";
-			Log(DEBUG, sstm);
+			if (m_verbose)
+			{
+				AsmCommon::Reset(sstm);
+				sstm << "Connecting to SERVER (" << Ipv4Address::ConvertFrom(m_serverAddress[i]) << ")";
+				Log(DEBUG, sstm);
+			}
 
 			TypeId tid = TypeId::LookupByName ("ns3::TcpSocketFactory");
 			m_socket[i] = Socket::CreateSocket (GetNode (), tid);
@@ -337,9 +340,12 @@ void OhFastClient::ConnectionSucceeded (Ptr<Socket> socket)
 
   m_serversConnected++;
 
-  std::stringstream sstm;
-  sstm << "Connected to SERVER (" << InetSocketAddress::ConvertFrom (from).GetIpv4() <<")";
-  Log(DEBUG, sstm);
+  if (m_verbose)
+  {
+	  std::stringstream sstm;
+	  sstm << "Connected to SERVER (" << InetSocketAddress::ConvertFrom (from).GetIpv4() <<")";
+	  Log(DEBUG, sstm);
+  }
 
   // Check if connected to the all the servers start operations
   if (m_serversConnected == m_serverAddress.size() )
@@ -505,6 +511,7 @@ OhFastClient::InvokeWrite (void)
 		AsmCommon::Reset(sstm);
 		sstm << "** WRITE INVOKED: " << m_opCount << " at "<< m_opStart.GetSeconds() <<"s";
 		Log( INFO, sstm);
+		m_pvalue = m_value;
 		m_value = m_opCount + 900;
 		m_replies = 0;
 		HandleSend();
@@ -562,10 +569,13 @@ OhFastClient::HandleSend (void)
 		m_txTrace (p);
 		m_socket[i]->Send (p);
 
-		std::stringstream sstm;
-		sstm << "Sent " << message_type <<" "<< p->GetSize() << " bytes to " << Ipv4Address::ConvertFrom (m_serverAddress[i])
-		<< " port " << m_peerPort << " data " << pkts.str();
-		Log(DEBUG,  sstm );
+		if (m_verbose)
+		{
+			std::stringstream sstm;
+			sstm << "Sent " << message_type <<" "<< p->GetSize() << " bytes to " << Ipv4Address::ConvertFrom (m_serverAddress[i])
+			<< " port " << m_peerPort << " data " << pkts.str();
+			Log(DEBUG,  sstm );
+		}
 	}
 }
 
@@ -603,10 +613,13 @@ OhFastClient::HandleRecv (Ptr<Socket> socket)
 	  }
 	 
 
-	  sstm << "Received " << message_type <<" "<< packet->GetSize () << " bytes from " <<
-			  InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
-			  InetSocketAddress::ConvertFrom (from).GetPort () << " data " << buf;
-	  Log(DEBUG, sstm);
+	  if (m_verbose)
+	  {
+		  sstm << "Received " << message_type <<" "<< packet->GetSize () << " bytes from " <<
+				  InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
+				  InetSocketAddress::ConvertFrom (from).GetPort () << " data " << buf;
+		  Log(DEBUG, sstm);
+	  }
 
       // check message freshness and if client is waiting
       if ((msgC == m_opCount) && (m_opStatus != IDLE))
@@ -663,9 +676,12 @@ OhFastClient::ProcessReply(std::istream& istm, Address sender)
 			m_value = msgV;
 			m_pvalue = msgVp;
 
-			AsmCommon::Reset(sstm);
-			sstm << "Updated local <ts,value> pair to: [" << m_ts << "," << m_value << "," << m_pvalue <<"]";
-			Log(DEBUG, sstm);
+			if (m_verbose)
+			{
+				AsmCommon::Reset(sstm);
+				sstm << "Updated local <ts,value> pair to: [" << m_ts << "," << m_value << "," << m_pvalue <<"]";
+				Log(DEBUG, sstm);
+			}
 
 			//reset the maxAck set and tsSecured variables
 			m_repliesSet.clear();
@@ -688,6 +704,12 @@ OhFastClient::ProcessReply(std::istream& istm, Address sender)
 				if ( msgInit )
 				{
 					m_initiator = true;
+					if (m_verbose)
+					{
+						AsmCommon::Reset(sstm);
+						sstm << "ReadAck after RELAY from: " << InetSocketAddress::ConvertFrom(sender).GetIpv4();
+						Log(DEBUG, sstm);
+					}
 				}
 			}
 
@@ -717,7 +739,7 @@ OhFastClient::ProcessReply(std::istream& istm, Address sender)
       				m_fastOpCount++;
       			}
       		}
-      		else if ( IsPredicateValid () ) // check the predicate
+      		else if ( m_ts == 0 || IsPredicateValid () ) // check the predicate
       		{
       			m_opEnd = Now();
       			sstm << "** READ COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, Return Value: "<< m_value <<
@@ -751,23 +773,31 @@ OhFastClient::IsPredicateValid()
 	int a;
 	std::stringstream sstm;
 
-	AsmCommon::Reset(sstm);
-	sstm << "Checking the predicate.";
-	Log(DEBUG, sstm);
+	if (m_verbose)
+	{
+		AsmCommon::Reset(sstm);
+		sstm << "Checking the predicate.";
+		Log(DEBUG, sstm);
+	}
 
-	buckets.resize((int) ((m_numServers/m_fail) - 1));
+	buckets.resize((int) m_numServers);
 
 	// construct the buckets
 	for( it = m_repliesSet.begin(); it<m_repliesSet.end(); it++)
 	{
-		buckets[(*it).second]++;
+		//NS_ASSERT_MSG ((*it).second < m_numServers, "OhFastClient::IsPredicateValid(): invalid second term in reply set. ("<< (*it).second << "," << InetSocketAddress::ConvertFrom((*it).first).GetIpv4() << ")");
+		if( (*it).second < m_numServers)
+			buckets[(*it).second]++;
 	}
 
 	for(a = ((m_numServers/m_fail) - 2); a > 0; a--)
 	{
-		AsmCommon::Reset(sstm);
-		sstm << "PREDICATE LOOP: a=" << a << ", b[a]="<< buckets[a] << ", bound=" << (m_numServers - a*m_fail);
-		Log(DEBUG, sstm);
+		if (m_verbose)
+		{
+			AsmCommon::Reset(sstm);
+			sstm << "PREDICATE LOOP: a=" << a << ", b[a]="<< buckets[a] << ", bound=" << (m_numServers - a*m_fail);
+			Log(DEBUG, sstm);
+		}
 
 		if (buckets[a] >= (m_numServers - a*m_fail))
 		{
