@@ -132,7 +132,7 @@ ohSamServer::StartApplication (void)
 	NS_LOG_FUNCTION (this);
 	
 	std::stringstream sstm;
-	sstm << "Debug Mode="<<m_verbose;
+	sstm << "Debug Mode="<< m_verbose;
 	LogInfo(sstm);
 	
 	if (m_socket == 0)
@@ -179,9 +179,12 @@ ohSamServer::StartApplication (void)
 
 		for (uint32_t i = m_personalID; i < m_serverAddress.size(); i++ )
 		{
-			AsmCommon::Reset(sstm);
-			sstm << "Connecting to SERVER (" << Ipv4Address::ConvertFrom(m_serverAddress[i]) << ")";
-			LogInfo(sstm);
+			if ( m_verbose )
+			{
+				AsmCommon::Reset(sstm);
+				sstm << "Connecting to SERVER (" << Ipv4Address::ConvertFrom(m_serverAddress[i]) << ")";
+				LogInfo(sstm);
+			}
 
 			TypeId tid = TypeId::LookupByName ("ns3::TcpSocketFactory");
 			m_srvSocket[i] = Socket::CreateSocket (GetNode (), tid);
@@ -308,8 +311,8 @@ void ohSamServer::HandleAccept (Ptr<Socket> s, const Address& from)
 
 	if( !isServer )
 	{
-		m_clntAddress.push_back(from);
-		m_clntSocket.push_back(s);
+		m_clntAddress.push_back(std::make_pair(from, s));
+		//m_clntSocket.push_back(s);
 		m_numClients++;
 
 		m_operations.resize(m_numClients);
@@ -323,7 +326,7 @@ void ohSamServer::HandleAccept (Ptr<Socket> s, const Address& from)
 			sstm << "ACCEPTED CLIENT " << m_clntAddress.size() << ": " << InetSocketAddress::ConvertFrom(from).GetIpv4();
 			sstm << "ClientsSet: {";
 			for (uint32_t i=0; i < m_clntAddress.size(); i++)
-				sstm << InetSocketAddress::ConvertFrom(m_clntAddress[i]).GetIpv4() << " ";
+				sstm << InetSocketAddress::ConvertFrom(m_clntAddress[i].first).GetIpv4() << " ";
 			sstm << "}";
 
 			LogInfo(sstm);
@@ -464,7 +467,7 @@ ohSamServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType m
 	//find if the socket that client is connected to
 	for (uint32_t i=0; i < m_clntAddress.size(); i++)
 	{
-		if ( InetSocketAddress::ConvertFrom(from).GetIpv4() == InetSocketAddress::ConvertFrom(m_clntAddress[i]).GetIpv4() )
+		if ( InetSocketAddress::ConvertFrom(from).GetIpv4() == InetSocketAddress::ConvertFrom(m_clntAddress[i].first).GetIpv4() )
 		{
 			msgSenderID = i;
 			break;	//stop at the first client we find
@@ -624,7 +627,7 @@ ohSamServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 
 	AsmCommon::Reset(sstm);
 	sstm << "Processing ReadRelay from " << InetSocketAddress::ConvertFrom(from).GetIpv4() <<": InitiatorIp= "
-			<< InetSocketAddress::ConvertFrom(m_clntAddress[msgSenderID]).GetIpv4() << " InitiatorID=" << msgSenderID << ", msgOp=" << msgOp;
+			<< InetSocketAddress::ConvertFrom(m_clntAddress[msgSenderID].first).GetIpv4() << " InitiatorID=" << msgSenderID << ", msgOp=" << msgOp;
 			//<< ", relayTs=" << m_relayTs[msgSenderID] << ", msgTs=" << msgTs << ", #RelaysRcved=" << m_relays[msgSenderID];
 	LogInfo(sstm );
 
@@ -676,11 +679,11 @@ ohSamServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 			}
 
 			//Send to the corresponding client (from the info of the message is msgSenderId)
-			m_clntSocket[msgSenderID]->Send(pk);
+			(m_clntAddress[msgSenderID].second)->Send(pk);
 			m_sent++;
 
 			AsmCommon::Reset(sstm);
-			sstm << "Sent " << message_response_type <<" "<< pk->GetSize () << " bytes to " << InetSocketAddress::ConvertFrom (m_clntAddress[msgSenderID]).GetIpv4() << " data " << pkts.str();
+			sstm << "Sent " << message_response_type <<" "<< pk->GetSize () << " bytes to " << InetSocketAddress::ConvertFrom (m_clntAddress[msgSenderID].first).GetIpv4() << " data " << pkts.str();
 			LogInfo ( sstm );
 
 			//pk->RemoveAllPacketTags ();

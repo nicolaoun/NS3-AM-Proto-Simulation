@@ -495,7 +495,6 @@ ohSamClient::InvokeWrite (void)
 		m_opStatus = PHASE1;
 		m_msgType = WRITE;
 		m_ts ++;
-		m_opCount++;
 
 		m_value = m_opCount + 900;
 		m_replies = 0;
@@ -528,7 +527,7 @@ ohSamClient::HandleSend (void)
 	}
   else 
     {
-		pkts << m_msgType <<" "<< m_opCount;
+		pkts << m_msgType << " "<< m_opCount;
 		message_type = "read";
     }
 
@@ -597,15 +596,15 @@ ohSamClient::HandleRecv (Ptr<Socket> socket)
 	  }
 	 
 
-	  if((msgOp==m_opCount)||(msgTs==m_ts))
-	  {
-	  	sstm << "Received " << message_type <<" "<< packet->GetSize () << " bytes from " <<
-	                        InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
-	                        InetSocketAddress::ConvertFrom (from).GetPort () << " data " << buf;
-   		LogInfo (sstm);
-   		packet->RemoveAllPacketTags ();
-		packet->RemoveAllByteTags ();
-	  }
+	 // if((msgOp==m_opCount)||(msgTs==m_ts))
+	  // {
+	  sstm << "Received " << message_type <<" "<< packet->GetSize () << " bytes from " <<
+			  InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
+			  InetSocketAddress::ConvertFrom (from).GetPort () << ", msgOp = " << msgOp <<", opCount = " << m_opCount << " data " << buf;
+	  LogInfo (sstm);
+	  //packet->RemoveAllPacketTags ();
+	  //packet->RemoveAllByteTags ();
+	  // }
 
       // check message freshness and if client is waiting
       if ((msgOp == m_opCount) && (msgT==READACK) && (m_opStatus != IDLE))

@@ -132,7 +132,8 @@ private:
   std::vector<Address> m_serverAddress; //!< Remote server adresses
   std::vector< Ptr<Socket> > m_srvSocket;
 
-  std::vector<Address> m_clntAddress; //!< Remote client adresses
+  //std::vector<Address> m_clntAddress; //!< Remote client adresses
+  std::vector< std::pair< Address, Ptr<Socket> > > m_clntAddress; //!< Remote client adresses
   std::vector< Ptr<Socket> > m_clntSocket;
   uint32_t m_numServers;    //!< number of servers
   uint32_t m_numClients;    //!< number of clients
