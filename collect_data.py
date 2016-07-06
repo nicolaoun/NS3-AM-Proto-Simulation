@@ -33,8 +33,8 @@ def get_single_test_avg_results(filename,numR):
 					r_invokedReads += int(line.split("InvokedReads=")[1].split(",")[0])
 					r_completedReads += int(line.split("CompletedReads=")[1].split(",")[0])
 					if(protocol==1): #ABD
-						r_slowReads = int(line.split("4EXCH_reads=")[1].split(",")[0])
-						r_fastReads = 0
+						r_slowReads += int(line.split("4EXCH_reads=")[1].split(",")[0])
+						r_fastReads += 0
 					elif (protocol==2): #ohSAM, oh-fast
 						r_slowReads += int(line.split("3EXCH_reads=")[1].split(",")[0])
 						r_fastReads += 0
@@ -70,7 +70,7 @@ def create_output_file_for_scenario(drct,mode):
 		if (mode==1):
 			text_file.write("Protocol Version #Servers #Readers rIntvl wIntvl fastOps slowOps readRatio readPrcnt readAvgT rdrMsgs wrtMsgs srvMsgs\n")
 		else:
-			text_file.write("Protocol Version #Servers #Readers  rIntvl wIntvl fastOps slowOps readRatio readPrcnt readAvgT rdrAvgMsgs TotRdrAvgMsgs wrtAvgMsgs srvAvgMsgs TotSrvAvgMsgs\n")
+			text_file.write("Protocol Version #Servers #Readers rIntvl wIntvl fastOps slowOps readRatio readPrcnt readAvgT rdrAvgMsgs TotRdrAvgMsgs wrtAvgMsgs srvAvgMsgs TotSrvAvgMsgs CmpltTotal AvgReadsPerNode\n")
 	return directory
 
 def execute():
@@ -82,6 +82,7 @@ def execute():
 	main_avg_rdrMsgs=0
 	main_avg_wrtMsgs=0
 	main_avg_srvMsgs=0
+	
 	seed=0
 
 	# for each test (count for 1 to 6) - 6 not included
@@ -134,11 +135,13 @@ def execute():
 	main_avg_wrtMsgs = main_avg_wrtMsgs / tests
 	main_avg_Total_srvMsgs = main_avg_srvMsgs / tests
 	main_avg_srvMsgs = main_avg_srvMsgs / tests / numServers
+	
+
 
 	# Now write them to the main file
 	with open(main_directory, "a") as main_text_file:
 		# we have to write this: "Protocol Version #Servers #Readers rIntvl wIntvl fastOps slowOps readRatio readPrcnt readAvgT rdrAvgMsgs wrtAvgMsgs srvAvgMsgs\n"
-		output = str(alg) + " " + str(Version)+" "+ str(numServers)+" "+ str(numReaders)+" "+ str(rInterval)+" "+ str(wInterval)+" "+ str(main_avg_fastOps)+" " + str(main_avg_slowOps)+" "+ str(main_avg_readRatio)+" "+ str(main_avg_readPrcnt)+" "+ str(main_avg_readTime)+" "+ str(main_avg_rdrMsgs)+" "+str(main_avg_Total_rdrMsgs)+" "+ str(main_avg_wrtMsgs)+" "+ str(main_avg_srvMsgs)+" "+str(main_avg_Total_srvMsgs)+"\n"
+		output = str(alg) + " " + str(Version)+" "+ str(numServers)+" "+ str(numReaders)+" "+ str(rInterval)+" "+ str(wInterval)+" "+ str(main_avg_fastOps)+" " + str(main_avg_slowOps)+" "+ str(main_avg_readRatio)+" "+ str(main_avg_readPrcnt)+" "+ str(main_avg_readTime)+" "+ str(main_avg_rdrMsgs)+" "+str(main_avg_Total_rdrMsgs)+" "+ str(main_avg_wrtMsgs)+" "+ str(main_avg_srvMsgs)+" "+str(main_avg_Total_srvMsgs)+" "+str((main_avg_fastOps + main_avg_slowOps))+" "+str(float((main_avg_fastOps + main_avg_slowOps)/numReaders))+"\n"
 		main_text_file.write(output)
 # WE ARE DONE
 
@@ -149,7 +152,7 @@ hybridfast = "HybridFast"
 oh_fast = "oh-Fast"
 alg =""
 executable=""
-tests = 1
+tests = 5
 Version="fixInt"# "randInt"
 
 #############################################################################
@@ -159,53 +162,53 @@ Version="fixInt"# "randInt"
 #############################################################################
 # _start is the initial
 # _stop is the last one - included!
-# wInterval_start = 40 #(means 4)
-# wInterval_stop = 40
-# wInterval_step = 10
-# rInterval_start = 23 #(means 2.3)
-# rInterval_stop = 69
-# rInterval_step = 23
-# rdrs_start = 10 
-# rdrs_stop=100
-# rds_step=10  #No worries we will end up doing 10,20,40,80,100
-# vrsn_start=1
-# vrsn_stop=2
-# vrsn_step=1
-# prtcl_start = 1
-# prtcl_stop = 5
-# prtcl_step=1
-# srvrs_start=10
-# srvrs_stop=30
-# srvrs_step=5
-# fail_start=1
-# fail_stop=2
-# fail_step=1
+wInterval_start = 40 #(means 4)
+wInterval_stop = 40
+wInterval_step = 10
+rInterval_start = 23 #(means 2.3)
+rInterval_stop = 69
+rInterval_step = 23
+rdrs_start = 10 
+rdrs_stop=100
+rds_step=10  #No worries we will end up doing 10,20,40,80,100
+vrsn_start=1
+vrsn_stop=2
+vrsn_step=1
+prtcl_start = 1
+prtcl_stop = 5
+prtcl_step=1
+srvrs_start=10
+srvrs_stop=30
+srvrs_step=5
+fail_start=1
+fail_stop=2
+fail_step=1
 #############################################################################
 #############################################################################
 ############# FOR THE MOMENT USE THE BELLOW #################################
 #############################################################################
 #############################################################################
-wInterval_start = 40	
-wInterval_stop = 40
-wInterval_step = 10 
-rInterval_start = 23 #(means 2.3)
-rInterval_stop = 46  #(means 4.6)
-rInterval_step = 23  #(means 2.3)
-rdrs_start = 10      #number of readers to start
-rdrs_stop=100 		 #number of readers to stop (all will be 100)
-rds_step=10  		 #No worries we will end up doing 10,20,40,80,100 if stop = 100
-vrsn_start=0         #All versions = 2 (0-fixInt, 1-randInt)
-vrsn_stop=1          #for the moment do only the fixInt
-vrsn_step=1
-prtcl_start = 1      #All protocols = 5, ABD, ohSam, Semifast, Hybrid, ohFast 
-prtcl_stop = 5       #For the moment do only ABD. Use vale 2,3,4,5 to do also OhSam and others..
-prtcl_step=1
-srvrs_start=10       #Number of Servers
-srvrs_stop=30        #Number of Servers in the final should be 30
-srvrs_step=5
-fail_start=1         #Number of failures. For the moment do only one. 
-fail_stop=1
-fail_step=1
+# wInterval_start = 40	
+# wInterval_stop = 40
+# wInterval_step = 10 
+# rInterval_start = 23 #(means 2.3)
+# rInterval_stop = 46  #(means 4.6)
+# rInterval_step = 23  #(means 2.3)
+# rdrs_start = 10      #number of readers to start
+# rdrs_stop=100 		 #number of readers to stop (all will be 100)
+# rds_step=10  		 #No worries we will end up doing 10,20,40,80,100 if stop = 100
+# vrsn_start=0         #All versions = 2 (0-fixInt, 1-randInt)
+# vrsn_stop=1          #for the moment do only the fixInt
+# vrsn_step=1
+# prtcl_start = 1      #All protocols = 5, ABD, ohSam, Semifast, Hybrid, ohFast 
+# prtcl_stop = 5       #For the moment do only ABD. Use vale 2,3,4,5 to do also OhSam and others..
+# prtcl_step=1
+# srvrs_start=10       #Number of Servers
+# srvrs_stop=30        #Number of Servers in the final should be 30
+# srvrs_step=5
+# fail_start=1         #Number of failures. For the moment do only one. 
+# fail_stop=1
+# fail_step=1
 ################################################################################
 
 print "Starting Script...\n"
