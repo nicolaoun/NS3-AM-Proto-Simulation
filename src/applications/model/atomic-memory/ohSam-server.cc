@@ -518,7 +518,7 @@ ohSamServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType m
 
 			AsmCommon::Reset(pkts);
 
-			pkts << READRELAY << " " << m_ts << " " << m_value << " " << ipSize << " " << InetSocketAddress::ConvertFrom(from).GetIpv4() << " " << msgOp;
+			pkts << READRELAY << " " << m_ts << " " << m_value << " " << ipSize << " " << InetSocketAddress::ConvertFrom(from).GetIpv4().Get() << " " << msgOp;
 
 			/*
 			for( int k=0; k<ipSize; k++)
@@ -541,6 +541,9 @@ ohSamServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType m
 				pc = Create<Packet> (m_size);
 			}
 
+			//pc->RemoveAllPacketTags ();
+			//pc->RemoveAllByteTags ();
+
 			//Send a single packet to each server
 			for (uint32_t i=0; i<m_serverAddress.size(); i++)
 			{
@@ -560,8 +563,6 @@ ohSamServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType m
 				}
 			}
 
-			pc->RemoveAllPacketTags ();
-			pc->RemoveAllByteTags ();
 		}
 	}
 }
@@ -572,9 +573,7 @@ ohSamServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 	uint32_t msgT, msgTs, msgV, msgOp, msgIpSize;
 	int msgSenderID = -1;
 	//Address senderIp;
-	Ipv4Address senderIpv4;
-	//char msgSenderIp[Address::MAX_SIZE];
-	std::string msgSenderIp;
+	std::uint32_t msgSenderIp;
 	std::stringstream sstm;
 	std::string message_type = "";
 	std::string message_response_type = "";
@@ -585,42 +584,21 @@ ohSamServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 
 	istm >> msgTs >> msgV >> msgIpSize >> msgSenderIp >> msgOp;
 
-	if ( msgSenderIp == "" )
+	if ( msgSenderIp <= 0 )
 	{
 		AsmCommon::Reset(sstm);
-		sstm << "Invalid Ipsize: " << msgIpSize;
-		LogInfo(sstm );
-
-		return;
-	}
-	/*
-	if ( msgIpSize < 8 || msgIpSize-1 >= Address::MAX_SIZE )
-	{
-		AsmCommon::Reset(sstm);
-		sstm << "Invalid Ipsize: " << msgIpSize;
+		sstm << "Invalid Ip: " << msgSenderIp;
 		LogInfo(sstm );
 
 		return;
 	}
 
-	char ipBuffer[msgIpSize];
-	uint8_t ipBuffer2[msgIpSize];
-	istm.read(ipBuffer, 1);	// flush the space
-	istm.read(ipBuffer, msgIpSize-1);
-
-	memcpy(ipBuffer2, ipBuffer, msgIpSize-1);
-
-	istm >> msgOp;
-	senderIp.CopyFrom(ipBuffer2, msgIpSize-1);
-	//senderIp = new Ipv4Address(msgSenderIp.c_str());
-	*/
-
-	senderIpv4.Set(msgSenderIp.c_str());
+	Ipv4Address senderIpv4(msgSenderIp);
 
 	//find if the socket that client is connected to
 	for (uint32_t i=0; i < m_clntAddress.size(); i++)
 	{
-		if ( Ipv4Address::ConvertFrom(senderIpv4) == InetSocketAddress::ConvertFrom(m_clntAddress[i]).GetIpv4() )
+		if ( msgSenderIp == InetSocketAddress::ConvertFrom(m_clntAddress[i]).GetIpv4().Get() )
 		{
 			msgSenderID = i;
 			break;	//stop at the first client we find
@@ -629,7 +607,7 @@ ohSamServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 
 	AsmCommon::Reset(sstm);
 	sstm << "Processing ReadRelay from " << InetSocketAddress::ConvertFrom(from).GetIpv4() <<": InitiatorIp= "
-			<< Ipv4Address::ConvertFrom(senderIpv4) << " RawIp=" << msgSenderIp.c_str() << " InitiatorID=" << msgSenderID << ", msgOp=" << msgOp;
+			<< Ipv4Address::ConvertFrom(senderIpv4) << " RawIp=" << msgSenderIp << " InitiatorID=" << msgSenderID << ", msgOp=" << msgOp;
 	// << ", relayTs=" << m_relayTs[msgSenderID] << ", msgTs=" << msgTs << ", #RelaysRcved=" << m_relays[msgSenderID];
 	LogInfo(sstm );
 
@@ -659,7 +637,7 @@ ohSamServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 		sstm << "Relays: " << m_relays[msgSenderID] << " Need:" << (m_numServers - m_fail) << ", RelayOp: " << m_operations[msgSenderID];
 		LogInfo(sstm );
 
-		if (m_relays[msgSenderID] >= (m_numServers - m_fail))
+		if (m_relays[msgSenderID] == (m_numServers - m_fail))
 		{
 			// REPLY back to the reader
 			message_response_type = "readAck";
@@ -688,8 +666,8 @@ ohSamServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 			sstm << "Sent " << message_response_type <<" "<< pk->GetSize () << " bytes to " << InetSocketAddress::ConvertFrom (m_clntAddress[msgSenderID]).GetIpv4();
 			LogInfo ( sstm );
 
-			pk->RemoveAllPacketTags ();
-			pk->RemoveAllByteTags ();
+			//pk->RemoveAllPacketTags ();
+			//pk->RemoveAllByteTags ();
 
 			//reset the replies for that reader to one (to count ours)
 			m_relays[msgSenderID] =1;

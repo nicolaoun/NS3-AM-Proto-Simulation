@@ -560,8 +560,8 @@ ohSamClient::HandleSend (void)
 	  	   << " port " << m_peerPort << " data " << pkts.str();
 	  LogInfo ( sstm );
   }
-  	p->RemoveAllPacketTags ();
-	p->RemoveAllByteTags ();
+  	//p->RemoveAllPacketTags ();
+	//p->RemoveAllByteTags ();
 }
 
 void
