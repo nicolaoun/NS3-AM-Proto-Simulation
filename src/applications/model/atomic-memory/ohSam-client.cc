@@ -495,7 +495,7 @@ ohSamClient::InvokeWrite (void)
 		m_opStatus = PHASE1;
 		m_msgType = WRITE;
 		m_ts ++;
-		m_opCount++;
+		//m_opCount++;
 
 		m_value = m_opCount + 900;
 		m_replies = 0;

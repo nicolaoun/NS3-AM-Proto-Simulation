@@ -82,7 +82,11 @@ private:
 
   void HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType msgT);
 
+  void HandleRecvMsg2(uint32_t msgT, uint32_t msgTs, uint32_t msgV, uint32_t msgOp, Address from, Ptr<Socket> socket);
+
   void HandleRelay(std::istream& istm, Ptr<Socket> socket);
+
+  void HandleRelay2(uint32_t msgTs, uint32_t msgV, uint32_t invokerIP, uint32_t msgOp, Address from);
 
     /**
    * \brief Handle an incoming connection
