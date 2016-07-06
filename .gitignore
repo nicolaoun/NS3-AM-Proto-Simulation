@@ -7,3 +7,4 @@ doc/*
 waf-tools/*
 utils.pyc
 output/*
+*.log
