@@ -246,11 +246,14 @@ SemifastServer::HandleRead (Ptr<Socket> socket)
 		std::istream istm(&sb);
 		istm >> msgC >> msgT >> msgTs >> msgV >> msgVp >> msgVid;
 
-		AsmCommon::Reset(sstm);
-		sstm << "Received " << packet->GetSize () << " bytes from " <<
-				InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
-				InetSocketAddress::ConvertFrom (from).GetPort () << " data " << buf << " optimized " << m_optimize;
-		LogInfo(sstm);
+		if (m_verbose)
+		{
+			AsmCommon::Reset(sstm);
+			sstm << "Received " << packet->GetSize () << " bytes from " <<
+					InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
+					InetSocketAddress::ConvertFrom (from).GetPort () << " data " << buf << " optimized " << m_optimize;
+			LogInfo(sstm);
+		}
 
 
 		packet->RemoveAllPacketTags ();
@@ -307,18 +310,15 @@ SemifastServer::HandleRead (Ptr<Socket> socket)
 		socket->Send (p);
 		m_sent++;
 
-		AsmCommon::Reset(sstm);
-		sstm << "Sent " << packet->GetSize () << " bytes to " <<
-				InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
-				InetSocketAddress::ConvertFrom (from).GetPort () << " "
-				<< SetOperation<uint32_t>::printSet(m_seen,"Seen", "");
-
-		/*for(std::set< Address >::iterator it=m_seen.begin(); it!=m_seen.end(); it++)
-			sstm << " " <<  *it;
-
-		sstm << "} data " << pkts.str();
-		*/
-		LogInfo(sstm);
+		if (m_verbose)
+		{
+			AsmCommon::Reset(sstm);
+			sstm << "Sent " << packet->GetSize () << " bytes to " <<
+					InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
+					InetSocketAddress::ConvertFrom (from).GetPort () << " "
+					<< SetOperation<uint32_t>::printSet(m_seen,"Seen", "");
+			LogInfo(sstm);
+		}
 	}
 }
 

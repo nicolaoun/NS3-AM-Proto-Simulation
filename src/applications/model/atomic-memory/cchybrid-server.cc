@@ -246,11 +246,14 @@ CCHybridServer::HandleRead (Ptr<Socket> socket)
 		std::istream istm(&sb);
 		istm >> msgC >> msgT >> msgTs >> msgV >> msgVp;
 
-		AsmCommon::Reset(sstm);
-		sstm << "Received " << packet->GetSize () << " bytes from " <<
-				InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
-				InetSocketAddress::ConvertFrom (from).GetPort () << " data " << buf << " optimized " << m_optimize;
-		LogInfo(sstm);
+		if (m_verbose)
+		{
+			AsmCommon::Reset(sstm);
+			sstm << "Received " << packet->GetSize () << " bytes from " <<
+					InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
+					InetSocketAddress::ConvertFrom (from).GetPort () << " data " << buf << " optimized " << m_optimize;
+			LogInfo(sstm);
+		}
 
 
 		packet->RemoveAllPacketTags ();
@@ -304,16 +307,19 @@ CCHybridServer::HandleRead (Ptr<Socket> socket)
 		socket->Send (p);
 		m_sent++;
 
-		AsmCommon::Reset(sstm);
-		sstm << "Sent " << packet->GetSize () << " bytes to " <<
-				InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
-				InetSocketAddress::ConvertFrom (from).GetPort () << " seen: { ";
+		if (m_verbose)
+		{
+			AsmCommon::Reset(sstm);
+			sstm << "Sent " << packet->GetSize () << " bytes to " <<
+					InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
+					InetSocketAddress::ConvertFrom (from).GetPort () << " seen: { ";
 
-		for(std::set< Address >::iterator it=m_seen.begin(); it!=m_seen.end(); it++)
-			sstm << " " <<  InetSocketAddress::ConvertFrom( *it ).GetIpv4();
+			for(std::set< Address >::iterator it=m_seen.begin(); it!=m_seen.end(); it++)
+				sstm << " " <<  InetSocketAddress::ConvertFrom( *it ).GetIpv4();
 
-		sstm << "} data " << pkts.str();
-		LogInfo(sstm);
+			sstm << "} data " << pkts.str();
+			LogInfo(sstm);
+		}
 	}
 }
 

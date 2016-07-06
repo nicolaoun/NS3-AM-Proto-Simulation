@@ -227,9 +227,12 @@ ohSamClient::StartApplication (void)
 
 		for (uint32_t i = 0; i < m_serverAddress.size(); i++ )
 		{
-			AsmCommon::Reset(sstm);
-			sstm << "Connecting to SERVER (" << Ipv4Address::ConvertFrom(m_serverAddress[i]) << ")";
-			LogInfo(sstm);
+			if (m_verbose)
+			{
+				AsmCommon::Reset(sstm);
+				sstm << "Connecting to SERVER (" << Ipv4Address::ConvertFrom(m_serverAddress[i]) << ")";
+				LogInfo(sstm);
+			}
 
 			TypeId tid = TypeId::LookupByName ("ns3::TcpSocketFactory");
 			m_socket[i] = Socket::CreateSocket (GetNode (), tid);
@@ -335,9 +338,12 @@ void ohSamClient::ConnectionSucceeded (Ptr<Socket> socket)
 
   m_serversConnected++;
 
-  std::stringstream sstm;
-  sstm << "Connected to SERVER (" << InetSocketAddress::ConvertFrom (from).GetIpv4() <<")";
-  LogInfo(sstm);
+  if (m_verbose)
+  {
+	  std::stringstream sstm;
+	  sstm << "Connected to SERVER (" << InetSocketAddress::ConvertFrom (from).GetIpv4() <<")";
+	  LogInfo(sstm);
+  }
 
   // Check if connected to the all the servers start operations
   if (m_serversConnected == m_serverAddress.size() )
@@ -554,10 +560,13 @@ ohSamClient::HandleSend (void)
 	  //m_txTrace (p);
 	  m_socket[i]->Send (p);
 
-	  std::stringstream sstm;
-	  sstm << "Sent " << message_type <<" "<< p->GetSize() << " bytes to " << Ipv4Address::ConvertFrom (m_serverAddress[i])
-	  	   << " port " << m_peerPort << " data " << pkts.str();
-	  LogInfo ( sstm );
+	  if (m_verbose)
+	  {
+		  std::stringstream sstm;
+		  sstm << "Sent " << message_type <<" "<< p->GetSize() << " bytes to " << Ipv4Address::ConvertFrom (m_serverAddress[i])
+		  << " port " << m_peerPort << " data " << pkts.str();
+		  LogInfo ( sstm );
+	  }
   }
   	//p->RemoveAllPacketTags ();
 	//p->RemoveAllByteTags ();
@@ -596,15 +605,13 @@ ohSamClient::HandleRecv (Ptr<Socket> socket)
 	  }
 	 
 
-	 // if((msgOp==m_opCount)||(msgTs==m_ts))
-	  // {
-	  sstm << "Received " << message_type <<" "<< packet->GetSize () << " bytes from " <<
-			  InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
-			  InetSocketAddress::ConvertFrom (from).GetPort () << ", msgOp = " << msgOp <<", opCount = " << m_opCount << " data " << buf;
-	  LogInfo (sstm);
-	  //packet->RemoveAllPacketTags ();
-	  //packet->RemoveAllByteTags ();
-	  // }
+	  if (m_verbose)
+	  {
+		  sstm << "Received " << message_type <<" "<< packet->GetSize () << " bytes from " <<
+				  InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
+				  InetSocketAddress::ConvertFrom (from).GetPort () << ", msgOp = " << msgOp <<", opCount = " << m_opCount << " data " << buf;
+		  LogInfo (sstm);
+	  }
 
       // check message freshness and if client is waiting
       if ((msgOp == m_opCount) && (msgT==READACK) && (m_opStatus != IDLE))

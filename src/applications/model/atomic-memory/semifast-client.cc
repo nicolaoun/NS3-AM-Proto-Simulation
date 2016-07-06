@@ -279,9 +279,12 @@ void SemifastClient::ConnectionSucceeded (Ptr<Socket> socket)
 
   m_serversConnected++;
 
-  std::stringstream sstm;
-  sstm << "Connected to SERVER (" << InetSocketAddress::ConvertFrom (from).GetIpv4() <<")";
-  LogInfo(sstm);
+  if (m_verbose)
+  {
+	  std::stringstream sstm;
+	  sstm << "Connected to SERVER (" << InetSocketAddress::ConvertFrom (from).GetIpv4() <<")";
+	  LogInfo(sstm);
+  }
 
   // Check if connected to the all the servers start operations
   if (m_serversConnected == m_serverAddress.size() )
@@ -511,9 +514,12 @@ SemifastClient::HandleSend (void)
 	  m_txTrace (p);
 	  m_socket[i]->Send (p);
 
-	  std::stringstream sstm;
-	  sstm << "Sent " << m_size << " bytes to " << Ipv4Address::ConvertFrom (m_serverAddress[i]) << " port " << m_peerPort;
-	  LogInfo ( sstm );
+	  if (m_verbose)
+	  {
+		  std::stringstream sstm;
+		  sstm << "Sent " << m_size << " bytes to " << Ipv4Address::ConvertFrom (m_serverAddress[i]) << " port " << m_peerPort;
+		  LogInfo ( sstm );
+	  }
   }
 }
 
@@ -537,12 +543,14 @@ SemifastClient::HandleRecv (Ptr<Socket> socket)
 	  std::istream istm(&sb);
 	  istm >> msgC;
 
-
-	  std::stringstream sstm;
-	  sstm << "Received " << packet->GetSize () << " bytes from " <<
-			  InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
-			  InetSocketAddress::ConvertFrom (from).GetPort () << " data " << buf;
-	  LogInfo (sstm);
+	  if (m_verbose)
+	  {
+		  std::stringstream sstm;
+		  sstm << "Received " << packet->GetSize () << " bytes from " <<
+				  InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
+				  InetSocketAddress::ConvertFrom (from).GetPort () << " data " << buf;
+		  LogInfo (sstm);
+	  }
 
 	  // check message freshness and if client is waiting
 	  if ( msgC == m_opCount && m_opStatus != IDLE)
@@ -604,9 +612,12 @@ SemifastClient::ProcessReply(std::istream& istm, Address sender)
 				m_value = msgV;
 				m_pvalue = msgVp;
 
-				AsmCommon::Reset(sstm);
-				sstm << "Updated local <ts,value> pair to: [" << m_ts << "," << m_value << "," << m_pvalue <<"]";
-				LogInfo(sstm);
+				if (m_verbose)
+				{
+					AsmCommon::Reset(sstm);
+					sstm << "Updated local <ts,value> pair to: [" << m_ts << "," << m_value << "," << m_pvalue <<"]";
+					LogInfo(sstm);
+				}
 
 				//reset the maxAck set and maxViews variables
 				m_maxAckSet.clear();
@@ -633,14 +644,12 @@ SemifastClient::ProcessReply(std::istream& istm, Address sender)
 			//if we received enough replies go to the next phase
 			if (m_replies >= (m_numServers - m_fail))
 			{
-				AsmCommon::Reset(sstm);
-				sstm << "Waiting for " << (m_numServers-m_fail) << " replies, received " << m_replies;
-				LogInfo(sstm);
-
-				// Check the predicate
-				AsmCommon::Reset(sstm);
-				sstm << "Checking the PREDICATE, maxViews " << m_maxViews << ", bound "<< ((m_numServers/m_fail) - 2);
-				LogInfo(sstm);
+				if (m_verbose)
+				{
+					AsmCommon::Reset(sstm);
+					sstm << "Waiting for " << (m_numServers-m_fail) << " replies, received " << m_replies;
+					LogInfo(sstm);
+				}
 
 					int predRes;
 					predRes = IsPredicateValid ();
@@ -741,9 +750,12 @@ SemifastClient::IsPredicateValid()
 	{
 		msSize = m_numServers - a*m_fail;
 
-		AsmCommon::Reset(sstm);
-		sstm << "PREDICATE LOOP: a=" << a << ", msSize="<< msSize << " maxAckSize="<< m_maxAckSet.size() <<", bound=" << (m_numServers - a*m_fail);
-		LogInfo(sstm);
+		if (m_verbose)
+		{
+			AsmCommon::Reset(sstm);
+			sstm << "PREDICATE LOOP: a=" << a << ", msSize="<< msSize << " maxAckSize="<< m_maxAckSet.size() <<", bound=" << (m_numServers - a*m_fail);
+			LogInfo(sstm);
+		}
 
 		// Choose(maxAck.size(), msSize) possible different sets MS
 		//f2 = SetOperation<int>::Factorial(msSize);
@@ -758,14 +770,17 @@ SemifastClient::IsPredicateValid()
 			maxSet = SetOperation< std::pair< Address, std::set<uint32_t> > >::IthSubsetSizeK(m_maxAckSet, msSize, i);
 			intersection.clear();
 
-			AsmCommon::Reset(sstm);
-			sstm << "MAX SET:{ ";
-			for ( it = maxSet.begin(); it != maxSet.end(); it++)
+			if (m_verbose)
 			{
-				sstm << InetSocketAddress::ConvertFrom((*it).first).GetIpv4() << " ";
+				AsmCommon::Reset(sstm);
+				sstm << "MAX SET:{ ";
+				for ( it = maxSet.begin(); it != maxSet.end(); it++)
+				{
+					sstm << InetSocketAddress::ConvertFrom((*it).first).GetIpv4() << " ";
+				}
+				sstm << "}";
+				LogInfo(sstm);
 			}
-			sstm << "}";
-			LogInfo(sstm);
 
 
 			// compute the intersection of the seen sets in maxSet
@@ -780,9 +795,12 @@ SemifastClient::IsPredicateValid()
 					intersection = SetOperation<uint32_t>::intersect(intersection, (*it).second);
 				}
 
-				AsmCommon::Reset(sstm);
-				sstm << "INTERSECTION LOOP: " << SetOperation<uint32_t>::printSet(intersection, "Intersection", "vid_");
-				LogInfo(sstm);
+				if (m_verbose)
+				{
+					AsmCommon::Reset(sstm);
+					sstm << "INTERSECTION LOOP: " << SetOperation<uint32_t>::printSet(intersection, "Intersection", "vid_");
+					LogInfo(sstm);
+				}
 			}
 
 			AsmCommon::Reset(sstm);

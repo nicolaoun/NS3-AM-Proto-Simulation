@@ -240,11 +240,14 @@ AbdServer::HandleRead (Ptr<Socket> socket)
 		std::istream istm(&sb);
 		istm >> msgT >> msgTs >> msgV >> msgC;
 
-		AsmCommon::Reset(sstm);
-		sstm << "Received " << packet->GetSize () << " bytes from " <<
-				InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
-				InetSocketAddress::ConvertFrom (from).GetPort () << " data " << buf;
-		LogInfo(sstm);
+		if (m_verbose)
+		{
+			AsmCommon::Reset(sstm);
+			sstm << "Received " << packet->GetSize () << " bytes from " <<
+					InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
+					InetSocketAddress::ConvertFrom (from).GetPort () << " data " << buf;
+			LogInfo(sstm);
+		}
 
 
 		packet->RemoveAllPacketTags ();
@@ -282,11 +285,15 @@ AbdServer::HandleRead (Ptr<Socket> socket)
 		//socket->SendTo (p, 0, from);
 		socket->Send (p);
 		m_sent++;     //!< sent messages counter
-		AsmCommon::Reset(sstm);
-		sstm << "Sent " << packet->GetSize () << " bytes to " <<
-				InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
-				InetSocketAddress::ConvertFrom (from).GetPort ();
-		LogInfo(sstm);
+
+		if (m_verbose)
+		{
+			AsmCommon::Reset(sstm);
+			sstm << "Sent " << packet->GetSize () << " bytes to " <<
+					InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
+					InetSocketAddress::ConvertFrom (from).GetPort ();
+			LogInfo(sstm);
+		}
 	}
 }
 

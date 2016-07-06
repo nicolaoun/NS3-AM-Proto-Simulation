@@ -183,9 +183,12 @@ AbdClient::StartApplication (void)
 
 		for (uint32_t i = 0; i < m_serverAddress.size(); i++ )
 		{
-			AsmCommon::Reset(sstm);
-			sstm << "Connecting to SERVER (" << Ipv4Address::ConvertFrom(m_serverAddress[i]) << ")";
-			LogInfo(sstm);
+			if (m_verbose)
+			{
+				AsmCommon::Reset(sstm);
+				sstm << "Connecting to SERVER (" << Ipv4Address::ConvertFrom(m_serverAddress[i]) << ")";
+				LogInfo(sstm);
+			}
 
 			TypeId tid = TypeId::LookupByName ("ns3::TcpSocketFactory");
 			m_socket[i] = Socket::CreateSocket (GetNode (), tid);
@@ -264,9 +267,12 @@ void AbdClient::ConnectionSucceeded (Ptr<Socket> socket)
 
   m_serversConnected++;
 
-  std::stringstream sstm;
-  sstm << "Connected to SERVER (" << InetSocketAddress::ConvertFrom (from).GetIpv4() <<")";
-  LogInfo(sstm);
+  if (m_verbose)
+  {
+	  std::stringstream sstm;
+	  sstm << "Connected to SERVER (" << InetSocketAddress::ConvertFrom (from).GetIpv4() <<")";
+	  LogInfo(sstm);
+  }
 
   // Check if connected to the all the servers start operations
   if (m_serversConnected == m_serverAddress.size() )
@@ -474,9 +480,12 @@ AbdClient::HandleSend (void)
 	  m_txTrace (p);
 	  m_socket[i]->Send (p);
 
-	  std::stringstream sstm;
-	  sstm << "Sent " << m_size << " bytes to " << Ipv4Address::ConvertFrom (m_serverAddress[i]) << " port " << m_peerPort;
-	  LogInfo ( sstm );
+	  if (m_verbose)
+	  {
+		  std::stringstream sstm;
+		  sstm << "Sent " << m_size << " bytes to " << Ipv4Address::ConvertFrom (m_serverAddress[i]) << " port " << m_peerPort;
+		  LogInfo ( sstm );
+	  }
   }
 }
 
@@ -500,11 +509,14 @@ AbdClient::HandleRecv (Ptr<Socket> socket)
 	  istm >> msgT >> msgTs >> msgV >> msgC;
 
 
-	  std::stringstream sstm;
-	  sstm << "Received " << packet->GetSize () << " bytes from " <<
-	                         InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
-	                         InetSocketAddress::ConvertFrom (from).GetPort () << " data " << buf;
-      LogInfo (sstm);
+	  if (m_verbose)
+	  {
+		  std::stringstream sstm;
+		  sstm << "Received " << packet->GetSize () << " bytes from " <<
+				  InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
+				  InetSocketAddress::ConvertFrom (from).GetPort () << " data " << buf;
+		  LogInfo (sstm);
+	  }
 
       // check message freshness and if client is waiting
       if ( msgC == m_sent && m_opStatus != IDLE)
@@ -552,14 +564,20 @@ AbdClient::ProcessReply(uint32_t type, uint32_t ts, uint32_t val)
 				m_ts = ts;
 				m_value = val;
 
-				AsmCommon::Reset(sstm);
-				sstm << "Updated local <ts,value> pair to: [" << m_ts << "," << m_value << "]";
-				LogInfo(sstm);
+				if (m_verbose)
+				{
+					AsmCommon::Reset(sstm);
+					sstm << "Updated local <ts,value> pair to: [" << m_ts << "," << m_value << "]";
+					LogInfo(sstm);
+				}
 			}
 
-			AsmCommon::Reset(sstm);
-			sstm << "Waiting for " << (m_numServers-m_fail) << " replies, received " << m_replies;
-			LogInfo(sstm);
+			if (m_verbose)
+			{
+				AsmCommon::Reset(sstm);
+				sstm << "Waiting for " << (m_numServers-m_fail) << " replies, received " << m_replies;
+				LogInfo(sstm);
+			}
 
 			//if we received enough replies go to the next phase
 			if (m_replies >= (m_numServers - m_fail))
