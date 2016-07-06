@@ -315,18 +315,31 @@ void ohSamServer::HandleAccept (Ptr<Socket> s, const Address& from)
 		m_operations.resize(m_numClients);
 		m_relays.resize(m_numClients);
 
-		AsmCommon::Reset(sstm);
-		sstm << "ACCEPTED CLIENT " << m_clntAddress.size() << ": " << InetSocketAddress::ConvertFrom(from).GetIpv4();
-		LogInfo(sstm);
+		std::sort(m_clntAddress.begin(), m_clntAddress.end());
+
+		if (m_verbose)
+		{
+			AsmCommon::Reset(sstm);
+			sstm << "ACCEPTED CLIENT " << m_clntAddress.size() << ": " << InetSocketAddress::ConvertFrom(from).GetIpv4();
+			sstm << "ClientsSet: {";
+			for (uint32_t i=0; i < m_clntAddress.size(); i++)
+				sstm << InetSocketAddress::ConvertFrom(m_clntAddress[i]).GetIpv4() << " ";
+			sstm << "}";
+
+			LogInfo(sstm);
+		}
 	}
 	else
 	{
 		//m_socketList.push_back (s);
 		m_srvSocket[serverId] = s;
 
-		AsmCommon::Reset(sstm);
-		sstm << "ACCEPTED SERVER " << serverId << ": " << InetSocketAddress::ConvertFrom(from).GetIpv4();
-		LogInfo(sstm);
+		if (m_verbose)
+		{
+			AsmCommon::Reset(sstm);
+			sstm << "ACCEPTED SERVER " << serverId << ": " << InetSocketAddress::ConvertFrom(from).GetIpv4();
+			LogInfo(sstm);
+		}
 	}
 }
 
@@ -518,7 +531,8 @@ ohSamServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType m
 
 			AsmCommon::Reset(pkts);
 
-			pkts << READRELAY << " " << m_ts << " " << m_value << " " << ipSize << " " << InetSocketAddress::ConvertFrom(from).GetIpv4().Get() << " " << msgOp;
+			//pkts << READRELAY << " " << m_ts << " " << m_value << " " << ipSize << " " << InetSocketAddress::ConvertFrom(from).GetIpv4().Get() << " " << msgOp;
+			pkts << READRELAY << " " << m_ts << " " << m_value << " " << msgSenderID << " " << msgOp;
 
 			/*
 			for( int k=0; k<ipSize; k++)
@@ -570,10 +584,10 @@ ohSamServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType m
 void
 ohSamServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 {
-	uint32_t msgT, msgTs, msgV, msgOp, msgIpSize;
+	uint32_t msgT, msgTs, msgV, msgOp; //, msgIpSize;
 	int msgSenderID = -1;
 	//Address senderIp;
-	std::uint32_t msgSenderIp;
+	//std::uint32_t msgSenderIp;
 	std::stringstream sstm;
 	std::string message_type = "";
 	std::string message_response_type = "";
@@ -582,8 +596,10 @@ ohSamServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 
 	socket->GetPeerName(from);
 
-	istm >> msgTs >> msgV >> msgIpSize >> msgSenderIp >> msgOp;
+	//istm >> msgTs >> msgV >> msgIpSize >> msgSenderIp >> msgOp;
+	istm >> msgTs >> msgV >> msgSenderID >> msgOp;
 
+	/*
 	if ( msgSenderIp <= 0 )
 	{
 		AsmCommon::Reset(sstm);
@@ -604,11 +620,12 @@ ohSamServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 			break;	//stop at the first client we find
 		}
 	}
+	*/
 
 	AsmCommon::Reset(sstm);
 	sstm << "Processing ReadRelay from " << InetSocketAddress::ConvertFrom(from).GetIpv4() <<": InitiatorIp= "
-			<< Ipv4Address::ConvertFrom(senderIpv4) << " RawIp=" << msgSenderIp << " InitiatorID=" << msgSenderID << ", msgOp=" << msgOp;
-	// << ", relayTs=" << m_relayTs[msgSenderID] << ", msgTs=" << msgTs << ", #RelaysRcved=" << m_relays[msgSenderID];
+			<< InetSocketAddress::ConvertFrom(m_clntAddress[msgSenderID]).GetIpv4() << " InitiatorID=" << msgSenderID << ", msgOp=" << msgOp;
+			//<< ", relayTs=" << m_relayTs[msgSenderID] << ", msgTs=" << msgTs << ", #RelaysRcved=" << m_relays[msgSenderID];
 	LogInfo(sstm );
 
 	if ( msgSenderID >= 0 && msgSenderID < (int) m_clntAddress.size() )
@@ -663,7 +680,7 @@ ohSamServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 			m_sent++;
 
 			AsmCommon::Reset(sstm);
-			sstm << "Sent " << message_response_type <<" "<< pk->GetSize () << " bytes to " << InetSocketAddress::ConvertFrom (m_clntAddress[msgSenderID]).GetIpv4();
+			sstm << "Sent " << message_response_type <<" "<< pk->GetSize () << " bytes to " << InetSocketAddress::ConvertFrom (m_clntAddress[msgSenderID]).GetIpv4() << " data " << pkts.str();
 			LogInfo ( sstm );
 
 			//pk->RemoveAllPacketTags ();
