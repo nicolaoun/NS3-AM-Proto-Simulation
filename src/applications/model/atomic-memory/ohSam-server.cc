@@ -31,6 +31,7 @@
 #include "ns3/packet.h"
 #include "ns3/uinteger.h"
 #include "ohSam-server.h"
+#include <algorithm>
 
 namespace ns3 {
 
