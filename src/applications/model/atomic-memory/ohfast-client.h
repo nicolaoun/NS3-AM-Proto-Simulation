@@ -235,6 +235,7 @@ private:
 	
 
 	uint32_t m_numServers;		//!< number of servers
+	uint32_t m_numClients;
 	uint32_t m_fail;			//!< max number of failures supported
 
 	Status m_opStatus;			//!< operation status

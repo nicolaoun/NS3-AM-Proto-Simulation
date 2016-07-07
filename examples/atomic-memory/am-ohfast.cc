@@ -300,6 +300,7 @@ main (int argc, char *argv[])
 		client.SetAttribute ("MaxOperations", UintegerValue (maxPacketCount));
 		client.SetAttribute ("Port", UintegerValue (port));               // Incoming packets port
 		client.SetAttribute ("ID", UintegerValue (i));    //we want them to start from Writers
+		client.SetAttribute ("Clients", UintegerValue (numClients));    //we want them to start from Writers
 		client.SetAttribute ("MaxFailures", UintegerValue (numFail));
 		client.SetAttribute ("Interval", TimeValue (interPacketInterval));
 		client.SetAttribute ("PacketSize", UintegerValue (packetSize));

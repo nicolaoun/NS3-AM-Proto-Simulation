@@ -115,6 +115,11 @@ OhFastClient::GetTypeId (void)
                    	 UintegerValue (100),
                   	 MakeUintegerAccessor (&OhFastClient::m_personalID),
                   	 MakeUintegerChecker<uint32_t> ())
+    .AddAttribute ("Clients", 
+                     "Number of Clients",
+                   	 UintegerValue (100),
+                  	 MakeUintegerAccessor (&OhFastClient::m_numClients),
+                  	 MakeUintegerChecker<uint32_t> ())
 	 .AddAttribute ("RandomInterval",
 					 "Apply randomness on the invocation interval",
 					 UintegerValue (0),
@@ -280,9 +285,6 @@ OhFastClient::StopApplication ()
 	  }
     }
 
-  Simulator::Cancel (m_sendEvent);
-
-  
   float avg_time=0;
   if(m_opCount==0)
   	avg_time = 0;
@@ -300,11 +302,19 @@ OhFastClient::StopApplication ()
 	  Log( INFO, sstm);
 	  break;
   }
+  
+  if(m_personalID==m_numClients-1){
+  	exit(0);
+  }
+  	
+
+  Simulator::Cancel (m_sendEvent);
 }
 
 void
 OhFastClient::DoDispose (void)
 {
+  
   NS_LOG_FUNCTION (this);
   Application::DoDispose ();
 }
