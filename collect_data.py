@@ -219,14 +219,24 @@ print "Starting Script...\n"
 if len(sys.argv) == 2:
 	if (int(sys.argv[1]) == 1):
 		print "Algorithm ABD\n"
+		prtcl_start=1
+		prtcl_stop=1
 	elif(int(sys.argv[1]) == 2):
 		print "Algorithm oh-Sam\n"
+		prtcl_start=2
+		prtcl_stop=2
 	elif(int(sys.argv[1]) == 3):
 		print "Algorithm SemiFast\n"
+		prtcl_start=3
+		prtcl_stop=3
 	elif(int(sys.argv[1]) == 4):
 		print "Algorithm ccHybrid\n"
+		prtcl_start=4
+		prtcl_stop=4
 	elif(int(sys.argv[1]) == 5):
 		print "Algorithm oh-Fast\n"
+		prtcl_start=5
+		prtcl_stop=5
 	else:
 		print "Wrong Algorithm Selection\n"
 		exit(0)
