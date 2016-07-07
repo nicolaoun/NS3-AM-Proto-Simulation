@@ -1,4 +1,6 @@
 import os
+from time import sleep
+import sys
 
 
 def get_single_test_avg_results(filename,numR):
@@ -88,13 +90,13 @@ def execute():
 	# for each test (count for 1 to 6) - 6 not included
 	for t in range(1,tests+1):
 		#those variables will be used to write back to the main file
-		print "        executing #test=" + str(t)
+		###print "        executing #test=" + str(t)
 		
 
 		#create a file for each test
 		scc_directory = create_output_file_for_scenario("output/logs_for_fails_"+str(fail)+"/servers_equal_"+str(numServers)+"/"+str(alg)+"/readers_"+str(numReaders)+"/version_"+str(Version)+"/read_interval_"+str(rInterval)+"_write_interval_"+str(wInterval)+"_/test_"+str(t)+".txt", 1)
 		#create a commad and redirection of the output
-		command = "./waf --run '"+str(executable)+" --version="+str(version)+" --failures="+str(fail)+" --servers="+str(numServers)+" --readers="+str(numReaders)+" --rInterval="+str(rInterval)+" --wInterval="+str(wInterval)+" --version="+str(version)+" --seed="+str(seed)+"' >> "+str(scc_directory)+" 2>&1"
+		command = "./waf --run '"+str(executable)+" --version="+str(version)+" --failures="+str(fail)+" --servers="+str(numServers)+" --readers="+str(numReaders)+" --rInterval="+str(rInterval)+" --wInterval="+str(wInterval)+" --seed="+str(seed)+"' >> "+str(scc_directory)+" 2>&1"
 		#execute the command
 		os.system(command)
 		# open the file of the result
@@ -183,6 +185,7 @@ srvrs_step=5
 fail_start=1
 fail_stop=2
 fail_step=1
+bar=0
 #############################################################################
 #############################################################################
 ############# FOR THE MOMENT USE THE BELLOW #################################
@@ -218,10 +221,10 @@ for fail in range(fail_start,fail_stop+1,fail_step):
 	#print fail
 	#range(start, stop, step) (last step is not included
 	main_results_dir = "output/ALL_RESULTS_fail_"+str(fail)+".txt"
-	print "*** For Failures="+str(fail)+" the Main Averaged Results will be at: " + str(main_results_dir)+" ***"
+	###print "*** For Failures="+str(fail)+" the Main Averaged Results will be at: " + str(main_results_dir)+" ***"
 	main_directory = create_output_file_for_scenario(main_results_dir,0)
 	for numServers in range(srvrs_start, srvrs_stop+1, srvrs_step):
-		print "--Scenario for Servers="+str(numServers)+"--"
+		###print "--Scenario for Servers="+str(numServers)+"--"
 		# for each protocol (up to 6)
 		for protocol in range(prtcl_start,prtcl_stop+1,prtcl_step):
 			# for each number of readers (up to 10,20,40,80)
@@ -241,23 +244,28 @@ for fail in range(fail_start,fail_stop+1,fail_step):
 				alg=oh_fast;
 				executable="am-ohfast"
 
-			print "  For Algorithm="+str(executable)+":"
+			###print "  For Algorithm="+str(executable)+":"
 			
 			for numReaders in range(rdrs_start,rdrs_stop+1, rds_step):
 				if (numReaders==10) or (numReaders==20) or (numReaders==40) or (numReaders==80) or (numReaders==100):
-					print "    For Readers="+str(numReaders)+":"
+					###print "    For Readers="+str(numReaders)+":"
 					for version in range(vrsn_start, vrsn_stop+1, vrsn_step):
-						if(version==0):
+						if(version==1):
 							Version="fixInt"
 						else:
 							Version = "randInt"
-						print "     For Version="+str(Version)+":"
+						bar=bar+1
+						sys.stdout.write('\r')
+						# the exact output you're looking for:
+						sys.stdout.write("[%-100s] %d%%" % ('='*bar, bar))
+						sys.stdout.flush()
+    					###print "     For Version="+str(Version)+":"
 						for readInterval in range(rInterval_start, rInterval_stop+1, rInterval_step):
 							rInterval = float(readInterval)/10
-							print "      For readInterval="+str(rInterval)+":"
+							###print "      For readInterval="+str(rInterval)+":"
 							for writeInterval in range(wInterval_start, wInterval_stop+1, wInterval_step):
 								wInterval = float(writeInterval)/10
-								print "       For writeInterval="+str(wInterval)+":"
+								###print "       For writeInterval="+str(wInterval)+":"
 								execute()
 
 
