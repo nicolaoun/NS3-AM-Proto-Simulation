@@ -216,6 +216,23 @@ bar=0
 
 print "Starting Script...\n"
 
+if len(sys.argv) == 2:
+	if (int(sys.argv[1]) == 1):
+		print "Algorithm ABD\n"
+	elif(int(sys.argv[1]) == 2):
+		print "Algorithm oh-Sam\n"
+	elif(int(sys.argv[1]) == 3):
+		print "Algorithm SemiFast\n"
+	elif(int(sys.argv[1]) == 4):
+		print "Algorithm ccHybrid\n"
+	elif(int(sys.argv[1]) == 5):
+		print "Algorithm oh-Fast\n"
+	else:
+		print "Wrong Algorithm Selection\n"
+		exit(0)
+
+
+
 #for all the fail scenario (1,3)
 for fail in range(fail_start,fail_stop+1,fail_step):
 	#print fail
