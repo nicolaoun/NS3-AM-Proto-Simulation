@@ -31,7 +31,7 @@
 #include "ns3/packet.h"
 #include "ns3/uinteger.h"
 #include "ohfast-server.h"
-//#include <algorithm>
+#include <algorithm>
 
 namespace ns3 {
 

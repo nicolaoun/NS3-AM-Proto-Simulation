@@ -35,6 +35,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <ctime>
+#include <algorithm>
 
 namespace ns3 {
 
