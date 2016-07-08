@@ -173,8 +173,8 @@ rInterval_step = 23
 rdrs_start = 10 
 rdrs_stop=100
 rds_step=10  #No worries we will end up doing 10,20,40,80,100
-vrsn_start=1
-vrsn_stop=2
+vrsn_start=0
+vrsn_stop=1
 vrsn_step=1
 prtcl_start = 1
 prtcl_stop = 5
@@ -277,7 +277,7 @@ for fail in range(fail_start,fail_stop+1,fail_step):
 				if (numReaders==10) or (numReaders==20) or (numReaders==40) or (numReaders==80) or (numReaders==100):
 					###print "    For Readers="+str(numReaders)+":"
 					for version in range(vrsn_start, vrsn_stop+1, vrsn_step):
-						if(version==1):
+						if(version==0):
 							Version="fixInt"
 						else:
 							Version = "randInt"
