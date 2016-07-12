@@ -5,7 +5,7 @@ import sys
 
 def get_single_test_avg_results(filename,numR):
 	# For each file
-	srv_msgs=0;
+	srv_msgs=0
 	w_sentMsgs = 0
 	w_invokedWrites = 0
 	w_completedWrites = 0
@@ -49,8 +49,8 @@ def get_single_test_avg_results(filename,numR):
 					r_avgtime += float(line.split("AveOpTime=")[1].split("s")[0])
 	
 	# To be sure not to divide by 0 at any time and break everything
-	ratio=0;
-	percent=0;
+	ratio=0
+	percent=0
 	if(r_slowReads+r_fastReads!=0):
 		ratio=r_fastReads/(r_slowReads+r_fastReads)
 		percent=(r_slowReads/(r_fastReads+r_slowReads))*100
@@ -262,14 +262,32 @@ for fail in range(fail_start,fail_stop+1,fail_step):
 				alg=oh_sam
 				executable="am-ohSam"
 			elif (protocol==3):
-				alg=semifast;
+				alg=semifast
 				executable="am-semifast"
 			elif (protocol==4):
-				alg=hybridfast;
+				alg=hybridfast
 				executable="am-cchybrid"
-			else:
-				alg=oh_fast;
+			elif (protocol==5):
+				alg=oh_fast
 				executable="am-ohfast"
+			elif (protocol==6):
+				alg=abd
+				executable="am-abd-spike"
+			elif (protocol==7):
+				alg=oh_sam
+				executable="am-ohSam-spike"
+			elif (protocol==8):
+				alg=oh_fast
+				executable="am-ohfast-spike"
+			elif (protocol==9):
+				alg=abd
+				executable="am-abd-star"
+			elif (protocol==10):
+				alg=oh_sam
+				executable="am-ohSam-star"
+			elif (protocol==11):
+				alg=oh_fast
+				executable="am-ohfast-star"
 
 			###print "  For Algorithm="+str(executable)+":"
 			#s - 15 r -40
