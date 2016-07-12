@@ -115,6 +115,11 @@ SemifastClient::GetTypeId (void)
 					 UintegerValue (0),
 					 MakeUintegerAccessor (&SemifastClient::m_verbose),
 					 MakeUintegerChecker<uint16_t> ())
+	.AddAttribute ("Clients", 
+                     "Number of Clients",
+                   	 UintegerValue (100),
+                  	 MakeUintegerAccessor (&SemifastClient::m_numClients),
+                  	 MakeUintegerChecker<uint32_t> ())
   ;
   return tid;
 }
@@ -228,7 +233,6 @@ SemifastClient::StopApplication ()
 	  }
     }
 
-  Simulator::Cancel (m_sendEvent);
 
   float avg_time=0;
   if(m_opCount==0)
@@ -240,13 +244,21 @@ SemifastClient::StopApplication ()
   {
   case WRITER:
 	  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_twoExOps+m_fourExOps <<", AveOpTime="<< avg_time <<"s **";
+	  //std::cout << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_twoExOps+m_fourExOps <<", AveOpTime="<< avg_time <<"s **"<<std::endl;
 	  LogInfo(sstm);
 	  break;
   case READER:
 	  sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads=" << m_opCount <<", #CompletedReads="<<m_twoExOps+m_fourExOps <<", #4EXCH_reads="<< m_fourExOps << ", #2EXCH_reads="<<m_twoExOps<<", AveOpTime="<< avg_time <<"s **";
+	  //std::cout << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads=" << m_opCount <<", #CompletedReads="<<m_twoExOps+m_fourExOps <<", #4EXCH_reads="<< m_fourExOps << ", #2EXCH_reads="<<m_twoExOps<<", AveOpTime="<< avg_time <<"s **"<<std::endl;
 	  LogInfo(sstm);
 	  break;
   }
+
+ if(m_personalID==m_numClients-1){
+  	exit(0);
+ }	
+
+  Simulator::Cancel (m_sendEvent);
 
   // switch(m_prType)
   // {

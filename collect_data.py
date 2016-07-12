@@ -272,7 +272,8 @@ for fail in range(fail_start,fail_stop+1,fail_step):
 				executable="am-ohfast"
 
 			###print "  For Algorithm="+str(executable)+":"
-			
+			#s - 15 r -40
+
 			for numReaders in range(rdrs_start,rdrs_stop+1, rds_step):
 				if (numReaders==10) or (numReaders==20) or (numReaders==40) or (numReaders==80) or (numReaders==100):
 					###print "    For Readers="+str(numReaders)+":"
@@ -286,6 +287,8 @@ for fail in range(fail_start,fail_stop+1,fail_step):
 						# the exact output you're looking for:
 						sys.stdout.write("[%-100s] %d%%" % ('='*bar, bar))
 						sys.stdout.flush()
+						# if (bar<8):
+						# 	break
     					###print "     For Version="+str(Version)+":"
 						for readInterval in range(rInterval_start, rInterval_stop+1, rInterval_step):
 							rInterval = float(readInterval)/10

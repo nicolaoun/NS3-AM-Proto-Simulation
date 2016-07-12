@@ -356,6 +356,7 @@ main (int argc, char *argv[])
 	// Now, do the actual simulation.
 	//
 	NS_LOG_INFO ("Run Simulation: oh-fast.");
+	//std::cout<<"Run Simulation: oh-fast STAR."<<std::endl;
   Simulator::Run ();
   Simulator::Destroy ();
   NS_LOG_INFO (">>>> oh-fast Scenario - Servers:"<<numServers<<", Readers:"<<numReaders<<", Writers:"<<numWriters<<", Failures:"<<numFail<<", ReadInterval:"<<readInterval<<", WriteInterval:"<<writeInterval<<", <<<<");

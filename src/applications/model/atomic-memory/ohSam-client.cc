@@ -110,6 +110,11 @@ ohSamClient::GetTypeId (void)
                    	 UintegerValue (100),
                   	 MakeUintegerAccessor (&ohSamClient::m_personalID),
                   	 MakeUintegerChecker<uint32_t> ())
+    .AddAttribute ("Clients", 
+                     "Number of Clients",
+                   	 UintegerValue (100),
+                  	 MakeUintegerAccessor (&ohSamClient::m_numClients),
+                  	 MakeUintegerChecker<uint32_t> ())
 	 .AddAttribute ("RandomInterval",
 					 "Apply randomness on the invocation interval",
 					 UintegerValue (0),
@@ -279,7 +284,7 @@ ohSamClient::StopApplication ()
 	  }
     }
 
-  Simulator::Cancel (m_sendEvent);
+  
 
   float avg_time=0;
   if(m_opCount==0)
@@ -291,13 +296,21 @@ ohSamClient::StopApplication ()
   {
   case WRITER:
 	  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_completeOps <<", AveOpTime="<< avg_time <<"s **";
+	  //std::cout << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_completeOps <<", AveOpTime="<< avg_time <<"s **"<<std::endl;
 	  LogInfo(sstm);
 	  break;
   case READER:
 	  sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads=" << m_opCount <<", #CompletedReads="<<m_completeOps <<", #3EXCH_reads="<< m_completeOps << ", #2EXCH_reads=0, AveOpTime="<< avg_time <<"s **";
+	  //std::cout << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads=" << m_opCount <<", #CompletedReads="<<m_completeOps <<", #3EXCH_reads="<< m_completeOps << ", #2EXCH_reads=0, AveOpTime="<< avg_time <<"s **"<<std::endl;
 	  LogInfo(sstm);
 	  break;
   }
+  
+  if(m_personalID==m_numClients-1){
+  	exit(0);
+  }
+
+  Simulator::Cancel (m_sendEvent);
 }
 
 void

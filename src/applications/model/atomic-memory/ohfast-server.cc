@@ -244,6 +244,7 @@ OhFastServer::StopApplication ()
 	std::stringstream sstm;
 	sstm << "** SERVER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent<<" **";
 	Log(INFO, sstm);
+	//std::cout << "** SERVER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent<<" **"<<std::endl;
 }
 
 void

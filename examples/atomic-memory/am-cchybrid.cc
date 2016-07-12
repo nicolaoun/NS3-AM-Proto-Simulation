@@ -276,6 +276,7 @@ main (int argc, char *argv[])
   		client.SetAttribute ("ID", UintegerValue (i));
   		client.SetAttribute ("MaxFailures", UintegerValue (numFail));
   		client.SetAttribute ("Interval", TimeValue (interPacketInterval));
+  		client.SetAttribute ("Clients", UintegerValue (numClients));
   		client.SetAttribute ("PacketSize", UintegerValue (packetSize));
   		client.SetAttribute("RandomInterval", UintegerValue (version));
   		client.SetAttribute("Seed", UintegerValue (seed));
@@ -298,6 +299,7 @@ main (int argc, char *argv[])
 // Now, do the actual simulation.
 //
   NS_LOG_INFO ("Run Simulation: ccHybrid.");
+  //std::cout<<"Run Simulation: ccHybrid."<<std::endl;
   Simulator::Run ();
   Simulator::Destroy ();
   NS_LOG_INFO (">>>> ccHybrid Scenario - Servers:"<<numServers<<", Readers:"<<numReaders<<", Writers:1, Failures:"<<numFail<<", ReadInterval:"<<readInterval<<", WriteInterval:"<<writeInterval<<", <<<<");

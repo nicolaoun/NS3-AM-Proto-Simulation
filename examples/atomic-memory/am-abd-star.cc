@@ -311,6 +311,7 @@ main (int argc, char *argv[])
 		client.SetAttribute ("MaxOperations", UintegerValue (maxPacketCount));
 		client.SetAttribute ("ID", UintegerValue (i));
 		client.SetAttribute ("MaxFailures", UintegerValue (numFail));
+		client.SetAttribute ("Clients", UintegerValue (numClients));
 		client.SetAttribute ("Interval", TimeValue (interPacketInterval));
 		client.SetAttribute ("PacketSize", UintegerValue (packetSize));
 		client.SetAttribute ("RandomInterval", UintegerValue (version));
@@ -334,7 +335,8 @@ main (int argc, char *argv[])
 	//
 	// Now, do the actual simulation.
 	//
-	NS_LOG_INFO ("Run Simulation: ABD SWMR");
+	NS_LOG_INFO ("Run Simulation: ABD STAR SWMR");
+	//std::cout<<"Run Simulation: ABD STAR."<<std::endl;
 	Simulator::Run ();
 	Simulator::Destroy ();
 	NS_LOG_INFO (">>>> ABD SWMR Scenario - Servers:"<<numServers<<", Readers:"<<numReaders<<", Writers:1, Failures:"<<numFail<<", ReadInterval:"<<readInterval<<", WriteInterval:"<<writeInterval<<", <<<<");

@@ -245,6 +245,7 @@ private:
 	uint32_t m_completeOps;
 	uint32_t m_slowOpCount;
 	uint32_t m_fastOpCount;
+	uint32_t m_numClients;
 	uint32_t m_replies;
 	uint32_t m_sent; 		//!< Counter for sent msgs
 	uint32_t m_count; 		//!< Maximum number of packets the application will send

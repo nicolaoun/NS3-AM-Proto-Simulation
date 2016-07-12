@@ -309,6 +309,7 @@ main (int argc, char *argv[])
 	  client.SetAttribute ("Port", UintegerValue (port));               // Incoming packets port
 	  client.SetAttribute ("ID", UintegerValue (i));    //we want them to start from Writers
 	  client.SetAttribute ("MaxFailures", UintegerValue (numFail));
+	  client.SetAttribute ("Clients", UintegerValue (numClients));
 	  client.SetAttribute ("Interval", TimeValue (interPacketInterval));
 	  client.SetAttribute ("PacketSize", UintegerValue (packetSize));
 	  client.SetAttribute("RandomInterval", UintegerValue (version));
@@ -333,6 +334,7 @@ main (int argc, char *argv[])
 // Now, do the actual simulation.
 //
   NS_LOG_INFO ("Run Simulation: oh-Sam.");
+  //std::cout<<"Run Simulation: oh-Sam SPIKE."<<std::endl;
   Simulator::Run ();
   Simulator::Destroy ();
   NS_LOG_INFO (">>>> oh-Sam Scenario - Servers:"<<numServers<<", Readers:"<<numReaders<<", Writers:1, Failures:"<<numFail<<", ReadInterval:"<<readInterval<<", WriteInterval:"<<writeInterval<<", <<<<");

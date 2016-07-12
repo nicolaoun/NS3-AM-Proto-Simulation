@@ -211,6 +211,7 @@ private:
 	//counters
 	uint32_t m_opCount;
 	uint32_t m_completeOps;
+	uint32_t m_numClients;
 	uint32_t m_replies;
 	uint32_t m_sent; 		//!< Counter for sent packets
 	uint32_t m_count; 		//!< Maximum number of packets the application will send
