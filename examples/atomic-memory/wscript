@@ -4,6 +4,9 @@ def build(bld):
     obj = bld.create_ns3_program('am-abd', ['csma', 'point-to-point', 'internet', 'applications'])
     obj.source = 'am-abd.cc'
     
+    obj = bld.create_ns3_program('am-abd-star', ['csma', 'point-to-point', 'internet', 'applications'])
+    obj.source = 'am-abd-star.cc'
+    
     obj = bld.create_ns3_program('am-abd-mwmr', ['csma', 'point-to-point', 'internet', 'applications'])
     obj.source = 'am-abd-mwmr.cc'
     
@@ -13,8 +16,14 @@ def build(bld):
     obj = bld.create_ns3_program('am-ohSam', ['csma', 'point-to-point', 'internet', 'applications'])
     obj.source = 'am-ohSam.cc'
     
+    obj = bld.create_ns3_program('am-ohSam-star', ['csma', 'point-to-point', 'internet', 'applications'])
+    obj.source = 'am-ohSam-star.cc'
+    
     obj = bld.create_ns3_program('am-ohfast', ['csma', 'point-to-point', 'internet', 'applications'])
     obj.source = 'am-ohfast.cc'
+    
+    obj = bld.create_ns3_program('am-ohfast-star', ['csma', 'point-to-point', 'internet', 'applications'])
+    obj.source = 'am-ohfast-star.cc'
     
     obj = bld.create_ns3_program('am-cchybrid', ['csma', 'point-to-point', 'internet', 'applications'])
     obj.source = 'am-cchybrid.cc'
