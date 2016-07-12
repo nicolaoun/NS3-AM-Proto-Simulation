@@ -16,34 +16,25 @@
 
 // Network topology
 //
-//	  s2 s3 s4
-//     \ | /
-//      \|/
-//  s1---r0---s5
-//      /| \
-//     / |  \
-//    sn |  s6
-//  _____|
-//	|
-//  |   w    c1   ...   ci
-//  |   |     |    ...    |
-//  r1 =======================
-//   |           LAN
-//   |
-//   |  c(i+1)   ...   c(2i)
-//   |     |      ...    |
-//  r2 =======================
-//   |           LAN
-//   |
-//   .
-//	 .
-//   .
-//   |  c((n-1)*i)  ...   c(ni)
-//   |      |       ...    |
-//  rn =========================
+//         w      c1   ...   ci
+//         |      |    ...    |
+//  s1--r1 =======================
+//      |           LAN
+//      |
+//      |   c(i+1)   ...   c(2i)
+//      |     |      ...    |
+//  s2--r2 =======================
+//      |           LAN
+//      |
+//      .
+//	    .
+//      .
+//      |   c((n-1)*i)  ...   c(ni)
+//      |       |       ...    |
+//  sn--rn =========================
 //              LAN
 //
-// - Links between r_0 and s_j: Point to point 50Mpbs, 1ms delay
+// - Links between r_i and s_i: Point to point 1.5Mpbs, 10ms delay
 // - Links between r_i and r_{i+1}: Point to point 1.5Mpbs, 10ms delay
 // - Links between nodes in LAN: CSMA 5Mpbs, 2ms delay
 // - DropTail queues 
@@ -152,7 +143,7 @@ main (int argc, char *argv[])
 				lanClients.Add ( clientNodes.Get(j) );
 			}
 
-			nodeLanList.push_back( NodeContainer (routers.Get(i+1), lanClients));
+			nodeLanList.push_back( NodeContainer (routers.Get(i), lanClients));
 		}
 
 
@@ -163,8 +154,11 @@ main (int argc, char *argv[])
 		for(int i=0; i<numServers; ++i)
 		{
 			//
-			routerServersAdjacencyList.push_back( NodeContainer (routers.Get(0), serverNodes.Get(i)) );
-			routerAdjacencyList.push_back ( NodeContainer (routers.Get(i), routers.Get(i+1)) );
+			routerServersAdjacencyList.push_back( NodeContainer (routers.Get(i), serverNodes.Get(i)) );
+			if (i < numServers -1 )
+			{
+				routerAdjacencyList.push_back ( NodeContainer (routers.Get(i), routers.Get(i+1)) );
+			}
 		}
 
 
@@ -191,11 +185,11 @@ main (int argc, char *argv[])
 		}
 
 		PointToPointHelper p2pServers;
-		p2pServers.SetDeviceAttribute ("DataRate", StringValue ("50Mbps"));
-		p2pServers.SetChannelAttribute ("Delay", StringValue ("1ms"));
+		p2pServers.SetDeviceAttribute ("DataRate", StringValue ("1.5Mbps"));
+		p2pServers.SetChannelAttribute ("Delay", StringValue ("10ms"));
 		std::vector<NetDeviceContainer> p2pServersDeviceAdjacencyList;
 
-		for(uint32_t i=0; i<routerAdjacencyList.size (); ++i)
+		for(uint32_t i=0; i<routerServersAdjacencyList.size (); ++i)
 		{
 			p2pServersDeviceAdjacencyList.push_back( p2pServers.Install (routerServersAdjacencyList[i]) );
 		}
