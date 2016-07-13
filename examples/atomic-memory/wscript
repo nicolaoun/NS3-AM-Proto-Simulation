@@ -37,5 +37,17 @@ def build(bld):
     obj = bld.create_ns3_program('am-cchybrid', ['csma', 'point-to-point', 'internet', 'applications'])
     obj.source = 'am-cchybrid.cc'
     
+    obj = bld.create_ns3_program('am-cchybrid-star', ['csma', 'point-to-point', 'internet', 'applications'])
+    obj.source = 'am-cchybrid-star.cc'
+    
+    obj = bld.create_ns3_program('am-cchybrid-spike', ['csma', 'point-to-point', 'internet', 'applications'])
+    obj.source = 'am-cchybrid-spike.cc'
+    
     obj = bld.create_ns3_program('am-semifast', ['csma', 'point-to-point', 'internet', 'applications'])
     obj.source = 'am-semifast.cc'
+    
+    obj = bld.create_ns3_program('am-semifast-star', ['csma', 'point-to-point', 'internet', 'applications'])
+    obj.source = 'am-semifast-star.cc'
+    
+    obj = bld.create_ns3_program('am-semifast-spike', ['csma', 'point-to-point', 'internet', 'applications'])
+    obj.source = 'am-semifast-spike.cc'
