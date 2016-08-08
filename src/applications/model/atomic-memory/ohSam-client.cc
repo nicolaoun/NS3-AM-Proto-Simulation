@@ -287,21 +287,25 @@ ohSamClient::StopApplication ()
   
 
   float avg_time=0;
-  if(m_opCount==0)
+  float real_avg_time=0;
+  if(m_opCount==0){
   	avg_time = 0;
-  else
+  	real_avg_time=0;
+  }else{
   	avg_time = ((m_opAve.GetSeconds()) /m_opCount);
+  	real_avg_time = (m_real_opAve.count()/m_opCount);
+  }
 
   switch(m_prType)
   {
   case WRITER:
-	  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_completeOps <<", AveOpTime="<< avg_time <<"s **";
-	  //std::cout << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_completeOps <<", AveOpTime="<< avg_time <<"s **"<<std::endl;
+	  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_completeOps <<", AveOpTime="<< avg_time+real_avg_time <<"s, AveCommTime="<<avg_time<<"s, AvgCompTime="<<real_avg_time<<"s **";
+	  std::cout << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_completeOps <<", AveOpTime="<< avg_time+real_avg_time <<"s, AveCommTime="<<avg_time<<"s, AvgCompTime="<<real_avg_time<<"s **"<<std::endl;
 	  LogInfo(sstm);
 	  break;
   case READER:
-	  sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads=" << m_opCount <<", #CompletedReads="<<m_completeOps <<", #3EXCH_reads="<< m_completeOps << ", #2EXCH_reads=0, AveOpTime="<< avg_time <<"s **";
-	  //std::cout << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads=" << m_opCount <<", #CompletedReads="<<m_completeOps <<", #3EXCH_reads="<< m_completeOps << ", #2EXCH_reads=0, AveOpTime="<< avg_time <<"s **"<<std::endl;
+	  sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads=" << m_opCount <<", #CompletedReads="<<m_completeOps <<", #3EXCH_reads="<< m_completeOps << ", #2EXCH_reads=0, AveOpTime="<< avg_time+real_avg_time <<"s, AveCommTime="<<avg_time<<"s, AvgCompTime="<<real_avg_time<<"s **";
+	  std::cout << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads=" << m_opCount <<", #CompletedReads="<<m_completeOps <<", #3EXCH_reads="<< m_completeOps << ", #2EXCH_reads=0, AveOpTime="<< avg_time+real_avg_time <<"s, AveCommTime="<<avg_time<<"s, AvgCompTime="<<real_avg_time<<"s **"<<std::endl;
 	  LogInfo(sstm);
 	  break;
   }
@@ -477,6 +481,7 @@ ohSamClient::InvokeRead (void)
 	NS_LOG_FUNCTION (this);
 	std::stringstream sstm;
 	m_opStart = Now();
+	m_real_start = std::chrono::system_clock::now();
 
 	//check if we still have operations to perfrom
 	if ( m_opCount <  m_count )
@@ -506,6 +511,7 @@ ohSamClient::InvokeWrite (void)
 
 	m_opCount ++;
 	m_opStart = Now();
+	m_real_start = std::chrono::system_clock::now();
 	
 
 	//check if we still have operations to perfrom
@@ -664,11 +670,14 @@ ohSamClient::ProcessReply(uint32_t type, uint32_t ts, uint32_t val)
 			m_completeOps++;
 			m_opStatus = IDLE;
 			ScheduleOperation (m_interval);
+			m_real_end = std::chrono::system_clock::now();
+			std::chrono::duration<double> elapsed_seconds = m_real_end-m_real_start;
 
 			m_opEnd = Now();
 			m_opAve += m_opEnd - m_opStart;
+			m_real_opAve += elapsed_seconds;  //
 			AsmCommon::Reset(sstm);
-			sstm << "*** WRITE COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, [<ts,value>]: [<" << m_ts << "," << m_value << ">] - @ 2 EXCH **";
+			sstm << "** WRITE COMPLETED: "  << m_opCount << " in "<< ((m_opEnd.GetSeconds() - m_opStart.GetSeconds()) + elapsed_seconds.count()) << "s (<"<<(m_opEnd.GetSeconds() - m_opStart.GetSeconds())<<"> + <"<< elapsed_seconds.count() <<">), <ts, value>: [" << m_ts << "," << m_value << "], @ 2 EXCH **";
 			LogInfo(sstm);
 			m_replies = 0;
 		}
@@ -694,10 +703,14 @@ ohSamClient::ProcessReply(uint32_t type, uint32_t ts, uint32_t val)
 
       		m_opEnd = Now();
       		m_opAve += m_opEnd - m_opStart;
+      		m_real_end = std::chrono::system_clock::now();
+			std::chrono::duration<double> elapsed_seconds = m_real_end-m_real_start;
+			m_real_opAve += elapsed_seconds;  //
+
    			m_opStatus = IDLE;
 			ScheduleOperation (m_interval);
       		AsmCommon::Reset(sstm);
-			sstm << "*** READ COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, [<ts,value>]: [<" << m_MINts << "," << m_MINvalue << ">] - @ 3 EXCH **";
+			sstm << "** READ COMPLETED: "  << m_opCount << " in "<< ((m_opEnd.GetSeconds() - m_opStart.GetSeconds()) + elapsed_seconds.count()) << "s (<"<<(m_opEnd.GetSeconds() - m_opStart.GetSeconds())<<"> + <"<< elapsed_seconds.count() <<">), [<ts,value>]: [<" << m_MINts << "," << m_MINvalue << ">] - @ 3 EXCH **";
 			LogInfo(sstm);
 			m_replies =0;
 		}

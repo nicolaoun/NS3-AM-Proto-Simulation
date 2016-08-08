@@ -264,6 +264,7 @@ ohSamServer::StopApplication ()
 	}
 	std::stringstream sstm;
 	sstm << "** SERVER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent<<" **";
+	std::cout << "** SERVER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent<<" **"<<std::endl;
 	LogInfo(sstm);
 
 	//std::cout << "** SERVER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent<<" **"<<std::endl;

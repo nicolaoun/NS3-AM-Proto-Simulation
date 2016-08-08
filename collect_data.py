@@ -16,6 +16,11 @@ def get_single_test_avg_results(filename,numR):
 	r_slowReads = 0
 	r_fastReads = 0
 	r_avgtime = 0
+	
+	r_avgCommtime = 0
+	r_avgComptime = 0
+	w_avgCommtime = 0
+	w_avgComptime = 0
 
 
 	with open(filename) as f:
@@ -30,23 +35,27 @@ def get_single_test_avg_results(filename,numR):
 					w_invokedWrites = int(line.split("InvokedWrites=")[1].split(",")[0])
 					w_completedWrites = int(line.split("CompletedWrites=")[1].split(",")[0])
 					w_avgtime = float(line.split("AveOpTime=")[1].split("s")[0])
+					w_avgCommtime = float(line.split("AveCommTime=")[1].split("s")[0])		#ok
+					w_avgComptime = float(line.split("AvgCompTime=")[1].split("s")[0])		#ok
 				if("** READER_" in line):
 					r_sentMsgs += int(line.split("Msgs=")[1].split(",")[0])
 					r_invokedReads += int(line.split("InvokedReads=")[1].split(",")[0])
 					r_completedReads += int(line.split("CompletedReads=")[1].split(",")[0])
-					if(protocol==1): #ABD
+					if(protocol==1) or (protocol==6) or (protocol==11): #ABD
 						r_slowReads += int(line.split("4EXCH_reads=")[1].split(",")[0])
 						r_fastReads += 0
-					elif (protocol==2): #ohSAM, oh-fast
+					elif (protocol==2) or (protocol==7) or (protocol==12): #ohSAM
 						r_slowReads += int(line.split("3EXCH_reads=")[1].split(",")[0])
 						r_fastReads += 0
-					elif (protocol==5): #oh-fast
+					elif (protocol==5) or (protocol==10) or (protocol==15): #oh-fast
 						r_slowReads += int(line.split("3EXCH_reads=")[1].split(",")[0])
 						r_fastReads += int(line.split("2EXCH_reads=")[1].split(",")[0])
 					else: #Hybrid #Semifast
 						r_slowReads += int(line.split("4EXCH_reads=")[1].split(",")[0])
 						r_fastReads += int(line.split("2EXCH_reads=")[1].split(",")[0])
 					r_avgtime += float(line.split("AveOpTime=")[1].split("s")[0])
+					r_avgCommtime += float(line.split("AveCommTime=")[1].split("s")[0])		#ok
+					r_avgComptime += float(line.split("AvgCompTime=")[1].split("s")[0])		#ok
 	
 	# To be sure not to divide by 0 at any time and break everything
 	ratio=0
@@ -56,7 +65,10 @@ def get_single_test_avg_results(filename,numR):
 		percent=(r_slowReads/(r_fastReads+r_slowReads))*100
 	
 	# we have to return this: "fastOps slowOps readRatio readPrcnt readAvgT rdrMsgs wtMsgs srvMsgs\n"
-	return r_fastReads , r_slowReads , ratio , percent , r_avgtime/numR , r_sentMsgs , w_sentMsgs, srv_msgs
+	#return r_fastReads , r_slowReads , ratio , percent , r_avgtime/numR , r_sentMsgs , w_sentMsgs, srv_msgs
+	# we have to return this: "fastOps slowOps readRatio readPrcnt readAvgT readAvgCommT readAvgCompT rdrMsgs wtMsgs srvMsgs\n"
+	return r_fastReads , r_slowReads , ratio , percent , r_avgtime/numR , r_avgCommtime/numR , r_avgComptime/numR , r_sentMsgs , w_sentMsgs, srv_msgs
+
 
 
 
@@ -70,9 +82,9 @@ def create_output_file_for_scenario(drct,mode):
 	#open the file for this execution output
 	with open(directory, "w") as text_file:
 		if (mode==1):
-			text_file.write("Protocol Version #Servers #Readers rIntvl wIntvl fastOps slowOps readRatio readPrcnt readAvgT rdrMsgs wrtMsgs srvMsgs\n")
+			text_file.write("Protocol Version #Servers #Readers rIntvl wIntvl fastOps slowOps readRatio readPrcnt readAvgT readCommAvgT readCompAvgT rdrMsgs wrtMsgs srvMsgs\n")
 		else:
-			text_file.write("Protocol Version #Servers #Readers rIntvl wIntvl fastOps slowOps readRatio readPrcnt readAvgT rdrAvgMsgs TotRdrAvgMsgs wrtAvgMsgs srvAvgMsgs TotSrvAvgMsgs CmpltTotal AvgReadsPerNode\n")
+			text_file.write("Protocol Version #Servers #Readers rIntvl wIntvl fastOps slowOps readRatio readPrcnt readAvgT readCommAvgT readCompAvgT rdrAvgMsgs TotRdrAvgMsgs wrtAvgMsgs srvAvgMsgs TotSrvAvgMsgs CmpltTotal AvgReadsPerNode\n")
 	return directory
 
 def execute():
@@ -81,6 +93,8 @@ def execute():
 	main_avg_readRatio=0
 	main_avg_readPrcnt=0
 	main_avg_readTime=0
+	main_avg_readCommTime=0 #
+	main_avg_readCompTime=0 #
 	main_avg_rdrMsgs=0
 	main_avg_wrtMsgs=0
 	main_avg_srvMsgs=0
@@ -111,7 +125,7 @@ def execute():
 		
 		with open(avg_results_directory, "a") as avg_text_file:
 			# we have to write this: "Protocol Version #Servers #Readers rIntvl wIntvl fastOps slowOps readRatio readPrcnt readAvgT rdrMsgs wrtMsgs srvMsgs\n"
-			output = str(alg) + " " + str(Version)+" "+ str(numServers)+" "+ str(numReaders)+" "+ str(rInterval)+" "+ str(wInterval)+" "+ str(avgs_list[0])+" " + str(avgs_list[1])+" "+ str(avgs_list[2])+" "+ str(avgs_list[3])+" "+ str(avgs_list[4])+" "+ str(avgs_list[5])+" "+ str(avgs_list[6])+" "+ str(avgs_list[7])+"\n"
+			output = str(alg) + " " + str(Version)+" "+ str(numServers)+" "+ str(numReaders)+" "+ str(rInterval)+" "+ str(wInterval)+" "+ str(avgs_list[0])+" " + str(avgs_list[1])+" "+ str(avgs_list[2])+" "+ str(avgs_list[3])+" "+ str(avgs_list[4])+" "+ str(avgs_list[5])+" "+ str(avgs_list[6])+" "+ str(avgs_list[7])+" "+ str(avgs_list[8])+" "+ str(avgs_list[9])+"\n"
 			avg_text_file.write(output)
 		##################
 		#Average the values for the main file
@@ -120,9 +134,11 @@ def execute():
 		main_avg_readRatio += avgs_list[2]
 		main_avg_readPrcnt += avgs_list[3]
 		main_avg_readTime += avgs_list[4]
-		main_avg_rdrMsgs += avgs_list[5]
-		main_avg_wrtMsgs += avgs_list[6]
-		main_avg_srvMsgs += avgs_list[7]
+		main_avg_readCommTime += avgs_list[5]
+		main_avg_readCompTime += avgs_list[6]
+		main_avg_rdrMsgs += avgs_list[7]
+		main_avg_wrtMsgs += avgs_list[8]
+		main_avg_srvMsgs += avgs_list[9]
 		seed += 19
 	
 	# Once all the tests finish now we have to AVG_ALL the test and write them to the main file!!!
@@ -132,6 +148,8 @@ def execute():
 	main_avg_readRatio = main_avg_readRatio / tests
 	main_avg_readPrcnt = main_avg_readPrcnt / tests
 	main_avg_readTime = main_avg_readTime / tests
+	main_avg_readCommTime = main_avg_readCommTime / tests
+	main_avg_readCompTime = main_avg_readCompTime / tests
 	main_avg_Total_rdrMsgs = main_avg_rdrMsgs / tests
 	main_avg_rdrMsgs = main_avg_rdrMsgs / tests / numReaders
 	main_avg_wrtMsgs = main_avg_wrtMsgs / tests
@@ -143,7 +161,7 @@ def execute():
 	# Now write them to the main file
 	with open(main_directory, "a") as main_text_file:
 		# we have to write this: "Protocol Version #Servers #Readers rIntvl wIntvl fastOps slowOps readRatio readPrcnt readAvgT rdrAvgMsgs wrtAvgMsgs srvAvgMsgs\n"
-		output = str(alg) + " " + str(Version)+" "+ str(numServers)+" "+ str(numReaders)+" "+ str(rInterval)+" "+ str(wInterval)+" "+ str(main_avg_fastOps)+" " + str(main_avg_slowOps)+" "+ str(main_avg_readRatio)+" "+ str(main_avg_readPrcnt)+" "+ str(main_avg_readTime)+" "+ str(main_avg_rdrMsgs)+" "+str(main_avg_Total_rdrMsgs)+" "+ str(main_avg_wrtMsgs)+" "+ str(main_avg_srvMsgs)+" "+str(main_avg_Total_srvMsgs)+" "+str((main_avg_fastOps + main_avg_slowOps))+" "+str(float((main_avg_fastOps + main_avg_slowOps)/numReaders))+"\n"
+		output = str(alg) + " " + str(Version)+" "+ str(numServers)+" "+ str(numReaders)+" "+ str(rInterval)+" "+ str(wInterval)+" "+ str(main_avg_fastOps)+" " + str(main_avg_slowOps)+" "+ str(main_avg_readRatio)+" "+ str(main_avg_readPrcnt)+" "+ str(main_avg_readTime)+" "+ str(main_avg_readCommTime)+" "+ str(main_avg_readCompTime)+ " "+ str(main_avg_rdrMsgs)+" "+str(main_avg_Total_rdrMsgs)+" "+ str(main_avg_wrtMsgs)+" "+ str(main_avg_srvMsgs)+" "+str(main_avg_Total_srvMsgs)+" "+str((main_avg_fastOps + main_avg_slowOps))+" "+str(float((main_avg_fastOps + main_avg_slowOps)/numReaders))+"\n"
 		main_text_file.write(output)
 # WE ARE DONE
 
@@ -177,13 +195,13 @@ vrsn_start=0
 vrsn_stop=1
 vrsn_step=1
 prtcl_start = 1
-prtcl_stop = 5
+prtcl_stop = 1
 prtcl_step=1
-srvrs_start=10
+srvrs_start=10 #10
 srvrs_stop=30
 srvrs_step=5
 fail_start=1
-fail_stop=2
+fail_stop=2 #2
 fail_step=1
 bar=0
 #############################################################################
@@ -237,6 +255,30 @@ if len(sys.argv) == 2:
 		print "Algorithm oh-Fast\n"
 		prtcl_start=5
 		prtcl_stop=5
+	elif(int(sys.argv[1]) == 6):
+		print "Algorithm ABD SPIKE\n"
+		prtcl_start=6
+		prtcl_stop=6
+	elif(int(sys.argv[1]) == 7):
+		print "Algorithm oh-Sam SPIKE\n"
+		prtcl_start=7
+		prtcl_stop=7
+	elif(int(sys.argv[1]) == 8):
+		print "Algorithm oh-Fast SPIKE\n"
+		prtcl_start=8
+		prtcl_stop=8
+	elif(int(sys.argv[1]) == 9):
+		print "Algorithm ABD STAR\n"
+		prtcl_start=9
+		prtcl_stop=9
+	elif(int(sys.argv[1]) == 10):
+		print "Algorithm oh-Sam STAR\n"
+		prtcl_start=10
+		prtcl_stop=10
+	elif(int(sys.argv[1]) == 11):
+		print "Algorithm oh-Fast STAR\n"
+		prtcl_start=11
+		prtcl_stop=11
 	else:
 		print "Wrong Algorithm Selection\n"
 		exit(0)
@@ -277,19 +319,31 @@ for fail in range(fail_start,fail_stop+1,fail_step):
 				alg=oh_sam
 				executable="am-ohSam-spike"
 			elif (protocol==8):
+				alg=semifast
+				executable="am-semifast-spike"
+			elif (protocol==9):
+				alg=hybridfast
+				executable="am-cchybrid-spike"
+			elif (protocol==10):
 				alg=oh_fast
 				executable="am-ohfast-spike"
-			elif (protocol==9):
+			elif (protocol==11):
 				alg=abd
 				executable="am-abd-star"
-			elif (protocol==10):
+			elif (protocol==12):
 				alg=oh_sam
 				executable="am-ohSam-star"
-			elif (protocol==11):
+			elif (protocol==13):
+				alg=semifast
+				executable="am-semifast-star"
+			elif (protocol==14):
+				alg=hybridfast
+				executable="am-cchybrid-star"
+			elif (protocol==15):
 				alg=oh_fast
 				executable="am-ohfast-star"
 
-			###print "  For Algorithm="+str(executable)+":"
+			print "  For Algorithm="+str(executable)+":"
 			#s - 15 r -40
 
 			for numReaders in range(rdrs_start,rdrs_stop+1, rds_step):
@@ -300,13 +354,11 @@ for fail in range(fail_start,fail_stop+1,fail_step):
 							Version="fixInt"
 						else:
 							Version = "randInt"
-						bar=bar+1
-						sys.stdout.write('\r')
-						# the exact output you're looking for:
-						sys.stdout.write("[%-100s] %d%%" % ('='*bar, bar))
-						sys.stdout.flush()
-						# if (bar<8):
-						# 	break
+						# bar=bar+1
+						# sys.stdout.write('\r')
+						# sys.stdout.write("[%-100s] %d%%" % ('='*bar, bar))
+						# sys.stdout.flush()
+						
     					###print "     For Version="+str(Version)+":"
 						for readInterval in range(rInterval_start, rInterval_stop+1, rInterval_step):
 							rInterval = float(readInterval)/10

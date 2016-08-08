@@ -36,6 +36,11 @@
 #include <iostream>
 #include <ctime>
 #include <algorithm>
+#include <unistd.h>
+#include <chrono>
+#include <thread>
+#include <time.h>
+
 
 namespace ns3 {
 
@@ -287,21 +292,25 @@ OhFastClient::StopApplication ()
     }
 
   float avg_time=0;
-  if(m_opCount==0)
+  float real_avg_time=0;
+  if(m_opCount==0){
   	avg_time = 0;
-  else
+  	real_avg_time=0;
+  }else{
   	avg_time = ((m_opAve.GetSeconds()) /m_opCount);
+  	real_avg_time = (m_real_opAve.count()/m_opCount);
+  }
   
   switch(m_prType)
   {
   case WRITER:
-	  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<< m_slowOpCount+m_fastOpCount <<", AveOpTime="<< avg_time <<"s **";
-	  //std::cout << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<< m_slowOpCount+m_fastOpCount <<", AveOpTime="<< avg_time <<"s **"<<std::endl;
+	  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_slowOpCount+m_fastOpCount <<", AveOpTime="<< avg_time+real_avg_time <<"s, AveCommTime="<<avg_time<<"s, AvgCompTime="<<real_avg_time<<"s **";
+	  std::cout << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_slowOpCount+m_fastOpCount <<", AveOpTime="<< avg_time+real_avg_time <<"s, AveCommTime="<<avg_time<<"s, AvgCompTime="<<real_avg_time<<"s **"<<std::endl;
 	  Log( INFO, sstm);
 	  break;
   case READER:
-	  sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads=" << m_opCount <<", #CompletedReads="<<m_slowOpCount+m_fastOpCount <<", #3EXCH_reads="<< m_slowOpCount << ", #2EXCH_reads="<<m_fastOpCount<<", AveOpTime="<< avg_time <<"s **";
-	  //std::cout << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads=" << m_opCount <<", #CompletedReads="<<m_slowOpCount+m_fastOpCount <<", #3EXCH_reads="<< m_slowOpCount << ", #2EXCH_reads="<<m_fastOpCount<<", AveOpTime="<< avg_time <<"s **"<<std::endl;
+	  sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads=" << m_opCount <<", #CompletedReads="<<m_slowOpCount+m_fastOpCount <<", #3EXCH_reads="<< m_slowOpCount << ", #2EXCH_reads="<<m_fastOpCount<<", AveOpTime="<< avg_time+real_avg_time <<"s, AveCommTime="<<avg_time<<"s, AvgCompTime="<<real_avg_time<<"s **";
+	  std::cout << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads=" << m_opCount <<", #CompletedReads="<<m_slowOpCount+m_fastOpCount <<", #3EXCH_reads="<< m_slowOpCount << ", #2EXCH_reads="<<m_fastOpCount<<", AveOpTime="<< avg_time+real_avg_time <<"s, AveCommTime="<<avg_time<<"s, AvgCompTime="<<real_avg_time<<"s **"<<std::endl;
 	  Log( INFO, sstm);
 	  break;
   }
@@ -480,6 +489,7 @@ OhFastClient::InvokeRead (void)
 	std::stringstream sstm;
 
 	m_opStart = Now();
+	m_real_start = std::chrono::system_clock::now();
 
 	//check if we still have operations to perfrom
 	if ( m_opCount <  m_count )
@@ -510,6 +520,7 @@ OhFastClient::InvokeWrite (void)
 
 	
 	m_opStart = Now();
+	m_real_start = std::chrono::system_clock::now();
 	
 	
 
@@ -669,8 +680,12 @@ OhFastClient::ProcessReply(std::istream& istm, Address sender)
 
 			m_opEnd = Now();
 			m_opAve += m_opEnd - m_opStart;
+			m_real_end = std::chrono::system_clock::now();
+			std::chrono::duration<double> elapsed_seconds = m_real_end-m_real_start;
+			m_real_opAve += elapsed_seconds;  //
+
 			AsmCommon::Reset(sstm);
-			sstm << "*** WRITE COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, [<ts,value>]: [<" << m_ts << "," << m_value << ">] - @ 2 EXCH **";
+			sstm << "** WRITE COMPLETED: "  << m_opCount << " in "<< ((m_opEnd.GetSeconds() - m_opStart.GetSeconds()) + elapsed_seconds.count()) << "s (<"<<(m_opEnd.GetSeconds() - m_opStart.GetSeconds())<<"> + <"<< elapsed_seconds.count() <<">), <ts, value>: [" << m_ts << "," << m_value << "], @ 2 EXCH **";
 			Log( INFO, sstm);
 			m_fastOpCount++;
 			m_replies = 0;
@@ -732,12 +747,16 @@ OhFastClient::ProcessReply(std::istream& istm, Address sender)
       	{
       		AsmCommon::Reset(sstm);
       		m_opStatus = IDLE;
+      		std::chrono::duration<double> elapsed_seconds;
 
       		// if ts is secured - return its associated value
       		if ( m_isTsSecured )
       		{
       			m_opEnd = Now();
-      			sstm << "** READ COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, Secure Value: "<< m_value <<
+      			m_real_end = std::chrono::system_clock::now();
+      			elapsed_seconds = m_real_end-m_real_start;
+
+      			sstm << "** READ COMPLETED: "  << m_opCount << " in "<< ((m_opEnd.GetSeconds() - m_opStart.GetSeconds()) + elapsed_seconds.count()) << "s (<"<<(m_opEnd.GetSeconds() - m_opStart.GetSeconds())<<"> + <"<< elapsed_seconds.count() <<">), Secure Value: "<< m_value <<
       					", <ts, value, pvalue>: ["<< m_ts << "," << m_value << ","<< m_pvalue <<"]";
 
       			// if read triggered the 3rd phase
@@ -755,14 +774,20 @@ OhFastClient::ProcessReply(std::istream& istm, Address sender)
       		else if ( m_ts == 0 || IsPredicateValid () ) // check the predicate
       		{
       			m_opEnd = Now();
-      			sstm << "** READ COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, Return Value: "<< m_value <<
+      			m_real_end = std::chrono::system_clock::now();
+      			elapsed_seconds = m_real_end-m_real_start;
+
+      			sstm << "** READ COMPLETED: "  << m_opCount << " in "<< ((m_opEnd.GetSeconds() - m_opStart.GetSeconds()) + elapsed_seconds.count()) << "s (<"<<(m_opEnd.GetSeconds() - m_opStart.GetSeconds())<<"> + <"<< elapsed_seconds.count() <<">), Return Value: "<< m_value <<
       					", <ts, value, pvalue>: ["<< m_ts << "," << m_value << ","<< m_pvalue <<"] - @ 2 EXCH **";
       			m_fastOpCount++;
       		}
       		else
       		{
       			m_opEnd = Now();
-      			sstm << "** READ COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, Return PValue: "<< m_pvalue <<
+      			m_real_end = std::chrono::system_clock::now();
+      			elapsed_seconds = m_real_end-m_real_start;
+
+      			sstm << "** READ COMPLETED: "  << m_opCount << " in "<< ((m_opEnd.GetSeconds() - m_opStart.GetSeconds()) + elapsed_seconds.count()) << "s (<"<<(m_opEnd.GetSeconds() - m_opStart.GetSeconds())<<"> + <"<< elapsed_seconds.count() <<">), Return PValue: "<< m_pvalue <<
       					", <ts, value, pvalue>: ["<< m_ts << "," << m_value << ","<< m_pvalue <<"] - @ 2 EXCH **";
       			m_fastOpCount++;
       		}
@@ -770,6 +795,7 @@ OhFastClient::ProcessReply(std::istream& istm, Address sender)
 			Log( INFO, sstm);
 
       		m_opAve += m_opEnd - m_opStart;
+      		m_real_opAve += elapsed_seconds;  //
 			ScheduleOperation (m_interval);
 			m_replies =0;
 		}

@@ -28,6 +28,11 @@
 #include "ns3/uinteger.h"
 #include "ns3/trace-source-accessor.h"
 #include "cchybrid-client.h"
+#include <unistd.h>
+#include <chrono>
+#include <thread>
+#include <time.h>
+#include <iostream>
 
 namespace ns3 {
 
@@ -236,21 +241,25 @@ CCHybridClient::StopApplication ()
 
   
   float avg_time=0;
-  if(m_opCount==0)
+  float real_avg_time=0;
+  if(m_opCount==0){
   	avg_time = 0;
-  else
+  	real_avg_time=0;
+  }else{
   	avg_time = ((m_opAve.GetSeconds()) /m_opCount);
+  	real_avg_time = (m_real_opAve.count()/m_opCount);
+  }
 
   switch(m_prType)
   {
   case WRITER:
-	  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_twoExOps+m_fourExOps <<", AveOpTime="<< avg_time <<"s **";
-	  //std::cout << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_twoExOps+m_fourExOps <<", AveOpTime="<< avg_time <<"s **"<<std::endl;
+	  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_twoExOps+m_fourExOps <<", AveOpTime="<< avg_time+real_avg_time <<"s, AveCommTime="<<avg_time<<"s, AvgCompTime="<<real_avg_time<<"s **";
+	  std::cout << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_twoExOps+m_fourExOps <<", AveOpTime="<< avg_time+real_avg_time <<"s, AveCommTime="<<avg_time<<"s, AvgCompTime="<<real_avg_time<<"s **"<<std::endl;
 	  LogInfo(sstm);
 	  break;
   case READER:
-	  sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads=" << m_opCount <<", #CompletedReads="<<m_twoExOps+m_fourExOps <<", #4EXCH_reads="<< m_fourExOps << ", #2EXCH_reads="<<m_twoExOps<<", AveOpTime="<< avg_time <<"s **";
-	  //std::cout << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads=" << m_opCount <<", #CompletedReads="<<m_twoExOps+m_fourExOps <<", #4EXCH_reads="<< m_fourExOps << ", #2EXCH_reads="<<m_twoExOps<<", AveOpTime="<< avg_time <<"s **"<<std::endl;
+	  sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads=" << m_opCount <<", #CompletedReads="<<m_twoExOps+m_fourExOps <<", #4EXCH_reads="<< m_fourExOps << ", #2EXCH_reads="<<m_twoExOps<<", AveOpTime="<< avg_time+real_avg_time <<"s, AveCommTime="<<avg_time<<"s, AvgCompTime="<<real_avg_time<<"s **";
+	  std::cout << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads=" << m_opCount <<", #CompletedReads="<<m_twoExOps+m_fourExOps <<", #4EXCH_reads="<< m_fourExOps << ", #2EXCH_reads="<<m_twoExOps<<", AveOpTime="<< avg_time+real_avg_time <<"s, AveCommTime="<<avg_time<<"s, AvgCompTime="<<real_avg_time<<"s **"<<std::endl;
 	  LogInfo(sstm);
 	  break;
   }
@@ -422,6 +431,7 @@ CCHybridClient::InvokeRead (void)
 
 	m_opCount ++;
 	m_opStart = Now();
+	m_real_start = std::chrono::system_clock::now();
 
 	//check if we still have operations to perfrom
 	if ( m_opCount <=  m_count )
@@ -448,6 +458,7 @@ CCHybridClient::InvokeWrite (void)
 
 	m_opCount ++;
 	m_opStart = Now();
+	m_real_start = std::chrono::system_clock::now();
 
 	//check if we still have operations to perfrom
 	if ( m_opCount <=  m_count )
@@ -575,12 +586,16 @@ CCHybridClient::ProcessReply(std::istream& istm, Address sender)
 			m_opStatus = IDLE;
 			ScheduleOperation (m_interval);
 
+			m_real_end = std::chrono::system_clock::now();
+			std::chrono::duration<double> elapsed_seconds = m_real_end-m_real_start;
+
 			m_opEnd = Now();
 			AsmCommon::Reset(sstm);
-			sstm << "** WRITE COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, <ts, value>: [" << m_ts << "," << m_value << "], @ 2 EXCH **";
+			sstm << "** WRITE COMPLETED: "  << m_opCount << " in "<< ((m_opEnd.GetSeconds() - m_opStart.GetSeconds()) + elapsed_seconds.count()) << "s (<"<<(m_opEnd.GetSeconds() - m_opStart.GetSeconds())<<"> + <"<< elapsed_seconds.count() <<">), <ts, value>: [" << m_ts << "," << m_value << "], @ 2 EXCH **";
 			LogInfo(sstm);
 
 			m_opAve += m_opEnd - m_opStart;
+			m_real_opAve += elapsed_seconds;  //
 
 			m_twoExOps++;
 		}
@@ -662,10 +677,14 @@ CCHybridClient::ProcessReply(std::istream& istm, Address sender)
 						AsmCommon::Reset(sstm);
 						m_opStatus = IDLE;
 						m_opEnd = Now();
-						sstm << "** READ COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, Prop Value: "<< m_value <<
+						m_real_end = std::chrono::system_clock::now();									///
+						std::chrono::duration<double> elapsed_seconds = m_real_end-m_real_start;		///
+
+						sstm << "** READ COMPLETED: "  << m_opCount << " in "<< ((m_opEnd.GetSeconds() - m_opStart.GetSeconds()) + elapsed_seconds.count()) << "s (<"<<(m_opEnd.GetSeconds() - m_opStart.GetSeconds())<<"> + <"<< elapsed_seconds.count() <<">), Prop Value: "<< m_value <<
 								", <ts, value, pvalue>: ["<< m_ts << "," << m_value << ","<< m_pvalue <<"] - @ 2 EXCH **";
 						LogInfo(sstm);
 						m_opAve += m_opEnd - m_opStart;
+						m_real_opAve += elapsed_seconds;  //
 						ScheduleOperation (m_interval);
 						//increase four exchange counter
 						m_twoExOps++;
@@ -683,22 +702,30 @@ CCHybridClient::ProcessReply(std::istream& istm, Address sender)
 					AsmCommon::Reset(sstm);
 
 					m_opStatus = IDLE;
+					std::chrono::duration<double> elapsed_seconds;
 
 					//check the predicate to return in one round
 					if ( IsPredicateValid () )
 					{
 						m_opEnd = Now();
-						sstm << "** READ COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, Return Value: "<< m_value <<
+						m_real_end = std::chrono::system_clock::now();									///
+						elapsed_seconds = m_real_end-m_real_start;		///
+
+						sstm << "** READ COMPLETED: "  << m_opCount << " in "<< ((m_opEnd.GetSeconds() - m_opStart.GetSeconds()) + elapsed_seconds.count()) << "s (<"<<(m_opEnd.GetSeconds() - m_opStart.GetSeconds())<<"> + <"<< elapsed_seconds.count() <<">), Return Value: "<< m_value <<
 								", <ts, value, pvalue>: ["<< m_ts << "," << m_value << ","<< m_pvalue <<"] - @ 2 EXCH **";
 					}
 					else
 					{
 						m_opEnd = Now();
-						sstm << "** READ COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, Return PValue: "<< m_pvalue <<
+						m_real_end = std::chrono::system_clock::now();									///
+						elapsed_seconds = m_real_end-m_real_start;		///
+
+						sstm << "** READ COMPLETED: "  << m_opCount << " in "<< ((m_opEnd.GetSeconds() - m_opStart.GetSeconds()) + elapsed_seconds.count()) << "s (<"<<(m_opEnd.GetSeconds() - m_opStart.GetSeconds())<<"> + <"<< elapsed_seconds.count() <<">), Return PValue: "<< m_pvalue <<
 								", <ts, value, pvalue>: ["<< m_ts << "," << m_value << ","<< m_pvalue <<"] - @ 2 EXCH **";
 					}
 
 					m_opAve += m_opEnd - m_opStart;
+					m_real_opAve += elapsed_seconds;  //
 					LogInfo(sstm);
 					ScheduleOperation (m_interval);
 					//increase four exchange counter
@@ -713,10 +740,14 @@ CCHybridClient::ProcessReply(std::istream& istm, Address sender)
 				ScheduleOperation (m_interval);
 
 				m_opEnd = Now();
+				m_real_end = std::chrono::system_clock::now();									///
+				std::chrono::duration<double> elapsed_seconds = m_real_end-m_real_start;		///
+
 				AsmCommon::Reset(sstm);
-				sstm << "** READ COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, <ts, value>: [" << m_ts << "," << m_value << "] - @ 4 EXCH **";
+				sstm << "** READ COMPLETED: "  << m_opCount << " in "<< ((m_opEnd.GetSeconds() - m_opStart.GetSeconds()) + elapsed_seconds.count()) << "s (<"<<(m_opEnd.GetSeconds() - m_opStart.GetSeconds())<<"> + <"<< elapsed_seconds.count() <<">), <ts, value>: [" << m_ts << "," << m_value << "] - @ 4 EXCH **";
 				LogInfo(sstm);
 
+				m_real_opAve += elapsed_seconds;  //
 				m_opAve += m_opEnd - m_opStart;
 
 				//increase four exchange counter

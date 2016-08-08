@@ -25,6 +25,7 @@
 #include "ns3/ipv4-address.h"
 #include "ns3/traced-callback.h"
 #include "asm-common.h"
+#include <chrono>
 
 namespace ns3 {
 
@@ -254,6 +255,9 @@ private:
 	uint16_t m_randInt;		//!< Flag indicating the choose of a random interval for each op invocation
 	uint16_t m_seed;		//!< Randomness seed
 	uint16_t m_verbose;		//!< Debug mode
+	std::chrono::time_point<std::chrono::system_clock> m_real_start;
+	std::chrono::time_point<std::chrono::system_clock> m_real_end;
+	std::chrono::duration<double> m_real_opAve;
 
 
 
