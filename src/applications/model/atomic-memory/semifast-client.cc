@@ -28,6 +28,20 @@
 #include "ns3/uinteger.h"
 #include "ns3/trace-source-accessor.h"
 #include "semifast-client.h"
+#include <unistd.h>
+#include <chrono>
+#include <thread>
+#include <time.h>
+#include <iostream>
+
+
+
+// std::chrono::time_point<std::chrono::system_clock> start, end;
+// start = std::chrono::system_clock::now();
+// end = std::chrono::system_clock::now();
+// std::chrono::duration<double> elapsed_seconds = end-start;
+// std::cout << elapsed_seconds.count() << "s\n";
+
 
 namespace ns3 {
 
@@ -438,6 +452,11 @@ SemifastClient::InvokeRead (void)
 
 	m_opCount ++;
 	m_opStart = Now();
+	//REAL TIME
+	
+	
+	m_real_start = std::chrono::system_clock::now();
+
 
 	AsmCommon::Reset(sstm);
 	sstm << "** READ INVOKED: " << m_opCount << " at "<< m_opStart.GetSeconds() <<"s";
@@ -466,6 +485,8 @@ SemifastClient::InvokeWrite (void)
 
 	m_opCount ++;
 	m_opStart = Now();
+
+	m_real_start = std::chrono::system_clock::now();
 
 	AsmCommon::Reset(sstm);
 	sstm << "** WRITE INVOKED: " << m_opCount << " at "<< m_opStart.GetSeconds() <<"s";
@@ -581,6 +602,7 @@ SemifastClient::ProcessReply(std::istream& istm, Address sender)
 	uint32_t msgT, msgTs, msgV, msgVp, msgPs, msgViews, vId;
 	std::set<uint32_t> msgSeen;
 
+
 	//increment the number of replies received
 	m_replies ++;
 
@@ -595,10 +617,17 @@ SemifastClient::ProcessReply(std::istream& istm, Address sender)
 			m_opStatus = IDLE;
 			ScheduleOperation (m_interval);
 
+			m_real_end = std::chrono::system_clock::now();
+			std::chrono::duration<double> elapsed_seconds = m_real_end-m_real_start;
+
 			m_opEnd = Now();
+			// AsmCommon::Reset(sstm);
+			// sstm << "** WRITE COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, <ts, value>: [" << m_ts << "," << m_value << "], @ 2 EXCH **";
+			// LogInfo(sstm);
+
 			AsmCommon::Reset(sstm);
-			sstm << "** WRITE COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, <ts, value>: [" << m_ts << "," << m_value << "], @ 2 EXCH **";
-			LogInfo(sstm);
+			sstm << "** WRITE COMPLETED: " << m_opCount << " in COMM "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, and in COMPUTATION "<< elapsed_seconds.count() <<"s, <ts, value>: [" << m_ts << "," << m_value << "], @ 2 EXCH **";
+			LogInfo(sstm);			
 
 			m_opAve += m_opEnd - m_opStart;
 
@@ -610,6 +639,7 @@ SemifastClient::ProcessReply(std::istream& istm, Address sender)
 		switch(m_opStatus)
 		{
 		case PHASE1:
+			
 			// deserialize the seen set of the message
 			for (uint32_t i=0; i<msgViews; i++)
 			{
@@ -665,16 +695,26 @@ SemifastClient::ProcessReply(std::istream& istm, Address sender)
 
 					int predRes;
 					predRes = IsPredicateValid ();
+					
 
 					//check the predicate to return in one round
 					if ( predRes == 1 || m_propSet.size() >= m_fail+1 )
 					{
 						m_opStatus = IDLE;
 						m_opEnd = Now();
+
+						m_real_end = std::chrono::system_clock::now();									///
+						std::chrono::duration<double> elapsed_seconds = m_real_end-m_real_start;		///
+
 						AsmCommon::Reset(sstm);
-						sstm << "** READ COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, Return Value: "<< m_value <<
+						sstm << "** READ COMPLETED: " << m_opCount << " in COMM "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) << "s, and in COMPUTATION "<< elapsed_seconds.count() <<"s, Return Value: "<< m_value <<
 								", <ts, value, pvalue>: ["<< m_ts << "," << m_value << ","<< m_pvalue <<"] - @ 2 EXCH **";
 						LogInfo(sstm);
+
+						//AsmCommon::Reset(sstm);
+						//sstm << "** READ COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, Return Value: "<< m_value <<
+						//		", <ts, value, pvalue>: ["<< m_ts << "," << m_value << ","<< m_pvalue <<"] - @ 2 EXCH **";
+						//LogInfo(sstm);
 
 						m_opAve += m_opEnd - m_opStart;
 						ScheduleOperation (m_interval);
@@ -703,10 +743,20 @@ SemifastClient::ProcessReply(std::istream& istm, Address sender)
 						//else return mxTs-1
                         m_opStatus = IDLE;
 						m_opEnd = Now();
+
+						m_real_end = std::chrono::system_clock::now();								///
+						std::chrono::duration<double> elapsed_seconds = m_real_end-m_real_start;	///
+
+						
 						AsmCommon::Reset(sstm);
-						sstm << "** READ COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, Return PValue: "<< m_pvalue <<
+						sstm << "** READ COMPLETED: " << m_opCount << " in COMM "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) << "s, and in COMPUTATION "<< elapsed_seconds.count() <<"s, Return PValue: "<< m_pvalue <<
 								", <ts, value, pvalue>: ["<< m_ts << "," << m_value << ","<< m_pvalue <<"] - @ 2 EXCH **";
 						LogInfo(sstm);
+
+						// AsmCommon::Reset(sstm);
+						// sstm << "** READ COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, Return PValue: "<< m_pvalue <<
+						// 		", <ts, value, pvalue>: ["<< m_ts << "," << m_value << ","<< m_pvalue <<"] - @ 2 EXCH **";
+						// LogInfo(sstm);
 
 						m_opAve += m_opEnd - m_opStart;
 						ScheduleOperation (m_interval);
@@ -720,12 +770,19 @@ SemifastClient::ProcessReply(std::istream& istm, Address sender)
 			{
 				m_opStatus = IDLE;
 
-                // usleep(5000000);
 				m_opEnd = Now();
+
+				m_real_end = std::chrono::system_clock::now();								///
+				std::chrono::duration<double> elapsed_seconds = m_real_end-m_real_start;	///
+
 				AsmCommon::Reset(sstm);
-				sstm << "** READ COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, <ts, value, pvalue>: [" << m_ts << "," << m_value << "," << m_pvalue << "] - @ 4 EXCH **";
+				sstm << "** READ COMPLETED: " << m_opCount << " in COMM "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) << "s, and in COMPUTATION "<< elapsed_seconds.count() <<"s, <ts, value, pvalue>: [" << m_ts << "," << m_value << "," << m_pvalue << "] - @ 4 EXCH **";
 				LogInfo(sstm);
 
+				// AsmCommon::Reset(sstm);
+				// sstm << "** READ COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, <ts, value, pvalue>: [" << m_ts << "," << m_value << "," << m_pvalue << "] - @ 4 EXCH **";
+				// LogInfo(sstm);
+				
 				m_opAve += m_opEnd - m_opStart;
 				ScheduleOperation (m_interval);
 				//increase four exchange counter
