@@ -279,9 +279,9 @@ main (int argc, char *argv[])
 
   	for (int i=0; i< numClients; i++)
   	{
-  		int lan = (int) (i/clientsPerLan);
+        //int lan = (int) (i/clientsPerLan);
 
-        CCHybridClientHelper client (p2pClientsInterfaceAdjacencyList[i].GetAddress (1)), port);
+        CCHybridClientHelper client (Address(p2pClientsInterfaceAdjacencyList[i].GetAddress (1)), port);
 
   		// if this is the writer - set role and interval
   		if(i == 0 )

@@ -281,7 +281,7 @@ main (int argc, char *argv[])
 
 	for (int i=0; i< numClients; i++)
 	{
-		int lan = (int) (i/clientsPerLan);
+        //int lan = (int) (i/clientsPerLan);
 
         AbdClientHelper client (Address(p2pClientsInterfaceAdjacencyList[i].GetAddress (1)), port);
 
