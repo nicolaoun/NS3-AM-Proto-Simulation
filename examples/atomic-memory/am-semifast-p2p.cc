@@ -96,8 +96,8 @@ main (int argc, char *argv[])
   // But since this is a realtime script, don't allow the user to mess with
   // that.
   //
-  GlobalValue::Bind ("SimulatorImplementationType",
-                     StringValue ("ns3::RealtimeSimulatorImpl"));
+  //GlobalValue::Bind ("SimulatorImplementationType",
+  //                   StringValue ("ns3::RealtimeSimulatorImpl"));
 
   // By default set the failures equal to the minority
   if ( numFail < 0 || numFail > numServers/2 )

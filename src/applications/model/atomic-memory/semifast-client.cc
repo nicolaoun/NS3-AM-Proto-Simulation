@@ -720,7 +720,7 @@ SemifastClient::ProcessReply(std::istream& istm, Address sender)
 			{
 				m_opStatus = IDLE;
 
-
+                // usleep(5000000);
 				m_opEnd = Now();
 				AsmCommon::Reset(sstm);
 				sstm << "** READ COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, <ts, value, pvalue>: [" << m_ts << "," << m_value << "," << m_pvalue << "] - @ 4 EXCH **";
