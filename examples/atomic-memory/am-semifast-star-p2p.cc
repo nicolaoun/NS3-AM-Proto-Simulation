@@ -179,7 +179,7 @@ main (int argc, char *argv[])
 
         PointToPointHelper p2p;
         p2p.SetDeviceAttribute ("DataRate", StringValue ("10Mbps"));
-        p2p.SetChannelAttribute ("Delay", StringValue ("4ms"));
+        p2p.SetChannelAttribute ("Delay", StringValue ("2ms"));
         p2p.SetQueue("ns3::DropTailQueue", "MaxPackets", UintegerValue (1000));
         std::vector<NetDeviceContainer> p2pDeviceAdjacencyList;
 
@@ -200,7 +200,7 @@ main (int argc, char *argv[])
         }
 
         PointToPointHelper p2pClients;
-        p2pClients.SetDeviceAttribute ("DataRate", StringValue ("5Mbps"));
+        p2pClients.SetDeviceAttribute ("DataRate", StringValue ("2Mbps"));
         p2pClients.SetChannelAttribute ("Delay", StringValue ("2ms"));
         p2pClients.SetQueue("ns3::DropTailQueue", "MaxPackets", UintegerValue (1000));
         std::vector<NetDeviceContainer> p2pClientsDeviceAdjacencyList;
