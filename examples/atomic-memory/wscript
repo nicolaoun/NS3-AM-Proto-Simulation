@@ -51,3 +51,6 @@ def build(bld):
     
     obj = bld.create_ns3_program('am-semifast-spike', ['csma', 'point-to-point', 'internet', 'applications'])
     obj.source = 'am-semifast-spike.cc'
+
+    obj = bld.create_ns3_program('am-semifast-p2p', ['csma', 'point-to-point', 'internet', 'applications'])
+    obj.source = 'am-semifast-p2p.cc'

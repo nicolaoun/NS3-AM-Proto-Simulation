@@ -681,7 +681,7 @@ SemifastClient::ProcessReply(std::istream& istm, Address sender)
 						//increase four exchange counter
 						m_twoExOps++;
 					}
-					// if predicate is valid with |seen| = a of maxPs=maxTs but < f+1 servers have it - Go to Phase2
+                    // if predicate is valid with |seen| = a or maxPs=maxTs but < f+1 servers have it - Go to Phase2
 					else if (predRes == 2 || m_propSet.size() > 0)
 					{
 						AsmCommon::Reset(sstm);
@@ -701,6 +701,7 @@ SemifastClient::ProcessReply(std::istream& istm, Address sender)
 					else
 					{
 						//else return mxTs-1
+                        m_opStatus = IDLE;
 						m_opEnd = Now();
 						AsmCommon::Reset(sstm);
 						sstm << "** READ COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, Return PValue: "<< m_pvalue <<
@@ -718,6 +719,7 @@ SemifastClient::ProcessReply(std::istream& istm, Address sender)
 			if (m_replies >= (m_numServers - m_fail))
 			{
 				m_opStatus = IDLE;
+
 
 				m_opEnd = Now();
 				AsmCommon::Reset(sstm);

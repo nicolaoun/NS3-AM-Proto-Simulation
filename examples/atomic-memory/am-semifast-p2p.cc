@@ -92,6 +92,13 @@ main (int argc, char *argv[])
   cmd.AddValue ("verbose", "Debug Mode", verbose);
   cmd.Parse (argc, argv);
 
+  //
+  // But since this is a realtime script, don't allow the user to mess with
+  // that.
+  //
+  GlobalValue::Bind ("SimulatorImplementationType",
+                     StringValue ("ns3::RealtimeSimulatorImpl"));
+
   // By default set the failures equal to the minority
   if ( numFail < 0 || numFail > numServers/2 )
   {
@@ -129,56 +136,37 @@ main (int argc, char *argv[])
 		InternetStackHelper internet;
 		internet.Install (allNodes);
 
-		//Create LANs
-		std::vector<NodeContainer> nodeLanList;
+        //Set clients per LAN
 		int clientsPerLan = std::ceil((float) numClients/ (float) numServers);
 
 		NS_LOG_INFO ("Clients per lan: "<< clientsPerLan);
 
-		// Create one lan per server
-		for ( int i=0; i<numServers; i++)
-		{
-			NodeContainer lanClients;
-			for ( int j=i*clientsPerLan; j < numClients && j < (i+1)*clientsPerLan; j++ )
-			{
-				lanClients.Add ( clientNodes.Get(j) );
-			}
-
-			nodeLanList.push_back( NodeContainer (routers.Get(i), lanClients));
-		}
-
-
 		std::vector<NodeContainer> routerServersAdjacencyList;
+        std::vector<NodeContainer> routerClientsAdjacencyList;
 		std::vector<NodeContainer> routerAdjacencyList;
 
 		//connect servers to the first router and the routers with p2p
 		for(int i=0; i<numServers; ++i)
 		{
-			//
+            //connect the router with the server
 			routerServersAdjacencyList.push_back( NodeContainer (routers.Get(i), serverNodes.Get(i)) );
-			if (i < numServers -1 )
+
+            //connect clients to the router
+            for ( int j=i*clientsPerLan; j < numClients && j < (i+1)*clientsPerLan; j++ )
+            {
+                routerClientsAdjacencyList.push_back( NodeContainer (routers.Get(i), clientNodes.Get(j)) );
+            }
+
+            if (i < numServers -1 )
 			{
+                //connect the router with the next router
 				routerAdjacencyList.push_back ( NodeContainer (routers.Get(i), routers.Get(i+1)) );
 			}
 		}
 
-
-		CsmaHelper csma;
-		csma.SetChannelAttribute ("DataRate", DataRateValue (DataRate (5000000)));
-		csma.SetChannelAttribute ("Delay", TimeValue (MilliSeconds (2)));
-        csma.SetQueue("ns3::DropTailQueue", "MaxPackets", UintegerValue (1000));
-		csma.SetDeviceAttribute ("Mtu", UintegerValue (1400));
-
-		std::vector<NetDeviceContainer> csmaDeviceAdjacencyList;
-
-		for(uint32_t i=0; i<nodeLanList.size (); ++i)
-		{
-			csmaDeviceAdjacencyList.push_back( csma.Install (nodeLanList[i]) );
-		}
-
 		PointToPointHelper p2p;
-		p2p.SetDeviceAttribute ("DataRate", StringValue ("1.5Mbps"));
-		p2p.SetChannelAttribute ("Delay", StringValue ("10ms"));
+        p2p.SetDeviceAttribute ("DataRate", StringValue ("5Mbps"));
+        p2p.SetChannelAttribute ("Delay", StringValue ("10ms"));
         p2p.SetQueue("ns3::DropTailQueue", "MaxPackets", UintegerValue (1000));
 		std::vector<NetDeviceContainer> p2pDeviceAdjacencyList;
 
@@ -188,8 +176,9 @@ main (int argc, char *argv[])
 		}
 
 		PointToPointHelper p2pServers;
-		p2pServers.SetDeviceAttribute ("DataRate", StringValue ("1.5Mbps"));
-		p2pServers.SetChannelAttribute ("Delay", StringValue ("10ms"));
+        p2pServers.SetDeviceAttribute ("DataRate", StringValue ("5Mbps"));
+        p2pServers.SetChannelAttribute ("Delay", StringValue ("2ms"));
+        p2pServers.SetQueue("ns3::DropTailQueue", "MaxPackets", UintegerValue (1000));
 		std::vector<NetDeviceContainer> p2pServersDeviceAdjacencyList;
 
 		for(uint32_t i=0; i<routerServersAdjacencyList.size (); ++i)
@@ -197,26 +186,27 @@ main (int argc, char *argv[])
 			p2pServersDeviceAdjacencyList.push_back( p2pServers.Install (routerServersAdjacencyList[i]) );
 		}
 
+        PointToPointHelper p2pClients;
+        p2pClients.SetDeviceAttribute ("DataRate", StringValue ("1.5Mbps"));
+        p2pClients.SetChannelAttribute ("Delay", StringValue ("2ms"));
+        p2pClients.SetQueue("ns3::DropTailQueue", "MaxPackets", UintegerValue (1000));
+        std::vector<NetDeviceContainer> p2pClientsDeviceAdjacencyList;
+
+        for(uint32_t i=0; i<routerClientsAdjacencyList.size (); ++i)
+        {
+            p2pClientsDeviceAdjacencyList.push_back( p2pClients.Install (routerClientsAdjacencyList[i]) );
+        }
+
 		//
 		// We've got the "hardware" in place.  Now we need to add IP addresses.
 		//
 		NS_LOG_INFO ("Assign IP Addresses.");
 
 		Ipv4AddressHelper ipv4;
-		std::vector<Ipv4InterfaceContainer> csmaInterfaceAdjacencyList;
 
-		//assign LAN addresses
-		for(uint32_t i=0; i<csmaDeviceAdjacencyList.size (); ++i)
-		{
-			std::ostringstream subnet;
-			subnet<<"192.168."<<i+1<<".0";
-			ipv4.SetBase (subnet.str ().c_str (), "255.255.255.0");
-			csmaInterfaceAdjacencyList.push_back ( ipv4.Assign (csmaDeviceAdjacencyList[i]) );
-		}
-
-		std::vector<Ipv4InterfaceContainer> p2pInterfaceAdjacencyList;
-		//assign Router addresses
-		for(uint32_t i=0; i<p2pDeviceAdjacencyList.size (); ++i)
+        //assign Router addresses
+        std::vector<Ipv4InterfaceContainer> p2pInterfaceAdjacencyList;
+        for(uint32_t i=0; i<p2pDeviceAdjacencyList.size (); ++i)
 		{
 			std::ostringstream subnet;
 			subnet<<"10.1."<<i+1<<".0";
@@ -224,15 +214,25 @@ main (int argc, char *argv[])
 			p2pInterfaceAdjacencyList.push_back ( ipv4.Assign (p2pDeviceAdjacencyList[i]) );
 		}
 
-		std::vector<Ipv4InterfaceContainer> p2pServersInterfaceAdjacencyList;
-		//assign Server addresses
-		for(uint32_t i=0; i<p2pServersDeviceAdjacencyList.size (); ++i)
+        //assign Server addresses
+        std::vector<Ipv4InterfaceContainer> p2pServersInterfaceAdjacencyList;
+        for(uint32_t i=0; i<p2pServersDeviceAdjacencyList.size (); ++i)
 		{
 			std::ostringstream subnet;
 			subnet<<"10.2."<<i+1<<".0";
 			ipv4.SetBase (subnet.str ().c_str (), "255.255.255.0");
 			p2pServersInterfaceAdjacencyList.push_back ( ipv4.Assign (p2pServersDeviceAdjacencyList[i]) );
 		}
+
+        //assign Client addresses
+        std::vector<Ipv4InterfaceContainer> p2pClientsInterfaceAdjacencyList;
+        for(uint32_t i=0; i<p2pClientsDeviceAdjacencyList.size (); ++i)
+        {
+            std::ostringstream subnet;
+            subnet<<"192.168."<<i+1<<".0";
+            ipv4.SetBase (subnet.str ().c_str (), "255.255.255.0");
+            p2pClientsInterfaceAdjacencyList.push_back ( ipv4.Assign (p2pClientsDeviceAdjacencyList[i]) );
+        }
 
 		//Turn on global static routing
 		Ipv4GlobalRoutingHelper::PopulateRoutingTables ();
@@ -282,9 +282,7 @@ main (int argc, char *argv[])
 
     	for (int i=0; i< numClients; i++)
     	{
-    		int lan = (int) (i/clientsPerLan);
-
-    		SemifastClientHelper client (Address(csmaInterfaceAdjacencyList[lan].GetAddress ((i%clientsPerLan)+1)), port);
+            SemifastClientHelper client (Address(p2pClientsInterfaceAdjacencyList[i].GetAddress (1)), port);
 
     		// if this is the writer - set role and interval
     		if(i == 0 )

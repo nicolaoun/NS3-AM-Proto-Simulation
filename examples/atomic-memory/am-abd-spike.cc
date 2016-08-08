@@ -176,6 +176,7 @@ main (int argc, char *argv[])
 	PointToPointHelper p2p;
 	p2p.SetDeviceAttribute ("DataRate", StringValue ("1.5Mbps"));
 	p2p.SetChannelAttribute ("Delay", StringValue ("10ms"));
+    p2p.SetQueue("DropTailQueue","MaxPackets", UintegerValue (1000));
 	std::vector<NetDeviceContainer> p2pDeviceAdjacencyList;
 
 	for(uint32_t i=0; i<routerAdjacencyList.size (); ++i)
