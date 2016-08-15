@@ -275,54 +275,62 @@ print "Starting Script...\n"
 
 if len(sys.argv) == 2:
 	if (int(sys.argv[1]) == 1):
-		print "Algorithm ABD\n"
-		prtcl_start=1
-		prtcl_stop=1
+            print "Algorithm ABD\n"
+            prtcl_start=1
+            prtcl_stop=1
 	elif(int(sys.argv[1]) == 2):
-		print "Algorithm oh-Sam\n"
-		prtcl_start=2
-		prtcl_stop=2
+            print "Algorithm oh-Sam\n"
+            prtcl_start=2
+            prtcl_stop=2
 	elif(int(sys.argv[1]) == 3):
-		print "Algorithm SemiFast\n"
-		prtcl_start=3
-		prtcl_stop=3
+            print "Algorithm SemiFast\n"
+            prtcl_start=3
+            prtcl_stop=3
 	elif(int(sys.argv[1]) == 4):
-		print "Algorithm ccHybrid\n"
-		prtcl_start=4
-		prtcl_stop=4
+            print "Algorithm ccHybrid\n"
+            prtcl_start=4
+            prtcl_stop=4
 	elif(int(sys.argv[1]) == 5):
-		print "Algorithm oh-Fast\n"
-		prtcl_start=5
-		prtcl_stop=5
+            print "Algorithm oh-Fast\n"
+            prtcl_start=5
+            prtcl_stop=5
 	elif(int(sys.argv[1]) == 6):
-		print "Algorithm ABD SPIKE\n"
-		prtcl_start=6
-		prtcl_stop=6
+            print "Algorithm ABD SPIKE\n"
+            prtcl_start=6
+            prtcl_stop=6
 	elif(int(sys.argv[1]) == 7):
-		print "Algorithm oh-Sam SPIKE\n"
-		prtcl_start=7
-		prtcl_stop=7
+            print "Algorithm oh-Sam SPIKE\n"
+            prtcl_start=7
+            prtcl_stop=7
 	elif(int(sys.argv[1]) == 8):
-		print "Algorithm oh-Fast SPIKE\n"
-		prtcl_start=8
-		prtcl_stop=8
+            print "Algorithm oh-Fast SPIKE\n"
+            prtcl_start=8
+            prtcl_stop=8
 	elif(int(sys.argv[1]) == 9):
-		print "Algorithm ABD STAR\n"
-		prtcl_start=9
-		prtcl_stop=9
+            print "Algorithm ABD STAR\n"
+            prtcl_start=9
+            prtcl_stop=9
 	elif(int(sys.argv[1]) == 10):
-		print "Algorithm oh-Sam STAR\n"
-		prtcl_start=10
-		prtcl_stop=10
+            print "Algorithm oh-Sam STAR\n"
+            prtcl_start=10
+            prtcl_stop=10
 	elif(int(sys.argv[1]) == 11):
-		print "Algorithm oh-Fast STAR\n"
-		prtcl_start=11
-		prtcl_stop=11
+            print "Algorithm oh-Fast STAR\n"
+            prtcl_start=11
+            prtcl_stop=11
+        elif(int(sys.argv[1]) == 30)
+            print "Version fixInt"
+            vrsn_start=0
+            vrsn_stop=0
+        elif(int(sys.argv[1]) == 30)
+            print "Version fixInt"
+            vrsn_start=1
+            vrsn_stop=1
 	elif(int(sys.argv[1]) == 50):
-		executeFlag=0
+            executeFlag=0
 	else:
-		print "Wrong Algorithm Selection\n"
-		exit(0)
+            print "Not Valid Argument\n"
+            exit(0)
 
 
 
