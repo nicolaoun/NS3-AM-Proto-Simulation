@@ -328,116 +328,119 @@ if len(sys.argv) == 2:
 
 #for all the fail scenario (1,3)
 for fail in range(fail_start,fail_stop+1,fail_step):
+    for version in range(vrsn_start, vrsn_stop+1, vrsn_step):
+        if(version==0):
+            Version="fixInt"
+        else:
+            Version = "randInt"
+
+        print "For Version="+str(Version)+":"
+
 	#print fail
 	#range(start, stop, step) (last step is not included
-	main_results_dir = "output/ALL_RESULTS_fail_"+str(fail)+".txt"
-        print "*** For Failures="+str(fail)+" the Main Averaged Results will be at: " + str(main_results_dir)+" ***"
+        main_results_dir = "output/ALL_RESULTS_fail_"+str(fail)+"_version_"+str(Version)+".txt"
+        print "*** The Main Averaged Results will be at: " + str(main_results_dir)+" ***"
 	main_directory = create_output_file_for_scenario(main_results_dir,0)
-	for numServers in range(srvrs_start, srvrs_stop+1, srvrs_step):
+
+        for numServers in range(srvrs_start, srvrs_stop+1, srvrs_step):
                 print "--Scenario for Servers="+str(numServers)+"--"
 		# for each protocol (up to 6)
 		for protocol in range(prtcl_start,prtcl_stop+1,prtcl_step):
-			# for each number of readers (up to 10,20,40,80)
-			if (protocol==1):
-				alg=abd
-				executable="am-abd"
-			elif (protocol==2):
-				alg=oh_sam
-				executable="am-ohSam"
-			elif (protocol==3):
-				alg=semifast
-				executable="am-semifast"
-			elif (protocol==4):
-				alg=hybridfast
-				executable="am-cchybrid"
-			elif (protocol==5):
-				alg=oh_fast
-				executable="am-ohfast"
-			elif (protocol==6):
-                                alg=abd+"-spike"
-				executable="am-abd-spike"
-			elif (protocol==7):
-                                alg=oh_sam+"-spike"
-				executable="am-ohSam-spike"
-			elif (protocol==8):
-                                alg=semifast+"-spike"
-				executable="am-semifast-spike"
-			elif (protocol==9):
-                                alg=hybridfast+"-spike"
-				executable="am-cchybrid-spike"
-			elif (protocol==10):
-                                alg=oh_fast+"-spike"
-				executable="am-ohfast-spike"
-			elif (protocol==11):
-                                alg=abd+"-star"
-				executable="am-abd-star"
-			elif (protocol==12):
-                                alg=oh_sam+"-star"
-				executable="am-ohSam-star"
-			elif (protocol==13):
-                                alg=semifast+"-star"
-				executable="am-semifast-star"
-			elif (protocol==14):
-                                alg=hybridfast+"-star"
-				executable="am-cchybrid-star"
-			elif (protocol==15):
-                                alg=oh_fast+"-star"
-				executable="am-ohfast-star"
-                        elif (protocol==16):
-                                alg=abd+"-p2p"
-                                executable="am-abd-p2p"
-                        elif (protocol==17):
-                                alg=oh_sam+"-p2p"
-                                executable="am-ohSam-p2p"
-                        elif (protocol==18):
-                                alg=semifast+"-p2p"
-                                executable="am-semifast-p2p"
-                        elif (protocol==19):
-                                alg=hybridfast+"-p2p"
-                                executable="am-cchybrid-p2p"
-                        elif (protocol==20):
-                                alg=oh_fast+"-p2p"
-                                executable="am-ohfast-p2p"
-                        elif (protocol==21):
-                                alg=abd+"-star-p2p"
-                                executable="am-abd-star-p2p"
-                        elif (protocol==22):
-                                alg=oh_sam+"-star-p2p"
-                                executable="am-ohSam-star-p2p"
-                        elif (protocol==23):
-                                alg=semifast+"-star-p2p"
-                                executable="am-semifast-star-p2p"
-                        elif (protocol==24):
-                                alg=hybridfast+"-star-p2p"
-                                executable="am-cchybrid-star-p2p"
-                        elif (protocol==25):
-                                alg=oh_fast+"-star-p2p"
-                                executable="am-ohfast-star-p2p"
+                    # for each number of readers (up to 10,20,40,80)
+                    if (protocol==1):
+                        alg=abd
+                        executable="am-abd"
+                    elif (protocol==2):
+                        alg=oh_sam
+                        executable="am-ohSam"
+                    elif (protocol==3):
+                        alg=semifast
+                        executable="am-semifast"
+                    elif (protocol==4):
+                        alg=hybridfast
+                        executable="am-cchybrid"
+                    elif (protocol==5):
+                        alg=oh_fast
+                        executable="am-ohfast"
+                    elif (protocol==6):
+                        alg=abd+"-spike"
+                        executable="am-abd-spike"
+                    elif (protocol==7):
+                        alg=oh_sam+"-spike"
+                        executable="am-ohSam-spike"
+                    elif (protocol==8):
+                        alg=semifast+"-spike"
+                        executable="am-semifast-spike"
+                    elif (protocol==9):
+                        alg=hybridfast+"-spike"
+                        executable="am-cchybrid-spike"
+                    elif (protocol==10):
+                        alg=oh_fast+"-spike"
+                        executable="am-ohfast-spike"
+                    elif (protocol==11):
+                        alg=abd+"-star"
+                        executable="am-abd-star"
+                    elif (protocol==12):
+                        alg=oh_sam+"-star"
+                        executable="am-ohSam-star"
+                    elif (protocol==13):
+                        alg=semifast+"-star"
+                        executable="am-semifast-star"
+                    elif (protocol==14):
+                        alg=hybridfast+"-star"
+                        executable="am-cchybrid-star"
+                    elif (protocol==15):
+                        alg=oh_fast+"-star"
+                        executable="am-ohfast-star"
+                    elif (protocol==16):
+                        alg=abd+"-p2p"
+                        executable="am-abd-p2p"
+                    elif (protocol==17):
+                        alg=oh_sam+"-p2p"
+                        executable="am-ohSam-p2p"
+                    elif (protocol==18):
+                        alg=semifast+"-p2p"
+                        executable="am-semifast-p2p"
+                    elif (protocol==19):
+                        alg=hybridfast+"-p2p"
+                        executable="am-cchybrid-p2p"
+                    elif (protocol==20):
+                        alg=oh_fast+"-p2p"
+                        executable="am-ohfast-p2p"
+                    elif (protocol==21):
+                        alg=abd+"-star-p2p"
+                        executable="am-abd-star-p2p"
+                    elif (protocol==22):
+                        alg=oh_sam+"-star-p2p"
+                        executable="am-ohSam-star-p2p"
+                    elif (protocol==23):
+                        alg=semifast+"-star-p2p"
+                        executable="am-semifast-star-p2p"
+                    elif (protocol==24):
+                        alg=hybridfast+"-star-p2p"
+                        executable="am-cchybrid-star-p2p"
+                    elif (protocol==25):
+                        alg=oh_fast+"-star-p2p"
+                        executable="am-ohfast-star-p2p"
 
-			print "  For Algorithm="+str(executable)+":"
-			#s - 15 r -40
+                    print "  For Algorithm="+str(executable)+":"
+                    #s - 15 r -40
 
-			for numReaders in range(rdrs_start,rdrs_stop+1, rds_step):
-				if (numReaders==10) or (numReaders==20) or (numReaders==40) or (numReaders==80) or (numReaders==100):
-                                        print "    For Readers="+str(numReaders)+":"
-					for version in range(vrsn_start, vrsn_stop+1, vrsn_step):
-						if(version==0):
-							Version="fixInt"
-						else:
-							Version = "randInt"
-						# bar=bar+1
-						# sys.stdout.write('\r')
-						# sys.stdout.write("[%-100s] %d%%" % ('='*bar, bar))
-						# sys.stdout.flush()
-						
-                                                print "     For Version="+str(Version)+":"
-						for readInterval in range(rInterval_start, rInterval_stop+1, rInterval_step):
-							rInterval = float(readInterval)/10
-                                                        print "      For readInterval="+str(rInterval)+":"
-							for writeInterval in range(wInterval_start, wInterval_stop+1, wInterval_step):
-								wInterval = float(writeInterval)/10
-                                                                print "       For writeInterval="+str(wInterval)+":"
-								execute()
+                    for numReaders in range(rdrs_start,rdrs_stop+1, rds_step):
+                        if (numReaders==10) or (numReaders==20) or (numReaders==40) or (numReaders==80) or (numReaders==100):
+                            print "    For Readers="+str(numReaders)+":"
+                            # bar=bar+1
+                            # sys.stdout.write('\r')
+                            # sys.stdout.write("[%-100s] %d%%" % ('='*bar, bar))
+                            # sys.stdout.flush()
+						                                            
+                        for readInterval in range(rInterval_start, rInterval_stop+1, rInterval_step):
+                                rInterval = float(readInterval)/10
+                                print "      For readInterval="+str(rInterval)+":"
+                                for writeInterval in range(wInterval_start, wInterval_stop+1, wInterval_step):
+                                        wInterval = float(writeInterval)/10
+                                        print "       For writeInterval="+str(wInterval)+":"
+                                        execute()
 
 
 print "\n\nAll the work is done, Script Exiting..."
