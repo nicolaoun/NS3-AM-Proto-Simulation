@@ -586,20 +586,26 @@ OhFastClient::HandleSend (void)
 	p->RemoveAllPacketTags ();
 	p->RemoveAllByteTags ();
 
+    //random server to start from
+    int current = rand()%m_serverAddress.size();
+
 	//Send a single packet to each server
 	for (uint32_t i=0; i<m_serverAddress.size(); i++)
 	{
 		m_sent++; //count the messages sent
 		m_txTrace (p);
-		m_socket[i]->Send (p);
+        m_socket[current]->Send (p);
 
 		if (m_verbose)
 		{
 			std::stringstream sstm;
-			sstm << "Sent " << message_type <<" "<< p->GetSize() << " bytes to " << Ipv4Address::ConvertFrom (m_serverAddress[i])
+            sstm << "Sent " << message_type <<" "<< p->GetSize() << " bytes to " << Ipv4Address::ConvertFrom (m_serverAddress[current])
 			<< " port " << m_peerPort << " data " << pkts.str();
 			Log(DEBUG,  sstm );
 		}
+
+        // move to the next server
+        current = (current+1)%m_serverAddress.size();
 	}
 }
 
