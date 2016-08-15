@@ -24,3 +24,9 @@ temp.log
 .lock-waf_darwin_build
 
 .lock-waf_darwin_build
+output_*
+.lock-waf_darwin_build
+
+.lock-waf_darwin_build
+
+*.out

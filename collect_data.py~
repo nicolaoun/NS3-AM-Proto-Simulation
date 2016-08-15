@@ -22,8 +22,6 @@ def get_single_test_avg_results(filename,numR):
 	w_avgCommtime = 0
 	w_avgComptime = 0
 
-	numR_completed = 0
-
 
 	with open(filename) as f:
 		file_lines = []
@@ -42,13 +40,8 @@ def get_single_test_avg_results(filename,numR):
 				if("** READER_" in line):
 					r_sentMsgs += int(line.split("Msgs=")[1].split(",")[0])
 					r_invokedReads += int(line.split("InvokedReads=")[1].split(",")[0])
-					
-					completed = int(line.split("CompletedReads=")[1].split(",")[0])
-					if completed > 0:	
-						numR_completed += 1
-					r_completedReads += completed 
-        
-					if(protocol==1) or (protocol==6) or (protocol==11) or (protocol==16) or (protocol==21): #ABD
+					r_completedReads += int(line.split("CompletedReads=")[1].split(",")[0])
+                                        if(protocol==1) or (protocol==6) or (protocol==11) or (protocol==16) or (protocol==21): #ABD
 						r_slowReads += int(line.split("4EXCH_reads=")[1].split(",")[0])
 						r_fastReads += 0
                                         elif (protocol==2) or (protocol==7) or (protocol==12) or (protocol==17) or (protocol==22): #ohSAM
@@ -69,12 +62,12 @@ def get_single_test_avg_results(filename,numR):
 					aveComm = line.split("AveCommTime=")[1].split("s")[0]
 					if( aveComm != "nan" and aveComm != "-inf" and aveComm != "inf"):  
 						r_avgCommtime += float(aveComm)		#ok
-						## print "** AverageCommunicationTime = " + aveComm
+						##print "** AverageCommunicationTime = " + aveComm
 					
 					aveComp = line.split("AvgCompTime=")[1].split("s")[0]
 					if( aveComp != "nan" and aveComp != "-inf" and aveComp != "inf"):  
 						r_avgComptime += float(aveComp)		#ok
-						## print "** AverageComputationTime = " + aveComp
+						print "** AverageComputationTime = " + aveComp
 					#r_avgComptime += float(line.split("AvgCompTime=")[1].split("s")[0])		#ok
 	
 	# To be sure not to divide by 0 at any time and break everything
@@ -84,19 +77,10 @@ def get_single_test_avg_results(filename,numR):
 		ratio=r_fastReads/(r_slowReads+r_fastReads)
 		percent=(r_slowReads/(r_fastReads+r_slowReads))*100
 	
-	# compute avg times
-	if (numR_completed == 0): 
-		r_avgtime = 0
-		r_avgCommtime = 0
-		r_avgComptime = 0
-	else:
-		r_avgtime = r_avgtime/numR_completed
-		r_avgCommtime = r_avgCommtime/numR_completed
-		r_avgComptime = r_avgComptime/numR_completed
 	# we have to return this: "fastOps slowOps readRatio readPrcnt readAvgT rdrMsgs wtMsgs srvMsgs\n"
 	#return r_fastReads , r_slowReads , ratio , percent , r_avgtime/numR , r_sentMsgs , w_sentMsgs, srv_msgs
 	# we have to return this: "fastOps slowOps readRatio readPrcnt readAvgT readAvgCommT readAvgCompT rdrMsgs wtMsgs srvMsgs\n"
-	return r_fastReads , r_slowReads , ratio , percent , r_avgtime , r_avgCommtime , r_avgComptime , r_sentMsgs , w_sentMsgs, srv_msgs
+	return r_fastReads , r_slowReads , ratio , percent , r_avgtime/numR , r_avgCommtime/numR , r_avgComptime/numR , r_sentMsgs , w_sentMsgs, srv_msgs
 
 
 
@@ -127,8 +111,6 @@ def execute():
 	main_avg_rdrMsgs=0
 	main_avg_wrtMsgs=0
 	main_avg_srvMsgs=0
-
-	success_tests=0
 	
 	seed=0
 
@@ -175,24 +157,21 @@ def execute():
 		main_avg_wrtMsgs += avgs_list[8]
 		main_avg_srvMsgs += avgs_list[9]
 		seed += 19
-
-		if avgs_list[4] > 0:
-			success_tests += 1
 	
 	# Once all the tests finish now we have to AVG_ALL the test and write them to the main file!!!
 	# Process them here!
-	main_avg_fastOps = main_avg_fastOps /success_tests
-	main_avg_slowOps = main_avg_slowOps / success_tests
-	main_avg_readRatio = main_avg_readRatio / success_tests
-	main_avg_readPrcnt = main_avg_readPrcnt / success_tests
-	main_avg_readTime = main_avg_readTime / success_tests
-	main_avg_readCommTime = main_avg_readCommTime / success_tests
-	main_avg_readCompTime = main_avg_readCompTime / success_tests
-	main_avg_Total_rdrMsgs = main_avg_rdrMsgs / success_tests
-	main_avg_rdrMsgs = main_avg_rdrMsgs / success_tests / numReaders
-	main_avg_wrtMsgs = main_avg_wrtMsgs / success_tests
-	main_avg_Total_srvMsgs = main_avg_srvMsgs / success_tests
-	main_avg_srvMsgs = main_avg_srvMsgs / success_tests / numServers
+	main_avg_fastOps = main_avg_fastOps / tests
+	main_avg_slowOps = main_avg_slowOps / tests
+	main_avg_readRatio = main_avg_readRatio / tests
+	main_avg_readPrcnt = main_avg_readPrcnt / tests
+	main_avg_readTime = main_avg_readTime / tests
+	main_avg_readCommTime = main_avg_readCommTime / tests
+	main_avg_readCompTime = main_avg_readCompTime / tests
+	main_avg_Total_rdrMsgs = main_avg_rdrMsgs / tests
+	main_avg_rdrMsgs = main_avg_rdrMsgs / tests / numReaders
+	main_avg_wrtMsgs = main_avg_wrtMsgs / tests
+	main_avg_Total_srvMsgs = main_avg_srvMsgs / tests
+	main_avg_srvMsgs = main_avg_srvMsgs / tests / numServers
 	
 
 

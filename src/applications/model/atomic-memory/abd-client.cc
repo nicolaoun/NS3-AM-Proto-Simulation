@@ -250,8 +250,8 @@ AbdClient::StopApplication ()
 	  LogInfo(sstm);
 	  break;
   case READER:
-	  sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads="<<m_opCount<<", #CompletedReads=" << m_completeOps << ", #4EXCH_reads="<< m_completeOps <<", AveOpTime="<< avg_time+real_avg_time <<"s, AveCommTime="<<avg_time<<"s, AvgCompTime="<<real_avg_time<<"s **";
-	  std::cout << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads="<<m_opCount<<", #CompletedReads=" << m_completeOps << ", #4EXCH_reads="<< m_completeOps <<", AveOpTime="<< avg_time+real_avg_time <<"s, AveCommTime="<<avg_time<<"s, AvgCompTime="<<real_avg_time<<"s **"<<std::endl;
+      sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads="<<m_opCount<<", #CompletedReads=" << m_completeOps << ", #4EXCH_reads="<< m_completeOps <<", AveOpTime="<< (avg_time+real_avg_time) <<"s, AveCommTime="<<avg_time<<"s, AvgCompTime="<<real_avg_time<<"s **";
+      std::cout << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads="<<m_opCount<<", #CompletedReads=" << m_completeOps << ", #4EXCH_reads="<< m_completeOps <<", AveOpTime="<< (avg_time+real_avg_time) <<"s, AveCommTime="<<avg_time<<"s, AvgCompTime="<<real_avg_time<<"s **"<<std::endl;
 	  LogInfo(sstm);
 	  break;
   }
@@ -412,7 +412,7 @@ AbdClient::InvokeRead (void)
 
 	m_opCount ++;
 	m_opStart = Now();
-	m_real_start = std::chrono::system_clock::now();
+    m_real_start = std::chrono::system_clock::now();
 
 	//check if we still have operations to perfrom
 	if ( m_opCount <=  m_count )
@@ -438,7 +438,7 @@ AbdClient::InvokeWrite (void)
 
 	m_opCount ++;
 	m_opStart = Now();
-	m_real_start = std::chrono::system_clock::now();
+    //m_real_start = std::chrono::system_clock::now();
 
 	//check if we still have operations to perfrom
 	if ( m_opCount <=  m_count )
@@ -489,20 +489,25 @@ AbdClient::HandleSend (void)
       p = Create<Packet> (m_size);
     }
 
+  //random server to start from
+  int current = rand()%m_serverAddress.size();
 
   //Send a single packet to each server
   for (uint32_t i=0; i<m_serverAddress.size(); i++)
   {
 	  // call to the trace sinks before the packet is actually sent
 	  m_txTrace (p);
-	  m_socket[i]->Send (p);
+      m_socket[current]->Send (p);
 
 	  if (m_verbose)
 	  {
 		  std::stringstream sstm;
-		  sstm << "Sent " << m_size << " bytes to " << Ipv4Address::ConvertFrom (m_serverAddress[i]) << " port " << m_peerPort;
+          sstm << "Sent " << m_size << " bytes to " << Ipv4Address::ConvertFrom (m_serverAddress[current]) << " port " << m_peerPort;
 		  LogInfo ( sstm );
 	  }
+
+      // move to the next server
+      current = (current+1)%m_serverAddress.size();
   }
 }
 
@@ -558,6 +563,9 @@ AbdClient::ProcessReply(uint32_t type, uint32_t ts, uint32_t val)
 	case WRITER:
 		if (m_replies >= (m_numServers - m_fail))
 		{
+            // computation time of the writer once it gets the replies
+            m_real_start = std::chrono::system_clock::now();
+
 			m_opStatus = IDLE;
 			m_completeOps++;
 			ScheduleOperation (m_interval);
