@@ -318,11 +318,11 @@ if len(sys.argv) == 2:
             print "Algorithm oh-Fast STAR\n"
             prtcl_start=11
             prtcl_stop=11
-        elif(int(sys.argv[1]) == 30)
+        elif(int(sys.argv[1]) == 30):
             print "Version fixInt"
             vrsn_start=0
             vrsn_stop=0
-        elif(int(sys.argv[1]) == 31)
+        elif(int(sys.argv[1]) == 31):
             print "Version randInt"
             vrsn_start=1
             vrsn_stop=1
