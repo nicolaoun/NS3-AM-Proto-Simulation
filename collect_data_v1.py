@@ -48,13 +48,13 @@ def get_single_test_avg_results(filename,numR):
 						numR_completed += 1
 					r_completedReads += completed 
         
-					if(protocol==1) or (protocol==6) or (protocol==11) or (protocol==16) or (protocol==21): #ABD
+                                        if(alg == "abd") : #ABD
 						r_slowReads += int(line.split("4EXCH_reads=")[1].split(",")[0])
 						r_fastReads += 0
-                                        elif (protocol==2) or (protocol==7) or (protocol==12) or (protocol==17) or (protocol==22): #ohSAM
+                                        elif (alg == "oh-Sam"): #ohSAM
 						r_slowReads += int(line.split("3EXCH_reads=")[1].split(",")[0])
 						r_fastReads += 0
-                                        elif (protocol==5) or (protocol==10) or (protocol==15) or (protocol==20) or (protocol==25): #oh-fast
+                                        elif (alg == "oh-Fast"): #oh-fast
 						r_slowReads += int(line.split("3EXCH_reads=")[1].split(",")[0])
 						r_fastReads += int(line.split("2EXCH_reads=")[1].split(",")[0])
 					else: #Hybrid #Semifast
