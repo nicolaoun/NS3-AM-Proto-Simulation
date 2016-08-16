@@ -48,13 +48,13 @@ def get_single_test_avg_results(filename,numR):
 						numR_completed += 1
 					r_completedReads += completed 
         
-                                        if(alg == "abd") : #ABD
+                                        if(protocol == "abd") : #ABD
 						r_slowReads += int(line.split("4EXCH_reads=")[1].split(",")[0])
 						r_fastReads += 0
-                                        elif (alg == "oh-Sam"): #ohSAM
+                                        elif (protocol == "oh-Sam"): #ohSAM
 						r_slowReads += int(line.split("3EXCH_reads=")[1].split(",")[0])
 						r_fastReads += 0
-                                        elif (alg == "oh-Fast"): #oh-fast
+                                        elif (protocol == "oh-Fast"): #oh-fast
 						r_slowReads += int(line.split("3EXCH_reads=")[1].split(",")[0])
 						r_fastReads += int(line.split("2EXCH_reads=")[1].split(",")[0])
 					else: #Hybrid #Semifast
@@ -211,6 +211,7 @@ hybridfast = "HybridFast"
 oh_fast = "oh-Fast"
 alg =""
 executable=""
+protocol = ""
 tests = 5
 Version="fixInt"# "randInt"
 
@@ -236,8 +237,10 @@ vrsn_step=1
 #prtcl_start = 16
 #prtcl_stop = 25
 #prtcl_step=1
-protocols = [ ["abd", "am-abd"], ["oh-Sam", "am-ohSam"], ["Semifast", "am-semifast"], ["HybridFast", "am-cchybrid"], ["oh-Fast", "am-ohfast"] ]
-topologies = [ "spike", "star", "p2p", "star-p2p" ]
+#protocols = [ ["abd", "am-abd"], ["oh-Sam", "am-ohSam"], ["Semifast", "am-semifast"], ["HybridFast", "am-cchybrid"], ["oh-Fast", "am-ohfast"] ]
+#topologies = [ "spike", "star", "p2p", "star-p2p" ]
+protocols = [ ["oh-Sam", "am-ohSam"], ["oh-Fast", "am-ohfast"] ]
+topologies = [ "p2p", "star-p2p" ]
 srvrs_start=10 #10
 srvrs_stop=30
 srvrs_step=5
@@ -357,8 +360,9 @@ for fail in range(fail_start,fail_stop+1,fail_step):
 		# for each protocol (up to 6)
                 #for protocol in range(prtcl_start,prtcl_stop+1,prtcl_step):
                 for topology in topologies:
-                    for alg, executable in protocols:
+                    for protocol, executable in protocols:
                         # for each number of readers (up to 10,20,40,80)
+                        alg = protocol +"-"+ topology
                         executable = executable +"-"+ topology
 
                         print "  For Algorithm="+str(executable)+":"
