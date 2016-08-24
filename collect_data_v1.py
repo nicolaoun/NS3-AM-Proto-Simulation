@@ -140,7 +140,7 @@ def execute():
 
 		scc_directory = "output/logs_for_fails_"+str(fail)+"/servers_equal_"+str(numServers)+"/"+str(alg)+"/readers_"+str(numReaders)+"/version_"+str(Version)+"/read_interval_"+str(rInterval)+"_write_interval_"+str(wInterval)+"_/test_"+str(t)+".txt"
 		#if execute flag raised - invoke the command otherwise just parse the output
-		if(executeFlag==1):
+                if(executeFlag==1 and not os.path.isfile(scc_directory)):
 		        #create a file for each test
 			scc_directory = create_output_file_for_scenario(scc_directory, 1)
 		        #create a commad and redirection of the output
@@ -237,15 +237,15 @@ vrsn_step=1
 #prtcl_start = 16
 #prtcl_stop = 25
 #prtcl_step=1
-#protocols = [ ["abd", "am-abd"], ["oh-Sam", "am-ohSam"], ["Semifast", "am-semifast"], ["HybridFast", "am-cchybrid"], ["oh-Fast", "am-ohfast"] ]
+protocols = [ ["abd", "am-abd"], ["oh-Sam", "am-ohSam"], ["Semifast", "am-semifast"], ["HybridFast", "am-cchybrid"], ["oh-Fast", "am-ohfast"] ]
 #topologies = [ "spike", "star", "p2p", "star-p2p" ]
-protocols = [ ["oh-Sam", "am-ohSam"], ["oh-Fast", "am-ohfast"] ]
-topologies = [ "p2p", "star-p2p" ]
+#protocols = [ ["abd", "am-abd"], ["Semifast", "am-semifast"], ["HybridFast", "am-cchybrid"] ]
+topologies = [ "star-p2p" ]
 srvrs_start=10 #10
 srvrs_stop=30
 srvrs_step=5
 fail_start=1
-fail_stop=2 #2
+fail_stop=1 #2
 fail_step=1
 bar=0
 #############################################################################
@@ -376,13 +376,13 @@ for fail in range(fail_start,fail_stop+1,fail_step):
                                 # sys.stdout.write("[%-100s] %d%%" % ('='*bar, bar))
                                 # sys.stdout.flush()
 						                                            
-                            for readInterval in range(rInterval_start, rInterval_stop+1, rInterval_step):
-                                rInterval = float(readInterval)/10
-                                print "      For readInterval="+str(rInterval)+":"
-                                for writeInterval in range(wInterval_start, wInterval_stop+1, wInterval_step):
-                                    wInterval = float(writeInterval)/10
-                                    print "       For writeInterval="+str(wInterval)+":"
-                                    execute()
+                                for readInterval in range(rInterval_start, rInterval_stop+1, rInterval_step):
+                                    rInterval = float(readInterval)/10
+                                    print "      For readInterval="+str(rInterval)+":"
+                                    for writeInterval in range(wInterval_start, wInterval_stop+1, wInterval_step):
+                                        wInterval = float(writeInterval)/10
+                                        print "       For writeInterval="+str(wInterval)+":"
+                                        execute()
 
 
 print "\n\nAll the work is done, Script Exiting..."
