@@ -33,6 +33,12 @@ def build(bld):
 
     obj = bld.create_ns3_program('am-ohSam-p2p', ['csma', 'point-to-point', 'internet', 'applications'])
     obj.source = 'am-ohSam-p2p.cc'
+    
+    obj = bld.create_ns3_program('am-ohSamEX-p2p', ['csma', 'point-to-point', 'internet', 'applications'])
+    obj.source = 'am-ohSamEX-p2p.cc'
+
+    obj = bld.create_ns3_program('am-ohSamEX-star-p2p', ['csma', 'point-to-point', 'internet', 'applications'])
+    obj.source = 'am-ohSamEX-star-p2p.cc'
 
     obj = bld.create_ns3_program('am-ohSam-star-p2p', ['csma', 'point-to-point', 'internet', 'applications'])
     obj.source = 'am-ohSam-star-p2p.cc'

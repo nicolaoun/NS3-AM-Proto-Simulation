@@ -337,7 +337,7 @@ main (int argc, char *argv[])
 //
 // Now, do the actual simulation.
 //
-  NS_LOG_INFO ("Run Simulation: semiFast.");
+  NS_LOG_INFO ("Run Simulation: SemiFast.");
   //std::cout<<"Run Simulation: semiFast."<<std::endl;
   Simulator::Run ();
   Simulator::Destroy ();
