@@ -30,3 +30,5 @@ output_*
 .lock-waf_darwin_build
 
 *.out
+
+.DS_Store
