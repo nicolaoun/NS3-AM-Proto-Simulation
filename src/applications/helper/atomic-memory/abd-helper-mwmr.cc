@@ -40,6 +40,12 @@ AbdServerHelperMWMR::SetAttribute (
   m_factory.Set (name, value);
 }
 
+// void
+// AbdServerHelperMWMR::SetServers (Ptr<Application> app, std::vector<Address> serverIps)
+// {
+//   app->GetObject<AbdServerHelperMWMR>()->SetServers (serverIps);
+// }
+
 ApplicationContainer
 AbdServerHelperMWMR::Install (Ptr<Node> node) const
 {

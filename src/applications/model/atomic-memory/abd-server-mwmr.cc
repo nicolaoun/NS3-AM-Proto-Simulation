@@ -30,18 +30,19 @@
 #include "ns3/socket-factory.h"
 #include "ns3/packet.h"
 #include "ns3/uinteger.h"
+
 #include "abd-server-mwmr.h"
 
 namespace ns3 {
 
-NS_LOG_COMPONENT_DEFINE ("AbdServerApplicationMWMR");
+NS_LOG_COMPONENT_DEFINE ("AbdServerMWMRApplication");
 
 NS_OBJECT_ENSURE_REGISTERED (AbdServerMWMR);
 
 void
 AbdServerMWMR::LogInfo( std::stringstream& s)
 {
-	NS_LOG_INFO("[SERVER "<< m_personalID << " - " << Ipv4Address::ConvertFrom(m_myAddress) << "] (" << Simulator::Now ().GetSeconds () << "s):" << s.str());
+	NS_LOG_INFO("[SERVER " << m_personalID << " - "<< InetSocketAddress::ConvertFrom(m_myAddress).GetIpv4() << "] (" << Simulator::Now ().GetSeconds () << "s):" << s.str());
 }
 
 
@@ -66,11 +67,16 @@ AbdServerMWMR::GetTypeId (void)
 							MakeAddressAccessor (&AbdServerMWMR::m_myAddress),
 							MakeAddressChecker ())
 					.AddAttribute ("ID", 
-                     		"Client ID",
-                   	 		UintegerValue (100),
-                  	 		MakeUintegerAccessor (&AbdServerMWMR::m_personalID),
-                  	 		MakeUintegerChecker<uint32_t> ())
-	;
+                     "Client ID",
+                   	 UintegerValue (100),
+                  	 MakeUintegerAccessor (&AbdServerMWMR::m_personalID),
+                  	 MakeUintegerChecker<uint32_t> ())
+					.AddAttribute ("Verbose",
+					 "Verbose for debug mode",
+					 UintegerValue (0),
+					 MakeUintegerAccessor (&AbdServerMWMR::m_verbose),
+					 MakeUintegerChecker<uint16_t> ())
+		;
 	return tid;
 }
 
@@ -81,19 +87,18 @@ AbdServerMWMR::AbdServerMWMR ()
 	m_id = 0;
 	m_ts = 0;
 	m_value = 0;
-	//we have to put the number of servers + writers + readers there
-	m_writeop = new uint32_t [100];
+	m_sent=0;     //!< sent messages counter
 }
 
 AbdServerMWMR::~AbdServerMWMR()
 {
 	NS_LOG_FUNCTION (this);
 	m_socket = 0;
-	m_id = 0;
 	m_ts = 0;
+	m_id=0;
 	m_value = 0;
-	//we have to put the number of clients there
-	m_writeop = new uint32_t [100];
+	m_sent=0;     //!< sent messages counter
+
 }
 
 /**************************************************************************************
@@ -104,11 +109,9 @@ void
 AbdServerMWMR::StartApplication (void)
 {
 	NS_LOG_FUNCTION (this);
-	
-	// std::stringstream sstm;
-	// AsmCommon::Reset(sstm);
-	// sstm << "Check0";
-	// LogInfo(sstm);
+	std::stringstream sstm;
+	sstm << "Debug Mode="<<m_verbose;
+	LogInfo(sstm);
 
 	if (m_socket == 0)
 	{
@@ -128,12 +131,10 @@ AbdServerMWMR::StartApplication (void)
 			}
 			else
 			{
-				NS_FATAL_ERROR ("Error: Server " << m_personalID << " Failed to join multicast group.");
+				NS_FATAL_ERROR ("Error: Failed to join multicast group");
 			}
 		}
-
 	}
-
 
 	m_socket->SetRecvCallback (MakeCallback (&AbdServerMWMR::HandleRead, this));
 
@@ -145,12 +146,14 @@ AbdServerMWMR::StartApplication (void)
 	m_socket->SetCloseCallbacks (
 			MakeCallback (&AbdServerMWMR::HandlePeerClose, this),
 			MakeCallback (&AbdServerMWMR::HandlePeerError, this));
+
 }
 
 void 
 AbdServerMWMR::StopApplication ()
 {
 	NS_LOG_FUNCTION (this);
+
 
 	if (m_socket != 0)
 	{
@@ -159,6 +162,8 @@ AbdServerMWMR::StopApplication ()
 	}
 	std::stringstream sstm;
 	sstm << "** SERVER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent<<" **";
+	std::cout << "** SERVER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent<<" **"<<std::endl;
+	//std::cout << "** SERVER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent<<" **"<<std::endl;
 	LogInfo(sstm);
 }
 
@@ -226,11 +231,9 @@ AbdServerMWMR::HandleRead (Ptr<Socket> socket)
 
 	Ptr<Packet> packet;
 	Address from;
-
-
-	// Added the msgId, msgWriteOp
-	uint32_t msgT, msgTs, msgId, msgV, msgOp ,msgC;
+	uint32_t msgT, msgTs, msgId, msgV, msgOp;
 	std::stringstream sstm;
+	std::string message_type = "";
 
 	while ((packet = socket->RecvFrom (from)))
 	{
@@ -240,46 +243,66 @@ AbdServerMWMR::HandleRead (Ptr<Socket> socket)
 		std::stringbuf sb;
 		sb.str(std::string((char*) buf));
 		std::istream istm(&sb);
-		istm >> msgT >> msgTs >> msgId >> msgV >> msgOp >> msgC;
+		istm >> msgT;
 
-		AsmCommon::Reset(sstm);
-		sstm << "Received " << packet->GetSize () << " bytes from " <<
-				InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
-				InetSocketAddress::ConvertFrom (from).GetPort () << " data " << buf;
-		LogInfo(sstm);
+		if (m_verbose)
+		{
+			AsmCommon::Reset(sstm);
+			sstm << "Received " << packet->GetSize () << " bytes from " <<
+					InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
+					InetSocketAddress::ConvertFrom (from).GetPort () << " data " << buf;
+			LogInfo(sstm);
+		}
 
+		//Only second phase we update
+		if ((msgT==WRITE) || (msgT==READ)){
+			istm >> msgTs >> msgId >> msgV >> msgOp;
+
+			NS_LOG_LOGIC ("Updating Local Info");
+			if ((msgTs >= m_ts) || ((msgTs==m_ts)&& (msgId>=m_id)))
+			{
+				m_ts = msgTs;
+				m_value = msgV;
+				m_id = msgId;
+			}
+		}
+
+		if ((msgT==DISCOVER) || (msgT==READ_DISCOVER)){
+			istm >> msgOp;
+		}
+		
+
+		// AsmCommon::Reset(sstm);
+		// sstm << "Received msgOp " << msgOp << " RCV Msg: " <<msgT;
+		// LogInfo(sstm);
 
 		packet->RemoveAllPacketTags ();
 		packet->RemoveAllByteTags ();
 
-		NS_LOG_LOGIC ("Updating Local Info");
 
-	
-		if ( ((m_ts < msgTs) || ((m_ts == msgTs)&&(m_id<msgId))) && (m_writeop[msgId] < msgOp) && (msgT==WRITE))
-		{
-			m_ts = msgTs;
-			m_value = msgV;
-			m_id = msgId;
-			
-		}
 
-		// The code bellow will be executed either is WRITE or READ
 		NS_LOG_LOGIC ("Echoing packet");
 
-	
-		// Prepare packet content
-		// serialize <msgType, ts, id, value, msgOp ,counter>
-		std::stringstream pkts;
-		pkts << msgT << " " << m_ts << " " << m_id << " " << m_value << " " << msgOp << " " << msgC;
+		 // Prepare packet content
+		  std::stringstream pkts;
+		  // serialize <msgType, ts, value, counter>
+		  if (msgT == WRITE){
+		  	pkts << WRITEACK << " " << m_ts << " " << m_id << " " << m_value << " " << msgOp;
+		  }else if (msgT == READ){
+		  	pkts << READACK << " " << m_ts << " " << m_id << " " << m_value << " " << msgOp;
+		  }else if (msgT == DISCOVER){
+		  	pkts << DISCOVERACK << " " << m_ts << " " << msgOp;
+		  }else if (msgT == READ_DISCOVER){
+		  	pkts << READ_DISCOVER_ACK << " " << m_ts << " " << m_id << " " << m_value << " " << msgOp;
+		  }
 
-
-		SetFill(pkts.str());
+		  SetFill(pkts.str());
 
 		Ptr<Packet> p;
 		  if (m_dataSize)
 		    {
-		      NS_ASSERT_MSG (m_dataSize == m_size, "AbdServerMWMR::HandleSend(): m_size and m_dataSize inconsistent");
-		      NS_ASSERT_MSG (m_data, "AbdServerMWMR::HandleSend(): m_dataSize but no m_data");
+		      NS_ASSERT_MSG (m_dataSize == m_size, "AbdClient::HandleSend(): m_size and m_dataSize inconsistent");
+		      NS_ASSERT_MSG (m_data, "AbdClient::HandleSend(): m_dataSize but no m_data");
 		      p = Create<Packet> (m_data, m_dataSize);
 		    }
 		  else
@@ -287,15 +310,17 @@ AbdServerMWMR::HandleRead (Ptr<Socket> socket)
 		      p = Create<Packet> (m_size);
 		    }
 
-		//socket->SendTo (p, 0, from);
-		  socket->Send (p);
-		  m_sent++;
+		socket->Send (p);
+		m_sent++;     //!< sent messages counter
 
-		AsmCommon::Reset(sstm);
-		sstm << "Sent " << packet->GetSize () << " bytes to " <<
-				InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
-				InetSocketAddress::ConvertFrom (from).GetPort ();
-		LogInfo(sstm);
+		if (m_verbose)
+		{
+			AsmCommon::Reset(sstm);
+			sstm << "Sent " << packet->GetSize () << " bytes to " <<
+					InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
+					InetSocketAddress::ConvertFrom (from).GetPort ();
+			LogInfo(sstm);
+		}
 	}
 }
 

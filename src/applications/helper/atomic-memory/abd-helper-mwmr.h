@@ -53,6 +53,8 @@ public:
    */
   void SetAttribute (std::string name, const AttributeValue &value);
 
+  //void SetServers (Ptr<Application> app, std::vector<Address> serverIps);
+
   /**
    * Create a AbdServerApplication on the specified Node.
    *

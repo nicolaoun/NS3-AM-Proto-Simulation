@@ -29,7 +29,9 @@ enum MessageType{
     CTRL_PKT,
 	READRELAY,
 	DISCOVER,
-	DISCOVERACK
+	DISCOVERACK,
+    READ_DISCOVER,
+    READ_DISCOVER_ACK,
 };
 
 // Log message level

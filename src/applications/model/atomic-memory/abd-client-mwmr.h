@@ -25,6 +25,7 @@
 #include "ns3/ipv4-address.h"
 #include "ns3/traced-callback.h"
 #include "asm-common.h"
+#include <chrono>
 
 namespace ns3 {
 
@@ -165,7 +166,7 @@ private:
 	 * \param ts the received timestamp
 	 * \param val the value associate with ts
 	 */
-	void ProcessReply(uint32_t type, uint32_t ts, uint32_t id, uint32_t val, uint32_t op);
+	void ProcessReply(uint32_t type, uint32_t ts, uint32_t id, uint32_t val);
 	/**
 	 * \brief Handle a Connection Succeed event
 	 * \param socket the connected socket
@@ -180,24 +181,22 @@ private:
 	uint32_t m_size; 		//!< Size of the sent packet
 	uint32_t m_dataSize; 	//!< packet payload size (must be equal to m_size)
 	uint8_t *m_data; 		//!< packet payload data
+	uint16_t m_port; //!< Port on which we listen for incoming packets.
 
 	std::vector< Ptr<Socket> > m_socket; //!< Socket
 	std::vector<Address> m_serverAddress; //!< Remote server adresses
 	Address m_peerAddress; //!< Remote peer address
 	Address m_myAddress; //!< Remote peer address
 	uint16_t m_peerPort; //!< Remote peer port
-	EventId m_sendEvent; //!
-	uint32_t m_personalID; 				//My Personal ID
+	EventId m_sendEvent;
 
 	uint16_t m_serversConnected;
+	uint32_t m_personalID; 				//My Personal ID
 
 	// ABD variables
-	// Together <m_ts,m_id> is the tag
 	uint32_t m_ts; 				//!< latest timestamp
 	uint32_t m_id; 				//!< latest id 
 	uint32_t m_value;			//!< value associated with m_ts
-	uint32_t m_readop;			//!< read operation counter
-	uint32_t m_writeop;			//!< write operation counter
 
 	uint32_t m_numServers;		//!< number of servers
 	uint32_t m_fail;			//!< max number of failures supported
@@ -215,11 +214,18 @@ private:
 	//counters
 	uint32_t m_opCount;
 	uint32_t m_completeOps;
+	uint32_t m_numClients;
 	uint32_t m_replies;
 	uint32_t m_sent; 		//!< Counter for sent packets
 	uint32_t m_count; 		//!< Maximum number of packets the application will send
 
-
+	//randomness
+	uint16_t m_randInt;		//!< Flag indicating the choose of a random interval for each op invocation
+	uint16_t m_seed;		//!< Randomness seed
+	uint16_t m_verbose;		//!< Debug mode
+	std::chrono::time_point<std::chrono::system_clock> m_real_start;
+	std::chrono::time_point<std::chrono::system_clock> m_real_end;
+	std::chrono::duration<double> m_real_opAve;
 
 	/// Callbacks for tracing the packet Tx events
 	TracedCallback<Ptr<const Packet> > m_txTrace;

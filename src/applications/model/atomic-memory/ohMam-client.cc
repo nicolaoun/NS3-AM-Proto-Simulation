@@ -710,7 +710,7 @@ OhMamClient::ProcessReply(uint32_t type, uint32_t ts, uint32_t id, uint32_t val,
 				m_real_opAve += elapsed_seconds; 
 
 				AsmCommon::Reset(sstm);
-				sstm << "** WRITE COMPLETED: "  << m_opCount << " in "<< ((m_opEnd.GetSeconds() - m_opStart.GetSeconds()) + elapsed_seconds.count()) << "s (<"<<(m_opEnd.GetSeconds() - m_opStart.GetSeconds())<<"> + <"<< elapsed_seconds.count() <<">), <ts, value>: [" << m_ts << "," << m_value << "], @ 4 EXCH **";
+				sstm << "** WRITE COMPLETED: "  << m_opCount << " in "<< ((m_opEnd.GetSeconds() - m_opStart.GetSeconds()) + elapsed_seconds.count()) << "s (<"<<(m_opEnd.GetSeconds() - m_opStart.GetSeconds())<<"> + <"<< elapsed_seconds.count() <<">), < <ts,id> , value>: [<" << m_ts <<"," << m_personalID << "> ," << m_value << "], @ 4 EXCH **";
 				LogInfo(sstm);
 				m_replies = 0;
 			}

@@ -31,7 +31,7 @@
 
 namespace ns3 {
 
-NS_LOG_COMPONENT_DEFINE ("AbdClientApplicationMWMR");
+NS_LOG_COMPONENT_DEFINE ("AbdClientMWMRApplication");
 
 NS_OBJECT_ENSURE_REGISTERED (AbdClientMWMR);
 
@@ -39,6 +39,8 @@ NS_OBJECT_ENSURE_REGISTERED (AbdClientMWMR);
 void
 AbdClientMWMR::LogInfo( std::stringstream& s)
 {
+	NS_LOG_FUNCTION (this);
+
 	NS_LOG_INFO("[CLIENT " << m_personalID << " - "<< Ipv4Address::ConvertFrom(m_myAddress) << "] (" << Simulator::Now ().GetSeconds () << "s):" << s.str());
 }
 
@@ -87,6 +89,10 @@ AbdClientMWMR::GetTypeId (void)
                    UintegerValue (0),
                    MakeUintegerAccessor (&AbdClientMWMR::m_peerPort),
                    MakeUintegerChecker<uint16_t> ())
+    .AddAttribute ("Port", "Port on which we listen for incoming packets.",
+					UintegerValue (9),
+					MakeUintegerAccessor (&AbdClientMWMR::m_port),
+					MakeUintegerChecker<uint16_t> ())
     .AddAttribute ("PacketSize", "Size of echo data in outbound packets",
                    UintegerValue (100),
                    MakeUintegerAccessor (&AbdClientMWMR::SetDataSize,
@@ -99,6 +105,26 @@ AbdClientMWMR::GetTypeId (void)
                      "Client ID",
                    	 UintegerValue (100),
                   	 MakeUintegerAccessor (&AbdClientMWMR::m_personalID),
+                  	 MakeUintegerChecker<uint32_t> ())
+	 .AddAttribute ("RandomInterval",
+					 "Apply randomness on the invocation interval",
+					 UintegerValue (0),
+					 MakeUintegerAccessor (&AbdClientMWMR::m_randInt),
+					 MakeUintegerChecker<uint16_t> ())
+	 .AddAttribute ("Seed",
+					 "Seed for the pseudorandom generator",
+					 UintegerValue (0),
+					 MakeUintegerAccessor (&AbdClientMWMR::m_seed),
+					 MakeUintegerChecker<uint16_t> ())
+	.AddAttribute ("Verbose",
+					 "Verbose for debug mode",
+					 UintegerValue (0),
+					 MakeUintegerAccessor (&AbdClientMWMR::m_verbose),
+					 MakeUintegerChecker<uint16_t> ())
+	.AddAttribute ("Clients", 
+                     "Number of Clients",
+                   	 UintegerValue (100),
+                  	 MakeUintegerAccessor (&AbdClientMWMR::m_numClients),
                   	 MakeUintegerChecker<uint32_t> ())
   ;
   return tid;
@@ -116,13 +142,13 @@ AbdClientMWMR::AbdClientMWMR ()
 	m_data = 0;
 	m_dataSize = 0;
 	m_serversConnected = 0;
-
 	m_ts = 0;					//initialize the local timestamp
-	m_id = 0;					//initialize the id of the tag
+	m_id = 0;
 	m_value = 0;				//initialize local value
 	m_opStatus = PHASE1; 		//initialize status
-
 	m_fail = 0;
+	m_opCount = 0;
+	m_completeOps = 0;
 }
 
 AbdClientMWMR::~AbdClientMWMR()
@@ -137,10 +163,12 @@ AbdClientMWMR::~AbdClientMWMR()
 
 	m_ts = 0;					//initialize the local timestamp
 	m_value = 0;				//initialize local value
-	m_id = 0;					//initialize the id of the tag
+	m_id = 0;
 	m_opStatus = PHASE1; 		//initialize status
 
 	m_fail = 0;
+	m_opCount = 0;
+	m_completeOps = 0;
 }
 
 /**************************************************************************************
@@ -154,6 +182,9 @@ AbdClientMWMR::StartApplication (void)
 
 	std::stringstream sstm;
 
+	// seed pseudo-randomness
+	srand(m_seed);
+
 	if ( m_socket.empty() )
 	{
 		//Set the number of sockets we need
@@ -161,9 +192,12 @@ AbdClientMWMR::StartApplication (void)
 
 		for (uint32_t i = 0; i < m_serverAddress.size(); i++ )
 		{
-			AsmCommon::Reset(sstm);
-			sstm << "Connecting to SERVER (" << Ipv4Address::ConvertFrom(m_serverAddress[i]) << ")";
-			LogInfo(sstm);
+			if (m_verbose)
+			{
+				AsmCommon::Reset(sstm);
+				sstm << "Connecting to SERVER (" << Ipv4Address::ConvertFrom(m_serverAddress[i]) << ")";
+				LogInfo(sstm);
+			}
 
 			TypeId tid = TypeId::LookupByName ("ns3::TcpSocketFactory");
 			m_socket[i] = Socket::CreateSocket (GetNode (), tid);
@@ -180,9 +214,8 @@ AbdClientMWMR::StartApplication (void)
 		}
 	}
 
-	
 	AsmCommon::Reset(sstm);
-	sstm << "Started Succesfully: #S=" << m_numServers <<", #F=" << m_fail << ", opInt=" << m_interval;
+	sstm << "Started Succesfully: #S=" << m_numServers <<", #F=" << m_fail << ", opInt=" << m_interval << ",debug="<<m_verbose;
 	LogInfo(sstm);
 
 }
@@ -203,24 +236,36 @@ AbdClientMWMR::StopApplication ()
 	  }
     }
 
-  Simulator::Cancel (m_sendEvent);
   float avg_time=0;
-  if(m_opCount==0)
+  float real_avg_time=0;
+  if(m_opCount==0){
   	avg_time = 0;
-  else
+  	real_avg_time=0;
+  }else{
   	avg_time = ((m_opAve.GetSeconds()) /m_opCount);
+  	real_avg_time = (m_real_opAve.count()/m_opCount);
+  }
 
   switch(m_prType)
   {
   case WRITER:
-	  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_completeOps<< ", AveOpTime="<< avg_time <<"s **";
+	  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_completeOps <<", AveOpTime="<< avg_time+real_avg_time <<"s, AveCommTime="<<avg_time<<"s, AvgCompTime="<<real_avg_time<<"s **";
+	  std::cout << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_completeOps <<", AveOpTime="<< avg_time+real_avg_time <<"s, AveCommTime="<<avg_time<<"s, AvgCompTime="<<real_avg_time<<"s **"<<std::endl;
 	  LogInfo(sstm);
 	  break;
   case READER:
-	  sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads="<<m_opCount<<", #CompletedReads=" << m_completeOps << ", #4EXCH_reads="<< m_completeOps <<", AveOpTime="<< avg_time <<"s **";
+      sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads="<<m_opCount<<", #CompletedReads=" << m_completeOps << ", #4EXCH_reads="<< m_completeOps <<", AveOpTime="<< (avg_time+real_avg_time) <<"s, AveCommTime="<<avg_time<<"s, AvgCompTime="<<real_avg_time<<"s **";
+      std::cout << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads="<<m_opCount<<", #CompletedReads=" << m_completeOps << ", #4EXCH_reads="<< m_completeOps <<", AveOpTime="<< (avg_time+real_avg_time) <<"s, AveCommTime="<<avg_time<<"s, AvgCompTime="<<real_avg_time<<"s **"<<std::endl;
 	  LogInfo(sstm);
 	  break;
   }
+
+  if(m_personalID==m_numClients-1){
+  	exit(0);
+  }
+  
+  Simulator::Cancel (m_sendEvent);
+
 }
 
 void
@@ -241,9 +286,12 @@ void AbdClientMWMR::ConnectionSucceeded (Ptr<Socket> socket)
 
   m_serversConnected++;
 
-  std::stringstream sstm;
-  sstm << "Connected to SERVER (" << InetSocketAddress::ConvertFrom (from).GetIpv4() <<")";
-  LogInfo(sstm);
+  if (m_verbose)
+  {
+	  std::stringstream sstm;
+	  sstm << "Connected to SERVER (" << InetSocketAddress::ConvertFrom (from).GetIpv4() <<")";
+	  LogInfo(sstm);
+  }
 
   // Check if connected to the all the servers start operations
   if (m_serversConnected == m_serverAddress.size() )
@@ -335,6 +383,18 @@ void
 AbdClientMWMR::ScheduleOperation (Time dt)
 {
   NS_LOG_FUNCTION (this << dt);
+  std::stringstream sstm;
+
+  // if rndomness is set - choose a random interval
+  if ( m_randInt )
+  {
+	  dt = Time::From( (rand() % (m_interval.GetMilliSeconds()-1000))+1000, Time::MS );
+  }
+
+  AsmCommon::Reset(sstm);
+  sstm << "** NEXT OPERATION: in " << dt.GetSeconds() <<"s";
+  LogInfo(sstm);
+
   if (m_prType == READER )
   {
 	  m_sendEvent = Simulator::Schedule (dt, &AbdClientMWMR::InvokeRead, this);
@@ -356,22 +416,21 @@ AbdClientMWMR::InvokeRead (void)
 
 	m_opCount ++;
 	m_opStart = Now();
+    m_real_start = std::chrono::system_clock::now();
 
 	//check if we still have operations to perfrom
 	if ( m_opCount <=  m_count )
 	{
 		//Phase 1
 		m_opStatus = PHASE1;
-		m_msgType = READ;
-		m_readop ++;
+		m_msgType = READ_DISCOVER;
 
 		//Send msg to all
 		m_replies = 0;		//reset replies
-		HandleSend();
-
 		AsmCommon::Reset(sstm);
 		sstm << "** READ INVOKED: " << m_opCount << " at "<< m_opStart.GetSeconds() <<"s";
 		LogInfo(sstm);
+		HandleSend();
 	}
 }
 
@@ -383,27 +442,26 @@ AbdClientMWMR::InvokeWrite (void)
 
 	m_opCount ++;
 	m_opStart = Now();
-	
+    //m_real_start = std::chrono::system_clock::now();
 
 	//check if we still have operations to perfrom
 	if ( m_opCount <=  m_count )
 	{
 		//Phase 1
 		m_opStatus = PHASE1;
-		m_msgType = WRITE;
-		m_writeop ++;
+		m_msgType = DISCOVER;
 
 		//increment the ts and generate a random value
 		//m_ts ++;
-		//m_value = rand()%1000;
+		m_value = rand()%1000;
 
 		//Send msg to all
 		m_replies = 0;		//reset replies
 		HandleSend();
-
 		AsmCommon::Reset(sstm);
 		sstm << "** WRITE INVOKED: " << m_opCount << " at "<< m_opStart.GetSeconds() <<"s";
 		LogInfo(sstm);
+		
 	}
 }
 
@@ -418,22 +476,28 @@ AbdClientMWMR::HandleSend (void)
 
   // Prepare packet content
   std::stringstream pkts;
-  
-  // Serialize the appropriate message for READ or WRITE
-  // serialize <msgType, ts, id, value, writeop ,counter>
-  // serialize <msgType, ts, id, value, readop ,counter>
-  if ((m_msgType == WRITE) && (m_opStatus == PHASE1))
+  std::string message_type;
+
+  if (m_msgType == DISCOVER)
   	{
-  		pkts << m_msgType << " " << m_ts << " " << m_id << " " << m_value << " " << m_writeop<<" " << m_sent;
+  		pkts << DISCOVER << " " << m_opCount;
+  		message_type = "discover-write";
 	}
-  else if ((m_msgType == WRITE) && (m_opStatus == PHASE2))
+  else if (m_msgType == WRITE)
   	{
-  		pkts << m_msgType << " " << m_ts << " " << m_personalID << " " << m_value << " " << m_writeop<<" " << m_sent;
+  		pkts << WRITE << " " << m_ts << " " << m_personalID << " " << m_value << " " << m_opCount;
+  		message_type = "write";
 	}
-  else 
+  else if (m_msgType == READ_DISCOVER)
     {
-		pkts << m_msgType << " " << m_ts << " " << m_id << " " << m_value << " " << m_readop<<" " << m_sent;
+		pkts << READ_DISCOVER << " " << m_opCount;
+		message_type = "discover-read";
     }
+  else if (m_msgType == READ)
+  	{
+  		pkts << READ << " " << m_ts << " " << m_id << " " << m_value << " " << m_opCount;
+  		message_type = "read";
+  	}
 
   SetFill(pkts.str());
 
@@ -450,17 +514,26 @@ AbdClientMWMR::HandleSend (void)
       p = Create<Packet> (m_size);
     }
 
+  //random server to start from
+  int current = rand()%m_serverAddress.size();
 
   //Send a single packet to each server
   for (uint32_t i=0; i<m_serverAddress.size(); i++)
   {
 	  // call to the trace sinks before the packet is actually sent
 	  m_txTrace (p);
-	  m_socket[i]->Send (p);
+      m_socket[current]->Send (p);
 
-	  std::stringstream sstm;
-	  sstm << "Sent " << m_size << " bytes to " << Ipv4Address::ConvertFrom (m_serverAddress[i]) << " port " << m_peerPort;
-	  LogInfo ( sstm );
+	  if (m_verbose)
+	  {
+		  std::stringstream sstm;
+          sstm << "Sent " << message_type <<" "<< p->GetSize() << " bytes to " << Ipv4Address::ConvertFrom (m_serverAddress[current])
+		  << " port " << m_peerPort << " data " << pkts.str();
+		  LogInfo ( sstm );
+	  }
+
+      // move to the next server
+      current = (current+1)%m_serverAddress.size();
   }
 }
 
@@ -471,7 +544,10 @@ AbdClientMWMR::HandleRecv (Ptr<Socket> socket)
 
   Ptr<Packet> packet;
   Address from;
-  uint32_t msgT, msgTs, msgId, msgV, msgOp, msgC;
+  uint32_t msgT, msgTs, msgId, msgV, msgOp;
+  msgId=0;
+  msgV=0;
+
 
   while ((packet = socket->RecvFrom (from)))
     {
@@ -481,27 +557,45 @@ AbdClientMWMR::HandleRecv (Ptr<Socket> socket)
 	  std::stringbuf sb;
 	  sb.str(std::string((char*) buf));
 	  std::istream istm(&sb);
-	  istm >> msgT >> msgTs >> msgId >> msgV >> msgOp >> msgC;
-
-
+	  istm >> msgT; 
 	  std::stringstream sstm;
-	  sstm << "Received " << packet->GetSize () << " bytes from " <<
-	                         InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
-	                         InetSocketAddress::ConvertFrom (from).GetPort () << " data " << buf;
-      LogInfo (sstm);
+	  std::string message_type;
+
+	  // What the servers send me back
+	  if (msgT==READACK){
+			message_type = "readAck";
+			istm >> msgTs >> msgId >> msgV >> msgOp;
+	  }else if (msgT==DISCOVERACK){
+			message_type = "write-discover-Ack";
+			istm >> msgTs >> msgOp;
+	  }else if (msgT==WRITEACK){
+			message_type = "writeAck";
+			istm >> msgTs >> msgId >> msgV >> msgOp;
+	  }else if (msgT==READ_DISCOVER_ACK){
+	  		message_type = "read-discover-Ack";
+			istm >> msgTs >> msgId >> msgV >> msgOp;
+	  }
+
+
+	  if (m_verbose)
+	  {
+		  sstm << "Received " << message_type <<" "<< packet->GetSize () << " bytes from " <<
+				  InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
+				  InetSocketAddress::ConvertFrom (from).GetPort () << ", msgOp = " << msgOp <<", opCount = " << m_opCount << " data " << buf;
+		  LogInfo (sstm);
+	  }
 
       // check message freshness and if client is waiting
-      // HAVE TO DOUBLE CHECK HERE
-      //if ((((msgOp == m_readop) && (msgT==READ)) || ((msgOp == m_writeop) && (msgT==READ))) && m_opStatus != IDLE)
-      if ((((msgOp == m_readop) && (msgT==READ)) || ((msgOp == m_writeop) && (msgT==WRITE))) && m_opStatus != IDLE)
+      //if ( msgC == m_sent && m_opStatus != IDLE)
+      if (msgOp==m_opCount && m_opStatus != IDLE)
       {
-    	  ProcessReply(msgT, msgTs, msgId, msgV, msgOp);
+    	  ProcessReply(msgT, msgTs, msgId, msgV);
       }
     }
 }
 
 void
-AbdClientMWMR::ProcessReply(uint32_t type, uint32_t ts, uint32_t id, uint32_t val, uint32_t op)
+AbdClientMWMR::ProcessReply(uint32_t type, uint32_t ts, uint32_t id, uint32_t val)
 {
 	NS_LOG_FUNCTION (this);
 
@@ -510,112 +604,118 @@ AbdClientMWMR::ProcessReply(uint32_t type, uint32_t ts, uint32_t id, uint32_t va
 	//increment the number of replies received
 	m_replies ++;
 
-	switch(m_prType)
+	if (m_prType == WRITER)
 	{
-	case WRITER:
-		switch(m_opStatus)
+		if(m_opStatus==PHASE1)
 		{
-		case PHASE1:
 			// Find the max Timestamp 
 			// We do not care about the id comparison since 
 			// we want to write and we will put ours. 
-			//if ((m_ts < ts) || ((m_ts == ts)&&(m_id<id))) 
-			if (m_ts < ts)
+			if( ts >= m_ts)
 			{
 				m_ts = ts;
-				
-				AsmCommon::Reset(sstm);
-				sstm << "Discoverd Max Timestamp [" << m_ts << "]";
-				LogInfo(sstm);
 			}
 
+			if (m_verbose)
+	  		{
 			AsmCommon::Reset(sstm);
-			sstm << "Waiting for " << (m_numServers-m_fail) << " replies, received " << m_replies;
+			sstm << "Waiting for " << (m_numServers-m_fail) << " write discover Ack replies, received " << m_replies;
 			LogInfo(sstm);
+			}
 
 			//if we received enough replies go to the next phase
 			if (m_replies >= (m_numServers - m_fail))
-			{
+			{	
 				//Phase 1
 				m_opStatus = PHASE2;
 				m_msgType = WRITE;
 				// Increase my timestamp, my writeop and generate a random value
 				m_ts ++; 
-				m_writeop ++;
-				m_value = rand()%1000;
+				m_value = m_opCount + 200;
 				
 				//Send msg to all
 				m_replies = 0;		//reset replies
 				HandleSend();
 			}
-			break;
-		case PHASE2:
+		}
+		else
+		{	/////////////////////////////////
+			//////////// PHASE 2 ////////////
+			/////////////////////////////////
+
 			if (m_replies >= (m_numServers - m_fail))
 			{
-				m_opStatus = IDLE;
+				
 				m_completeOps++;
+				m_opStatus = IDLE;
 				ScheduleOperation (m_interval);
+				m_real_end = std::chrono::system_clock::now();
+				std::chrono::duration<double> elapsed_seconds = m_real_end-m_real_start;
 				m_opEnd = Now();
-				AsmCommon::Reset(sstm);
-				sstm << "** WRITE COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, [<tag>,value]: [<" << m_ts << "," << m_personalID << ">," << m_value << "] - @ 4 EXCH **";
-				LogInfo(sstm);
-
 				m_opAve += m_opEnd - m_opStart;
+				m_real_opAve += elapsed_seconds; 
+
+				AsmCommon::Reset(sstm);
+				sstm << "** WRITE COMPLETED: "  << m_opCount << " in "<< ((m_opEnd.GetSeconds() - m_opStart.GetSeconds()) + elapsed_seconds.count()) << "s (<"<<(m_opEnd.GetSeconds() - m_opStart.GetSeconds())<<"> + <"<< elapsed_seconds.count() <<">), < <ts,id> , value>: [<" << m_ts <<"," << m_personalID << "> ," << m_value << "], @ 4 EXCH **";
+				LogInfo(sstm);
+				m_replies = 0;
 			}
-			break;
-		default:
-			break;
 		}
-	case READER:
-		switch(m_opStatus)
+	}
+	else
+	{	
+		////////// WE ARE A READER ////////////
+		if(m_opStatus==PHASE1)
 		{
-		case PHASE1:
-			//update the local <tag, value> pair if necessary
-			if ((m_ts < ts) || ((m_ts == ts)&&(m_id<id)))
+			// Find the max Timestamp and value associated with that
+			if ((ts >= m_ts) || ((ts==m_ts)&& (id>=m_id)))
 			{
 				m_ts = ts;
 				m_id = id;
 				m_value = val;
-
-				AsmCommon::Reset(sstm);
-				sstm << "Updated local [<tag>,value] pair to: [<" << m_ts << "," << m_id << ">," << m_value << "]";
-				LogInfo(sstm);
 			}
 
+			if (m_verbose)
+	  		{
 			AsmCommon::Reset(sstm);
-			sstm << "Waiting for " << (m_numServers-m_fail) << " replies, received " << m_replies;
+			sstm << "Waiting for " << (m_numServers-m_fail) << " write-discover-Ack replies, received " << m_replies;
 			LogInfo(sstm);
+			}
 
 			//if we received enough replies go to the next phase
 			if (m_replies >= (m_numServers - m_fail))
-			{
+			{	
 				//Phase 1
 				m_opStatus = PHASE2;
-				m_msgType = WRITE;
-				//realy? yes, we want to help the writing finish
-				m_writeop = op;
-
+				m_msgType = READ;
+				
 				//Send msg to all
 				m_replies = 0;		//reset replies
 				HandleSend();
 			}
-			break;
-		case PHASE2:
+		}
+		else
+		{	/////////////////////////////////
+			//////////// PHASE 2 ////////////
+			/////////////////////////////////
+
 			if (m_replies >= (m_numServers - m_fail))
 			{
+				
+				m_completeOps++;
 				m_opStatus = IDLE;
 				ScheduleOperation (m_interval);
-				m_completeOps++;
+				m_real_end = std::chrono::system_clock::now();
+				std::chrono::duration<double> elapsed_seconds = m_real_end-m_real_start;
 				m_opEnd = Now();
-				AsmCommon::Reset(sstm);
-				sstm << "** READ COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, [<tag>,value]: [<" << m_ts << "," << m_id << ">," << m_value << "] - @ 4 EXCH **";
-				LogInfo(sstm);
-
 				m_opAve += m_opEnd - m_opStart;
+				m_real_opAve += elapsed_seconds; 
+
+				AsmCommon::Reset(sstm);
+				sstm << "** READ COMPLETED: "  << m_opCount << " in "<< ((m_opEnd.GetSeconds() - m_opStart.GetSeconds()) + elapsed_seconds.count()) << "s (<"<<(m_opEnd.GetSeconds() - m_opStart.GetSeconds())<<"> + <"<< elapsed_seconds.count() <<">), < <ts,id> , value>: [<" << m_ts <<"," << m_id << "> ," << m_value << "], @ 4 EXCH **";
+				LogInfo(sstm);
+				m_replies = 0;
 			}
-			break;
-		default:
-			break;
 		}
 	}
 }
