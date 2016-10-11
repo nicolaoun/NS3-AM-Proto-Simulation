@@ -17,10 +17,10 @@
  *
  * Author: Mathieu Lacage <mathieu.lacage@sophia.inria.fr>
  */
-#include "ohMam-helper.h"
+#include "OhMam-helper.h"
 
-#include "ns3/ohMam-server.h"
-#include "ns3/ohMam-client.h"
+#include "ns3/OhMam-server.h"
+#include "ns3/OhMam-client.h"
 #include "ns3/uinteger.h"
 #include "ns3/names.h"
 
@@ -44,12 +44,6 @@ void
 OhMamServerHelper::SetServers (Ptr<Application> app, std::vector<Address> serverIps)
 {
   app->GetObject<OhMamServer>()->SetServers (serverIps);
-}
-
-void
-OhMamServerHelper::SetClients (Ptr<Application> app, std::vector<Address> clientIps)
-{
-  app->GetObject<OhMamServer>()->SetClients (clientIps);
 }
 
 ApplicationContainer

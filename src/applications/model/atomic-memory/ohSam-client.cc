@@ -593,8 +593,6 @@ ohSamClient::HandleSend (void)
       // move to the next server
       current = (current+1)%m_serverAddress.size();
   }
-  	//p->RemoveAllPacketTags ();
-	//p->RemoveAllByteTags ();
 }
 
 void
@@ -681,7 +679,8 @@ ohSamClient::ProcessReply(uint32_t type, uint32_t ts, uint32_t val)
 
 			m_opEnd = Now();
 			m_opAve += m_opEnd - m_opStart;
-			m_real_opAve += elapsed_seconds;  //
+			m_real_opAve += elapsed_seconds;  
+			
 			AsmCommon::Reset(sstm);
 			sstm << "** WRITE COMPLETED: "  << m_opCount << " in "<< ((m_opEnd.GetSeconds() - m_opStart.GetSeconds()) + elapsed_seconds.count()) << "s (<"<<(m_opEnd.GetSeconds() - m_opStart.GetSeconds())<<"> + <"<< elapsed_seconds.count() <<">), <ts, value>: [" << m_ts << "," << m_value << "], @ 2 EXCH **";
 			LogInfo(sstm);

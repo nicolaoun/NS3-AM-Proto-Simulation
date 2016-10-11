@@ -203,35 +203,6 @@ ohSamServer::StartApplication (void)
 
 		}
 	}
-	/*
-	//connect to the other servers
-	if ( m_clntSocket.empty() )
-	{
-		//Set the number of sockets we need
-		m_clntSocket.resize( m_clntAddress.size() );
-
-		for (uint32_t i = 0; i < m_clntAddress.size(); i++ )
-		{
-			AsmCommon::Reset(sstm);
-			sstm << "Connecting to SERVER (" << Ipv4Address::ConvertFrom(m_clntAddress[i]) << ")";
-			LogInfo(sstm);
-
-			TypeId tid = TypeId::LookupByName ("ns3::TcpSocketFactory");
-			m_clntSocket[i] = Socket::CreateSocket (GetNode (), tid);
-
-			m_clntSocket[i]->Bind();
-			m_clntSocket[i]->Listen();
-			m_clntSocket[i]->Connect (InetSocketAddress (Ipv4Address::ConvertFrom(m_clntAddress[i]), m_port));
-
-			m_clntSocket[i]->SetRecvCallback (MakeCallback (&ohSamServer::HandleRead, this));
-			m_clntSocket[i]->SetAllowBroadcast (false);
-
-			m_clntSocket[i]->SetConnectCallback (
-					MakeCallback (&ohSamServer::ConnectionSucceeded, this),
-					MakeCallback (&ohSamServer::ConnectionFailed, this));
-		}
-	}
-	*/
 }
 
 
@@ -435,7 +406,7 @@ ohSamServer::HandleRead (Ptr<Socket> socket)
 			message_type = "write";
 		}else if (msgT==READ){
 			message_type = "read";
-		}else{ if (msgT==READRELAY)
+		}else if (msgT==READRELAY){
 			message_type = "readRelay";
 		}
 		
@@ -552,13 +523,6 @@ ohSamServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType m
 
 			//pkts << READRELAY << " " << m_ts << " " << m_value << " " << ipSize << " " << InetSocketAddress::ConvertFrom(from).GetIpv4().Get() << " " << msgOp;
 			pkts << READRELAY << " " << m_ts << " " << m_value << " " << msgSenderID << " " << msgOp;
-
-			/*
-			for( int k=0; k<ipSize; k++)
-				pkts << (char) ipBuffer[k];
-
-			pkts << " " << msgOp;
-			*/
 
 			SetFill(pkts.str());
 

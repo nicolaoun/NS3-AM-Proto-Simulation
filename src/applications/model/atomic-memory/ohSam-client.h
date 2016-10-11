@@ -259,8 +259,6 @@ private:
 	std::chrono::time_point<std::chrono::system_clock> m_real_end;
 	std::chrono::duration<double> m_real_opAve;
 
-
-
 	/// Callbacks for tracing the packet Tx events
 	TracedCallback<Ptr<const Packet> > m_txTrace;
 };

@@ -19,8 +19,11 @@ def build(bld):
     obj = bld.create_ns3_program('am-abd-mwmr', ['csma', 'point-to-point', 'internet', 'applications'])
     obj.source = 'am-abd-mwmr.cc'
     
-    obj = bld.create_ns3_program('am-ohMam', ['csma', 'point-to-point', 'internet', 'applications'])
-    obj.source = 'am-ohMam.cc'
+    obj = bld.create_ns3_program('am-ohMam-p2p', ['csma', 'point-to-point', 'internet', 'applications'])
+    obj.source = 'am-ohMam-p2p.cc'
+
+    obj = bld.create_ns3_program('am-ohMam-star-p2p', ['csma', 'point-to-point', 'internet', 'applications'])
+    obj.source = 'am-ohMam-star-p2p.cc'
     
     obj = bld.create_ns3_program('am-ohSam', ['csma', 'point-to-point', 'internet', 'applications'])
     obj.source = 'am-ohSam.cc'

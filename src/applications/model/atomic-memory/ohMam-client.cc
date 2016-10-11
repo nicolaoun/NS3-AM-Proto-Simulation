@@ -30,7 +30,7 @@
 #include "ns3/packet.h"
 #include "ns3/uinteger.h"
 #include "ns3/trace-source-accessor.h"
-#include "ohMam-client.h"
+#include "OhMam-client.h"
 #include <string>
 #include <cstdlib>
 #include <iostream>
@@ -111,6 +111,26 @@ OhMamClient::GetTypeId (void)
                    	 UintegerValue (100),
                   	 MakeUintegerAccessor (&OhMamClient::m_personalID),
                   	 MakeUintegerChecker<uint32_t> ())
+    .AddAttribute ("Clients", 
+                     "Number of Clients",
+                   	 UintegerValue (100),
+                  	 MakeUintegerAccessor (&OhMamClient::m_numClients),
+                  	 MakeUintegerChecker<uint32_t> ())
+	 .AddAttribute ("RandomInterval",
+					 "Apply randomness on the invocation interval",
+					 UintegerValue (0),
+					 MakeUintegerAccessor (&OhMamClient::m_randInt),
+					 MakeUintegerChecker<uint16_t> ())
+	 .AddAttribute ("Seed",
+					 "Seed for the pseudorandom generator",
+					 UintegerValue (0),
+					 MakeUintegerAccessor (&OhMamClient::m_seed),
+					 MakeUintegerChecker<uint16_t> ())
+	.AddAttribute ("Verbose",
+					 "Verbose for debug mode",
+					 UintegerValue (0),
+					 MakeUintegerAccessor (&OhMamClient::m_verbose),
+					 MakeUintegerChecker<uint16_t> ())
   ;
   return tid;
 }
@@ -122,7 +142,6 @@ OhMamClient::OhMamClient ()
 {
 	NS_LOG_FUNCTION (this);
 	m_sent = 0;
-	//m_socket = 0;
 	m_sendEvent = EventId ();
 	m_data = 0;
 	m_dataSize = 0;
@@ -135,16 +154,14 @@ OhMamClient::OhMamClient ()
 	m_MINId = 10000000;
 	m_fail = 0;
 	m_opCount=0;
-	m_completeOps=0;
 	m_slowOpCount=0;
+	m_completeOps=0;
 	m_fastOpCount=0;
 }
 
 OhMamClient::~OhMamClient()
 {
 	NS_LOG_FUNCTION (this);
-	//m_socket = 0;
-
 	delete [] m_data;
 	m_data = 0;
 	m_dataSize = 0;
@@ -157,8 +174,8 @@ OhMamClient::~OhMamClient()
 	m_MINId = 10000000;
 	m_fail = 0;
 	m_opCount=0;
-	m_completeOps=0;
 	m_slowOpCount=0;
+	m_completeOps=0;
 	m_fastOpCount=0;
 }
 
@@ -171,6 +188,9 @@ OhMamClient::StartApplication (void)
 
 	NS_LOG_FUNCTION (this);
 	std::stringstream sstm;
+
+	// seed pseudo-randomness
+	srand(m_seed);
 
 	//////////////////////////////////////////////////////////////////////////////
 	if (m_insocket == 0)
@@ -215,9 +235,12 @@ OhMamClient::StartApplication (void)
 
 		for (uint32_t i = 0; i < m_serverAddress.size(); i++ )
 		{
-			AsmCommon::Reset(sstm);
-			sstm << "Connecting to SERVER (" << Ipv4Address::ConvertFrom(m_serverAddress[i]) << ")";
-			LogInfo(sstm);
+			if (m_verbose)
+			{
+				AsmCommon::Reset(sstm);
+				sstm << "Connecting to SERVER (" << Ipv4Address::ConvertFrom(m_serverAddress[i]) << ")";
+				LogInfo(sstm);
+			}
 
 			TypeId tid = TypeId::LookupByName ("ns3::TcpSocketFactory");
 			m_socket[i] = Socket::CreateSocket (GetNode (), tid);
@@ -237,7 +260,7 @@ OhMamClient::StartApplication (void)
 
 	
 	AsmCommon::Reset(sstm);
-	sstm << "Started Succesfully: #S=" << m_numServers <<", #F=" << m_fail << ", opInt=" << m_interval;
+	sstm << "Started Succesfully: #S=" << m_numServers <<", #F=" << m_fail << ", opInt=" << m_interval << ",debug="<<m_verbose;
 	LogInfo(sstm);
 
 }
@@ -264,24 +287,33 @@ OhMamClient::StopApplication ()
 	  }
     }
 
-  Simulator::Cancel (m_sendEvent);
   float avg_time=0;
-  if(m_opCount==0)
+  float real_avg_time=0;
+  if(m_opCount==0){
   	avg_time = 0;
-  else
+  	real_avg_time=0;
+  }else{
   	avg_time = ((m_opAve.GetSeconds()) /m_opCount);
+  	real_avg_time = (m_real_opAve.count()/m_opCount);
+  }
 
   switch(m_prType)
   {
   case WRITER:
-	  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_completeOps <<", AveOpTime="<< avg_time <<"s **";
+	  sstm << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_completeOps <<", AveOpTime="<< avg_time+real_avg_time <<"s, AveCommTime="<<avg_time<<"s, AvgCompTime="<<real_avg_time<<"s **";
+	  std::cout << "** WRITER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent <<", #InvokedWrites=" << m_opCount <<", #CompletedWrites="<<m_completeOps <<", AveOpTime="<< avg_time+real_avg_time <<"s, AveCommTime="<<avg_time<<"s, AvgCompTime="<<real_avg_time<<"s **"<<std::endl;
 	  LogInfo(sstm);
 	  break;
   case READER:
-	  sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads=" << m_opCount <<", #CompletedReads="<<m_completeOps <<", #3EXCH_reads="<< m_completeOps << ", #2EXCH_reads=0, AveOpTime="<< avg_time <<"s **";
+	  sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads=" << m_opCount <<", #CompletedReads="<<m_completeOps <<", #3EXCH_reads="<< m_completeOps << ", #2EXCH_reads=0, AveOpTime="<< avg_time+real_avg_time <<"s, AveCommTime="<<avg_time<<"s, AvgCompTime="<<real_avg_time<<"s **";
+	  std::cout << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads=" << m_opCount <<", #CompletedReads="<<m_completeOps <<", #3EXCH_reads="<< m_completeOps << ", #2EXCH_reads=0, AveOpTime="<< avg_time+real_avg_time <<"s, AveCommTime="<<avg_time<<"s, AvgCompTime="<<real_avg_time<<"s **"<<std::endl;
 	  LogInfo(sstm);
 	  break;
   }
+  if(m_personalID==m_numClients-1){
+  	exit(0);
+  }
+  Simulator::Cancel (m_sendEvent);
 }
 
 void
@@ -322,9 +354,12 @@ void OhMamClient::ConnectionSucceeded (Ptr<Socket> socket)
 
   m_serversConnected++;
 
-  std::stringstream sstm;
-  sstm << "Connected to SERVER (" << InetSocketAddress::ConvertFrom (from).GetIpv4() <<")";
-  LogInfo(sstm);
+  if (m_verbose)
+  {
+	  std::stringstream sstm;
+	  sstm << "Connected to SERVER (" << InetSocketAddress::ConvertFrom (from).GetIpv4() <<")";
+	  LogInfo(sstm);
+  }
 
   // Check if connected to the all the servers start operations
   if (m_serversConnected == m_serverAddress.size() )
@@ -399,16 +434,11 @@ OhMamClient::SetFill (std::string fill)
 
   if (dataSize != m_dataSize)
     {
-      delete [] m_data;
       m_data = new uint8_t [dataSize];
       m_dataSize = dataSize;
     }
 
   memcpy (m_data, fill.c_str (), dataSize);
-
-  //
-  // Overwrite packet size attribute.
-  //
   m_size = dataSize;
 }
 
@@ -419,6 +449,18 @@ void
 OhMamClient::ScheduleOperation (Time dt)
 {
   NS_LOG_FUNCTION (this << dt);
+  std::stringstream sstm;
+
+  // if rndomness is set - choose a random interval
+  if ( m_randInt )
+  {
+	  dt = Time::From( (rand() % (m_interval.GetMilliSeconds()-1000))+1000, Time::MS );
+  }
+
+  AsmCommon::Reset(sstm);
+  sstm << "** NEXT OPERATION: in " << dt.GetSeconds() <<"s";
+  LogInfo(sstm);
+
   if (m_prType == READER )
   {
 	  m_sendEvent = Simulator::Schedule (dt, &OhMamClient::InvokeRead, this);
@@ -437,9 +479,8 @@ OhMamClient::InvokeRead (void)
 {
 	NS_LOG_FUNCTION (this);
 	std::stringstream sstm;
-
-
 	m_opStart = Now();
+	m_real_start = std::chrono::system_clock::now();
 
 	//check if we still have operations to perfrom
 	if ( m_opCount <  m_count )
@@ -471,14 +512,15 @@ OhMamClient::InvokeWrite (void)
 
 	m_opCount ++;
 	m_opStart = Now();
+	m_real_start = std::chrono::system_clock::now();
 	
 
 	//check if we still have operations to perfrom
 	if ( m_opCount <=  m_count )
 	{
-		//Phase 1
 		m_opStatus = PHASE1;
 		m_msgType = DISCOVER;
+		m_value = m_opCount + 900;
 		m_writeop ++;
 		m_replies = 0;		//reset replies
 		
@@ -495,7 +537,6 @@ OhMamClient::HandleSend (void)
   NS_LOG_FUNCTION (this);
 
   NS_ASSERT (m_sendEvent.IsExpired ());
-  ++m_sent;
 
   // Prepare packet content
   std::stringstream pkts;
@@ -516,10 +557,9 @@ OhMamClient::HandleSend (void)
 	}
   else if (m_msgType == READ)
     {
-		pkts << m_msgType <<" "<< m_personalID <<" "<< m_readop;
+		pkts << m_msgType << " " << m_readop;
 		message_type = "read";
-    }else
-    	message_type = "asd";
+    }
 
   SetFill(pkts.str());
 
@@ -536,21 +576,26 @@ OhMamClient::HandleSend (void)
       p = Create<Packet> (m_size);
     }
 
+	//random server to start from
+  int current = rand()%m_serverAddress.size();
 
   //Send a single packet to each server
   for (uint32_t i=0; i<m_serverAddress.size(); i++)
   {
 	  // call to the trace sinks before the packet is actually sent
-	  m_txTrace (p);
-	  m_socket[i]->Send (p);
+	  m_sent++; //count the messages sent
+      m_socket[current]->Send (p);
 
-	  std::stringstream sstm;
-	  sstm << "Sent " << message_type <<" "<< p->GetSize() << " bytes to " << Ipv4Address::ConvertFrom (m_serverAddress[i])
-	  	   << " port " << m_peerPort << " data " << pkts.str();
-	  LogInfo ( sstm );
+	  if (m_verbose)
+	  {
+		  std::stringstream sstm;
+          sstm << "Sent " << message_type <<" "<< p->GetSize() << " bytes to " << Ipv4Address::ConvertFrom (m_serverAddress[current])
+		  << " port " << m_peerPort << " data " << pkts.str();
+		  LogInfo ( sstm );
+	  }
+	  // move to the next server
+      current = (current+1)%m_serverAddress.size();
   }
-  	p->RemoveAllPacketTags ();
-	p->RemoveAllByteTags ();
 }
 
 void
@@ -579,21 +624,18 @@ OhMamClient::HandleRecv (Ptr<Socket> socket)
 			istm >> msgTs >> msgId >> msgV >> msgOp;
 	  }else if (msgT==DISCOVERACK){
 			message_type = "discoverAck";
-			istm >> msgTs >> msgId >> msgV >> msgOp;
-	  }else{
+			istm >> msgTs >> msgOp;
+	  }else if (msgT==WRITEACK){
 			message_type = "writeAck";
 			istm >> msgTs >> msgId >> msgV >> msgOp;
 	  }
 	 
-
-	  if((msgOp==m_readop)||(msgOp==m_writeop))
+	 if (m_verbose)
 	  {
-	  	sstm << "Received " << message_type <<" "<< packet->GetSize () << " bytes from " <<
-	                        InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
-	                        InetSocketAddress::ConvertFrom (from).GetPort () << " data " << buf;
-   		LogInfo (sstm);
-   		packet->RemoveAllPacketTags ();
-		packet->RemoveAllByteTags ();
+		  sstm << "Received " << message_type <<" "<< packet->GetSize () << " bytes from " <<
+				  InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
+				  InetSocketAddress::ConvertFrom (from).GetPort () << ", msgOp = " << msgOp <<", opCount = " << m_opCount << " data " << buf;
+		  LogInfo (sstm);
 	  }
 
       // check message freshness and if client is waiting
@@ -622,19 +664,17 @@ OhMamClient::ProcessReply(uint32_t type, uint32_t ts, uint32_t id, uint32_t val,
 			// Find the max Timestamp 
 			// We do not care about the id comparison since 
 			// we want to write and we will put ours. 
-			//if ((m_ts < ts) || ((m_ts == ts)&&(m_id<id))) 
 			if( ts >= m_ts)
 			{
 				m_ts = ts;
-				
-				// AsmCommon::Reset(sstm);
-				// sstm << "Discoved Max TS [" << m_ts << "]";
-				// LogInfo(sstm);
 			}
 
+			if (m_verbose)
+	  		{
 			AsmCommon::Reset(sstm);
 			sstm << "Waiting for " << (m_numServers-m_fail) << " discoverAck replies, received " << m_replies;
 			LogInfo(sstm);
+			}
 
 			//if we received enough replies go to the next phase
 			if (m_replies >= (m_numServers - m_fail))
@@ -663,11 +703,14 @@ OhMamClient::ProcessReply(uint32_t type, uint32_t ts, uint32_t id, uint32_t val,
 				m_completeOps++;
 				m_opStatus = IDLE;
 				ScheduleOperation (m_interval);
-
+				m_real_end = std::chrono::system_clock::now();
+				std::chrono::duration<double> elapsed_seconds = m_real_end-m_real_start;
 				m_opEnd = Now();
 				m_opAve += m_opEnd - m_opStart;
+				m_real_opAve += elapsed_seconds; 
+
 				AsmCommon::Reset(sstm);
-				sstm << "*** WRITE COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, [<tag>,value]: [<" << m_ts << "," << m_personalID << ">," << m_value << "] - @ 4 EXCH **";
+				sstm << "** WRITE COMPLETED: "  << m_opCount << " in "<< ((m_opEnd.GetSeconds() - m_opStart.GetSeconds()) + elapsed_seconds.count()) << "s (<"<<(m_opEnd.GetSeconds() - m_opStart.GetSeconds())<<"> + <"<< elapsed_seconds.count() <<">), <ts, value>: [" << m_ts << "," << m_value << "], @ 4 EXCH **";
 				LogInfo(sstm);
 				m_replies = 0;
 			}
@@ -695,10 +738,14 @@ OhMamClient::ProcessReply(uint32_t type, uint32_t ts, uint32_t id, uint32_t val,
 
       		m_opEnd = Now();
       		m_opAve += m_opEnd - m_opStart;
+      		m_real_end = std::chrono::system_clock::now();
+			std::chrono::duration<double> elapsed_seconds = m_real_end-m_real_start;
+			m_real_opAve += elapsed_seconds;  //
+
    			m_opStatus = IDLE;
 			ScheduleOperation (m_interval);
       		AsmCommon::Reset(sstm);
-			sstm << "*** READ COMPLETED: " << m_opCount << " in "<< (m_opEnd.GetSeconds() - m_opStart.GetSeconds()) <<"s, [<tag>,value]: [<" << m_MINts << "," << m_MINId << ">," << m_MINvalue << "] - @ 3 EXCH **";
+			sstm << "** READ COMPLETED: "  << m_opCount << " in "<< ((m_opEnd.GetSeconds() - m_opStart.GetSeconds()) + elapsed_seconds.count()) << "s (<"<<(m_opEnd.GetSeconds() - m_opStart.GetSeconds())<<"> + <"<< elapsed_seconds.count() <<">), [<ts,value>]: [<" << m_MINts << "," << m_MINvalue << ">] - @ 3 EXCH **";
 			LogInfo(sstm);
 			m_replies =0;
 		}

@@ -54,7 +54,7 @@ public:
 
   void SetServers (std::vector<Address> ip);
 
-  void SetClients (std::vector<Address> ip);
+  //void SetClients (std::vector<Address> ip);
 
 protected:
   virtual void DoDispose (void);
@@ -79,6 +79,11 @@ private:
    */
   
   void HandleRead (Ptr<Socket> socket);
+
+  void HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType msgT);
+
+  void HandleRelay(std::istream& istm, Ptr<Socket> socket);
+
     /**
    * \brief Handle an incoming connection
    * \param socket the incoming connection socket
@@ -125,7 +130,7 @@ private:
   std::vector<Address> m_serverAddress; //!< Remote server adresses
   std::vector< Ptr<Socket> > m_srvSocket;
 
-  std::vector<Address> m_clntAddress; //!< Remote client adresses
+  std::vector< std::pair< Address, Ptr<Socket> > > m_clntAddress; //!< Remote client adresses
   std::vector< Ptr<Socket> > m_clntSocket;
   uint32_t m_numServers;    //!< number of servers
   uint32_t m_numClients;    //!< number of clients
@@ -138,6 +143,7 @@ private:
   uint32_t m_ts; 				//!< latest timestamp
   uint32_t m_value;			//!< value associated with m_ts
   uint32_t m_sent;     //!< sent messages counter
+  uint16_t m_verbose;   //!< Debug mode
   std::vector<uint32_t> m_writeop;     //!< value associated with m_ts
   std::vector<uint32_t> m_operations;
   std::vector<uint32_t> m_relays;

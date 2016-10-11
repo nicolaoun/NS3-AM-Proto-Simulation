@@ -245,11 +245,18 @@ private:
 	uint32_t m_completeOps;
 	uint32_t m_slowOpCount;
 	uint32_t m_fastOpCount;
+	uint32_t m_numClients;
 	uint32_t m_replies;
 	uint32_t m_sent; 		//!< Counter for sent packets
 	uint32_t m_count; 		//!< Maximum number of packets the application will send
 
-
+	//randomness
+	uint16_t m_randInt;		//!< Flag indicating the choose of a random interval for each op invocation
+	uint16_t m_seed;		//!< Randomness seed
+	uint16_t m_verbose;		//!< Debug mode
+	std::chrono::time_point<std::chrono::system_clock> m_real_start;
+	std::chrono::time_point<std::chrono::system_clock> m_real_end;
+	std::chrono::duration<double> m_real_opAve;
 
 	/// Callbacks for tracing the packet Tx events
 	TracedCallback<Ptr<const Packet> > m_txTrace;
