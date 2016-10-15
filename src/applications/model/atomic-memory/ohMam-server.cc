@@ -677,7 +677,7 @@ OhMamServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 			message_response_type = "readAck";
 			msgT = READACK;
 			AsmCommon::Reset(pkts);
-			pkts << msgT << " " << m_ts << " " << m_id << " " << m_value << " " << msgOp;
+			pkts << READACK << " " << m_ts << " " << m_id << " " << m_value << " " << msgOp;
 			SetFill(pkts.str());
 
 			Ptr<Packet> pk;

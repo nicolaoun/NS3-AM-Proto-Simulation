@@ -555,12 +555,12 @@ ohSamEXClient::HandleSend (void)
   // Serialize the appropriate message for READ or WRITE
   if ( m_msgType == WRITE )
   	{
-  		pkts << m_msgType << " " << m_ts << " " << m_value;
+  		pkts << WRITE << " " << m_ts << " " << m_value;
   		message_type = "write";
 	}
   else 
     {
-		pkts << m_msgType << " "<< m_opCount;
+		pkts << READ << " "<< m_opCount;
 		message_type = "read";
     }
 

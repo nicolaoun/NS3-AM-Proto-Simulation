@@ -547,17 +547,17 @@ OhMamClient::HandleSend (void)
   // serialize <msgType, ts, id, value, readop ,counter>
   if ((m_msgType == DISCOVER) && (m_opStatus == PHASE1))
   	{
-  		pkts << m_msgType << " " << m_writeop;
+  		pkts << DISCOVER << " " << m_writeop;
   		message_type = "discover";
 	}
   else if ((m_msgType == WRITE) && (m_opStatus == PHASE2))
   	{
-  		pkts << m_msgType << " " << m_ts << " " << m_personalID << " " << m_value << " " << m_writeop;
+  		pkts << WRITE << " " << m_ts << " " << m_personalID << " " << m_value << " " << m_writeop;
   		message_type = "write";
 	}
   else if (m_msgType == READ)
     {
-		pkts << m_msgType << " " << m_readop;
+		pkts << READ << " " << m_readop;
 		message_type = "read";
     }
 
