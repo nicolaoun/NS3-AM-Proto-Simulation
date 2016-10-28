@@ -30,83 +30,84 @@
 #include "ns3/socket-factory.h"
 #include "ns3/packet.h"
 #include "ns3/uinteger.h"
-#include "ohSamEX-server.h"
-#include <algorithm>
+#include "MwImp-server.h"
+ #include <algorithm>
 
 namespace ns3 {
 
-NS_LOG_COMPONENT_DEFINE ("ohSamEXServerApplication");
+NS_LOG_COMPONENT_DEFINE ("MwImpServerApplication");
 
-NS_OBJECT_ENSURE_REGISTERED (ohSamEXServer);
+NS_OBJECT_ENSURE_REGISTERED (MwImpServer);
 
 void
-ohSamEXServer::LogInfo( std::stringstream& s)
+MwImpServer::LogInfo( std::stringstream& s)
 {
 	NS_LOG_INFO("[SERVER "<< m_personalID << " - " << Ipv4Address::ConvertFrom(m_myAddress) << "] (" << Simulator::Now ().GetSeconds () << "s):" << s.str());
 }
 
 
 TypeId
-ohSamEXServer::GetTypeId (void)
+MwImpServer::GetTypeId (void)
 {
-	static TypeId tid = TypeId ("ns3::ohSamEXServer")
+	static TypeId tid = TypeId ("ns3::MwImpServer")
     				.SetParent<Application> ()
 					.SetGroupName("Applications")
-					.AddConstructor<ohSamEXServer> ()
+					.AddConstructor<MwImpServer> ()
 					.AddAttribute ("Port", "Port on which we listen for incoming packets.",
 							UintegerValue (9),
-							MakeUintegerAccessor (&ohSamEXServer::m_port),
+							MakeUintegerAccessor (&MwImpServer::m_port),
 							MakeUintegerChecker<uint16_t> ())
 					.AddAttribute ("PacketSize", "Size of echo data in outbound packets",
 							UintegerValue (100),
-							MakeUintegerAccessor (&ohSamEXServer::m_size),
+							MakeUintegerAccessor (&MwImpServer::m_size),
 							MakeUintegerChecker<uint32_t> ())
 					.AddAttribute ("LocalAddress",
 							"The local Address of the current node",
 							AddressValue (),
-							MakeAddressAccessor (&ohSamEXServer::m_myAddress),
+							MakeAddressAccessor (&MwImpServer::m_myAddress),
 							MakeAddressChecker ())
 					.AddAttribute ("ID", 
                      		"Client ID",
                    	 		UintegerValue (100),
-                  	 		MakeUintegerAccessor (&ohSamEXServer::m_personalID),
+                  	 		MakeUintegerAccessor (&MwImpServer::m_personalID),
                   	 		MakeUintegerChecker<uint32_t> ())
 					.AddAttribute ("MaxFailures",
 					  		"The maximum number of server failures",
 					  		UintegerValue (100),
-					  		MakeUintegerAccessor (&ohSamEXServer::m_fail),
+					  		MakeUintegerAccessor (&MwImpServer::m_fail),
 					  		MakeUintegerChecker<uint32_t> ())
 					.AddAttribute ("Verbose",
 					 "Verbose for debug mode",
 					 UintegerValue (0),
-					 MakeUintegerAccessor (&ohSamEXServer::m_verbose),
+					 MakeUintegerAccessor (&MwImpServer::m_verbose),
 					 MakeUintegerChecker<uint16_t> ())
 	;
 	return tid;
 }
 
-ohSamEXServer::ohSamEXServer ()
+MwImpServer::MwImpServer ()
 {
 	NS_LOG_FUNCTION (this);
 	m_id = 0;
 	m_ts = 0;
 	m_value = 0;
 	m_serversConnected =0;
-	m_sent=0;
+	m_sent = 0;
+	//m_writeop.resize(100);   ///
 	m_operations.resize(100);
 	m_relays.resize(100);
 
 }
 
-ohSamEXServer::~ohSamEXServer()
+MwImpServer::~MwImpServer()
 {
 	NS_LOG_FUNCTION (this);
-	//m_socket = 0;
 	m_id = 0;
 	m_ts = 0;
 	m_value = 0;
-	m_sent=0;
+	m_sent = 0;
 	m_serversConnected =0;
+	//m_writeop.resize(100);
 	m_operations.resize(100);
 	m_relays.resize(100);
 }
@@ -116,7 +117,7 @@ ohSamEXServer::~ohSamEXServer()
  **************************************************************************************/
 
 void
-ohSamEXServer::SetServers (std::vector<Address> ip)
+MwImpServer::SetServers (std::vector<Address> ip)
 {
 	m_serverAddress = ip;
 	m_numServers = m_serverAddress.size();
@@ -128,14 +129,14 @@ ohSamEXServer::SetServers (std::vector<Address> ip)
 }
 
 void 
-ohSamEXServer::StartApplication (void)
+MwImpServer::StartApplication (void)
 {
 	NS_LOG_FUNCTION (this);
 	
 	std::stringstream sstm;
 	sstm << "Debug Mode="<< m_verbose;
 	LogInfo(sstm);
-	
+
 	if (m_socket == 0)
 	{
 		TypeId tid = TypeId::LookupByName ("ns3::TcpSocketFactory");
@@ -158,16 +159,16 @@ ohSamEXServer::StartApplication (void)
 			}
 		}
 
-		m_socket->SetRecvCallback (MakeCallback (&ohSamEXServer::HandleRead, this));
+		m_socket->SetRecvCallback (MakeCallback (&MwImpServer::HandleRead, this));
 
 			// Accept new connection
 			m_socket->SetAcceptCallback (
 					MakeNullCallback<bool, Ptr<Socket>, const Address &> (),
-					MakeCallback (&ohSamEXServer::HandleAccept, this));
+					MakeCallback (&MwImpServer::HandleAccept, this));
 			// Peer socket close handles
 			m_socket->SetCloseCallbacks (
-					MakeCallback (&ohSamEXServer::HandlePeerClose, this),
-					MakeCallback (&ohSamEXServer::HandlePeerError, this));
+					MakeCallback (&MwImpServer::HandlePeerClose, this),
+					MakeCallback (&MwImpServer::HandlePeerError, this));
 
 	}
 
@@ -194,49 +195,20 @@ ohSamEXServer::StartApplication (void)
 			m_srvSocket[i]->Listen ();
 			m_srvSocket[i]->Connect (InetSocketAddress (Ipv4Address::ConvertFrom(m_serverAddress[i]), m_port));
 
-			m_srvSocket[i]->SetRecvCallback (MakeCallback (&ohSamEXServer::HandleRead, this));
+			m_srvSocket[i]->SetRecvCallback (MakeCallback (&MwImpServer::HandleRead, this));
 			m_srvSocket[i]->SetAllowBroadcast (false);
 
 			m_srvSocket[i]->SetConnectCallback (
-					MakeCallback (&ohSamEXServer::ConnectionSucceeded, this),
-					MakeCallback (&ohSamEXServer::ConnectionFailed, this));
+					MakeCallback (&MwImpServer::ConnectionSucceeded, this),
+					MakeCallback (&MwImpServer::ConnectionFailed, this));
 
 		}
 	}
-	/*
-	//connect to the other servers
-	if ( m_clntSocket.empty() )
-	{
-		//Set the number of sockets we need
-		m_clntSocket.resize( m_clntAddress.size() );
-
-		for (uint32_t i = 0; i < m_clntAddress.size(); i++ )
-		{
-			AsmCommon::Reset(sstm);
-			sstm << "Connecting to SERVER (" << Ipv4Address::ConvertFrom(m_clntAddress[i]) << ")";
-			LogInfo(sstm);
-
-			TypeId tid = TypeId::LookupByName ("ns3::TcpSocketFactory");
-			m_clntSocket[i] = Socket::CreateSocket (GetNode (), tid);
-
-			m_clntSocket[i]->Bind();
-			m_clntSocket[i]->Listen();
-			m_clntSocket[i]->Connect (InetSocketAddress (Ipv4Address::ConvertFrom(m_clntAddress[i]), m_port));
-
-			m_clntSocket[i]->SetRecvCallback (MakeCallback (&ohSamEXServer::HandleRead, this));
-			m_clntSocket[i]->SetAllowBroadcast (false);
-
-			m_clntSocket[i]->SetConnectCallback (
-					MakeCallback (&ohSamEXServer::ConnectionSucceeded, this),
-					MakeCallback (&ohSamEXServer::ConnectionFailed, this));
-		}
-	}
-	*/
 }
 
 
 void 
-ohSamEXServer::StopApplication ()
+MwImpServer::StopApplication ()
 {
 	NS_LOG_FUNCTION (this);
 
@@ -266,12 +238,10 @@ ohSamEXServer::StopApplication ()
 	sstm << "** SERVER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent<<" **";
 	std::cout << "** SERVER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent<<" **"<<std::endl;
 	LogInfo(sstm);
-
-	//std::cout << "** SERVER_"<<m_personalID <<" LOG: #sentMsgs="<<m_sent<<" **"<<std::endl;
 }
 
 void
-ohSamEXServer::DoDispose (void)
+MwImpServer::DoDispose (void)
 {
 	NS_LOG_FUNCTION (this);
 	Application::DoDispose ();
@@ -281,18 +251,18 @@ ohSamEXServer::DoDispose (void)
 /**************************************************************************************
  * Connection handlers
  **************************************************************************************/
-void ohSamEXServer::HandlePeerClose (Ptr<Socket> socket)
+void MwImpServer::HandlePeerClose (Ptr<Socket> socket)
 {
 	NS_LOG_FUNCTION (this << socket);
 }
 
-void ohSamEXServer::HandlePeerError (Ptr<Socket> socket)
+void MwImpServer::HandlePeerError (Ptr<Socket> socket)
 {
 	NS_LOG_FUNCTION (this << socket);
 }
 
 
-void ohSamEXServer::HandleAccept (Ptr<Socket> s, const Address& from)
+void MwImpServer::HandleAccept (Ptr<Socket> s, const Address& from)
 {
 	NS_LOG_FUNCTION (this << s << from);
 	//Address from;
@@ -300,7 +270,7 @@ void ohSamEXServer::HandleAccept (Ptr<Socket> s, const Address& from)
 	int serverId = -1;
 	std::stringstream sstm;
 
-	s->SetRecvCallback (MakeCallback (&ohSamEXServer::HandleRead, this));
+	s->SetRecvCallback (MakeCallback (&MwImpServer::HandleRead, this));
 	//s->GetPeerName(from);
 
 	for (uint32_t i=0; i < m_serverAddress.size(); i++)
@@ -350,7 +320,7 @@ void ohSamEXServer::HandleAccept (Ptr<Socket> s, const Address& from)
 	}
 }
 
- void ohSamEXServer::ConnectionSucceeded (Ptr<Socket> socket)
+ void MwImpServer::ConnectionSucceeded (Ptr<Socket> socket)
  {
    NS_LOG_FUNCTION (this << socket);
    Address from;
@@ -378,7 +348,7 @@ void ohSamEXServer::HandleAccept (Ptr<Socket> s, const Address& from)
    }
  }
 
- void ohSamEXServer::ConnectionFailed (Ptr<Socket> socket)
+ void MwImpServer::ConnectionFailed (Ptr<Socket> socket)
  {
    NS_LOG_FUNCTION (this << socket);
  }
@@ -387,7 +357,7 @@ void ohSamEXServer::HandleAccept (Ptr<Socket> s, const Address& from)
  * PACKET DATA Handler
  **************************************************************************************/
 void
-ohSamEXServer::SetFill (std::string fill)
+MwImpServer::SetFill (std::string fill)
 {
   NS_LOG_FUNCTION (this << fill);
 
@@ -404,12 +374,13 @@ ohSamEXServer::SetFill (std::string fill)
 }
 
 /**************************************************************************************
- * ohSamEX Rcv Handler
+ * MwImp Rcv Handler
  **************************************************************************************/
 void 
-ohSamEXServer::HandleRead (Ptr<Socket> socket)
+MwImpServer::HandleRead (Ptr<Socket> socket)
 {
 	NS_LOG_FUNCTION (this << socket);
+
 
 	Ptr<Packet> packet;
 	Address from;
@@ -427,18 +398,17 @@ ohSamEXServer::HandleRead (Ptr<Socket> socket)
 		std::stringbuf sb;
 		sb.str(std::string((char*) buf));
 		std::istream istm(&sb);
-
 		istm >> msgT;
 
 
 		if (msgT==WRITE){
 			message_type = "write";
-		}else if (msgT==READ){
-			message_type = "read";
-		}else{ if (msgT==READRELAY)
-			message_type = "readRelay";
+			//istm >> msgTs >> msgId >> msgV >> msgOp;
 		}
-		
+		else if (msgT==READ){
+			message_type = "read";
+		}
+
 		if (m_verbose)
 		{
 			AsmCommon::Reset(sstm);
@@ -448,7 +418,8 @@ ohSamEXServer::HandleRead (Ptr<Socket> socket)
 			LogInfo(sstm);
 		}
 
-		if ( msgT == WRITE || msgT == READ )
+
+		if ( msgT == WRITE || msgT == READ || msgT==DISCOVER )
 		{
 			HandleRecvMsg(istm, socket, (MessageType) msgT);
 		}
@@ -465,18 +436,19 @@ ohSamEXServer::HandleRead (Ptr<Socket> socket)
 	}
 }
 
+
 void
-ohSamEXServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType msgT)
+MwImpServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType msgT)
 {
 	Address from;
-	uint32_t msgTs, msgV, msgOp;
+	uint32_t msgTs, msgV, msgId, msgOp;
 	int msgSenderID = -1;
 	std::stringstream sstm;
 	std::string message_response_type = "";
 	std::stringstream pkts;
+	std::string reply_type = "";
 
 	socket->GetPeerName(from);
-
 
 	//find if the socket that client is connected to
 	for (uint32_t i=0; i < m_clntAddress.size(); i++)
@@ -488,41 +460,37 @@ ohSamEXServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType
 		}
 	}
 
-
 	// if not sender detected - drop the package
 	if ( ( msgSenderID >= 0 && msgSenderID < (int) m_clntAddress.size() ))
 	{
+		//// CASE WRITER 1st PHASE
+		if (msgT==DISCOVER){
 
-		//// CASE WRITE
-		if (msgT==WRITE){
+			//Get the message
+			istm >> msgOp;
 
-			istm >> msgTs >> msgV;
+			//AsmCommon::Reset(sstm);
+			//sstm << "GOT DISCOVER WITH MSGOP "<<msgOp << " my TS: "<<m_ts;
+			//LogInfo(sstm);
 
-			if (m_ts < msgTs)
-			{
-				NS_LOG_LOGIC ("Updating Local Info");
-
-				m_ts = msgTs;
-				m_value = msgV;
-				message_response_type = "writeAck";
-			}
+			message_response_type = "discoverAck";
+			NS_LOG_LOGIC ("Updating Local Info");
 
 			AsmCommon::Reset(pkts);
-			pkts << WRITEACK << " " << m_ts << " " << m_value;
+			pkts << DISCOVERACK << " " << m_ts << " "<<msgOp;
 			SetFill(pkts.str());
 
 			Ptr<Packet> p;
 			if (m_dataSize)
 			{
-				NS_ASSERT_MSG (m_dataSize == m_size, "ohSamEXServer::HandleSend(): m_size and m_dataSize inconsistent");
-				NS_ASSERT_MSG (m_data, "ohSamEXServer::HandleSend(): m_dataSize but no m_data");
+				NS_ASSERT_MSG (m_dataSize == m_size, "MwImpServer::HandleSend(): m_size and m_dataSize inconsistent");
+				NS_ASSERT_MSG (m_data, "MwImpServer::HandleSend(): m_dataSize but no m_data");
 				p = Create<Packet> (m_data, m_dataSize);
 			}
 			else
 			{
 				p = Create<Packet> (m_size);
 			}
-
 
 			socket->Send (p);
 			m_sent++; //count the sent messages
@@ -539,10 +507,59 @@ ohSamEXServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType
 			p->RemoveAllPacketTags ();
 			p->RemoveAllByteTags ();
 		}
-		else if (msgT == READ)
+		else if (msgT==DISCOVER)
+		{
+			//Get the message
+			istm >> msgTs >> msgId >> msgV >> msgOp;
+			message_response_type = "writeAck";
+			
+
+			if (((m_ts < msgTs) || ((m_ts == msgTs)&&(m_id < msgId))))
+			{
+				NS_LOG_LOGIC ("Updating Local Info");
+				m_ts = msgTs;
+				m_value = msgV;
+				m_id = msgId;
+			}
+
+			NS_LOG_LOGIC ("Echoing packet");
+			// Prepare packet content
+			// serialize <msgType, ts, id, value, msgOp ,counter>
+			AsmCommon::Reset(pkts);
+			pkts << WRITEACK << " " << m_ts << " " << m_id << " " << m_value << " " << msgOp;
+			SetFill(pkts.str());
+
+
+			Ptr<Packet> p;
+		  		if (m_dataSize)
+		    	{
+		      		NS_ASSERT_MSG (m_dataSize == m_size, "MwImpServer::HandleSend(): m_size and m_dataSize inconsistent");
+		      		NS_ASSERT_MSG (m_data, "MwImpServer::HandleSend(): m_dataSize but no m_data");
+		      		p = Create<Packet> (m_data, m_dataSize);
+		    	}
+		  		else
+		   		{
+		    		p = Create<Packet> (m_size);
+		    	}
+
+		  	socket->Send (p);
+		  	m_sent++;
+
+			if (m_verbose)
+			{
+				AsmCommon::Reset(sstm);
+				sstm << "Sent "<< message_response_type <<" " << p->GetSize () << " bytes to " <<
+						InetSocketAddress::ConvertFrom (from).GetIpv4 () << " port " <<
+						InetSocketAddress::ConvertFrom (from).GetPort ();
+				LogInfo(sstm);
+			}
+			p->RemoveAllPacketTags ();
+			p->RemoveAllByteTags ();
+
+		}
+		else if ((msgT==READ) || (msgT==WRITE))
 		{
 			istm >> msgOp;
-
 			message_response_type = "readRelay";
 
 			int ipSize = from.GetSerializedSize();
@@ -550,18 +567,15 @@ ohSamEXServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType
 			from.CopyTo(ipBuffer);
 
 			AsmCommon::Reset(pkts);
-
-			//pkts << READRELAY << " " << m_ts << " " << m_value << " " << ipSize << " " << InetSocketAddress::ConvertFrom(from).GetIpv4().Get() << " " << msgOp;
-			pkts << READRELAY << " " << m_ts << " " << m_value << " " << msgSenderID << " " << msgOp;
-
+			pkts << READRELAY << " " << m_ts << " " << m_id << " " << m_value << " " << msgSenderID << " " << msgOp;
 
 			SetFill(pkts.str());
 
 			Ptr<Packet> pc;
 			if (m_dataSize)
 			{
-				NS_ASSERT_MSG (m_dataSize == m_size, "ohSamEXServer::HandleSend(): m_size and m_dataSize inconsistent");
-				NS_ASSERT_MSG (m_data, "ohSamEXServer::HandleSend(): m_dataSize but no m_data");
+				NS_ASSERT_MSG (m_dataSize == m_size, "MwImpServer::HandleSend(): m_size and m_dataSize inconsistent");
+				NS_ASSERT_MSG (m_data, "MwImpServer::HandleSend(): m_dataSize but no m_data");
 				pc = Create<Packet> (m_data, m_dataSize);
 			}
 			else
@@ -593,24 +607,16 @@ ohSamEXServer::HandleRecvMsg(std::istream& istm, Ptr<Socket> socket, MessageType
 					}
 				}
 			}
-
-			//EX: and also send it back to the CLIENT.
-			m_sent++;
-			socket->Send (pc);
-			AsmCommon::Reset(sstm);
-			sstm << "Sent "<< message_response_type << " " << pc->GetSize () << " bytes to " << InetSocketAddress::ConvertFrom(from).GetIpv4() << " data " << pkts.str();
-			LogInfo ( sstm );
 		}
 	}
 }
 
+
 void
-ohSamEXServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
+MwImpServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 {
-	uint32_t msgT, msgTs, msgV, msgOp; //, msgIpSize;
+	uint32_t msgT, msgTs, msgId, msgV, msgOp; //, msgIpSize;
 	int msgSenderID = -1;
-	//Address senderIp;
-	//std::uint32_t msgSenderIp;
 	std::stringstream sstm;
 	std::string message_type = "";
 	std::string message_response_type = "";
@@ -619,27 +625,26 @@ ohSamEXServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 
 	socket->GetPeerName(from);
 
-	//istm >> msgTs >> msgV >> msgIpSize >> msgSenderIp >> msgOp;
-	istm >> msgTs >> msgV >> msgSenderID >> msgOp;
-
+	istm >> msgTs >> msgId >> msgV >> msgSenderID >> msgOp;
 
 	if (m_verbose)
 	{
 		AsmCommon::Reset(sstm);
 		sstm << "Processing ReadRelay from " << InetSocketAddress::ConvertFrom(from).GetIpv4() <<": InitiatorIp= "
 				<< InetSocketAddress::ConvertFrom(m_clntAddress[msgSenderID].first).GetIpv4() << " InitiatorID=" << msgSenderID << ", msgOp=" << msgOp;
-		//<< ", relayTs=" << m_relayTs[msgSenderID] << ", msgTs=" << msgTs << ", #RelaysRcved=" << m_relays[msgSenderID];
 		LogInfo(sstm );
 	}
 
+	//Drop the package if not valid
 	if ( msgSenderID >= 0 && msgSenderID < (int) m_clntAddress.size() )
 	{
 
-		if (m_ts < msgTs)
+		if ((m_ts < msgTs) || ((m_ts == msgTs)&&(m_id<msgId)))
 		{
 			NS_LOG_LOGIC ("Updating Local Info");
 
 			m_ts = msgTs;
+			m_id =msgId; 
 			m_value = msgV;
 		}
 
@@ -667,14 +672,14 @@ ohSamEXServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 			message_response_type = "readAck";
 			msgT = READACK;
 			AsmCommon::Reset(pkts);
-			pkts << msgT << " " << m_ts << " " << m_value << " " << msgOp;
+			pkts << READACK << " " << m_ts << " " << m_id << " " << m_value << " " << msgOp;
 			SetFill(pkts.str());
 
 			Ptr<Packet> pk;
 			if (m_dataSize)
 			{
-				NS_ASSERT_MSG (m_dataSize == m_size, "ohSamEXServer::HandleSend(): m_size and m_dataSize inconsistent");
-				NS_ASSERT_MSG (m_data, "ohSamEXServer::HandleSend(): m_dataSize but no m_data");
+				NS_ASSERT_MSG (m_dataSize == m_size, "MwImpServer::HandleSend(): m_size and m_dataSize inconsistent");
+				NS_ASSERT_MSG (m_data, "MwImpServer::HandleSend(): m_dataSize but no m_data");
 				pk = Create<Packet> (m_data, m_dataSize);
 			}
 			else
@@ -692,9 +697,6 @@ ohSamEXServer::HandleRelay(std::istream& istm, Ptr<Socket> socket)
 				sstm << "Sent " << message_response_type <<" "<< pk->GetSize () << " bytes to " << InetSocketAddress::ConvertFrom (m_clntAddress[msgSenderID].first).GetIpv4() << " data " << pkts.str();
 				LogInfo ( sstm );
 			}
-
-			//pk->RemoveAllPacketTags ();
-			//pk->RemoveAllByteTags ();
 
 			//reset the replies for that reader to one (to count ours)
 			m_relays[msgSenderID] =1;

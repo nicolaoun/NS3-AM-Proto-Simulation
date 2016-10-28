@@ -30,6 +30,12 @@ def build(bld):
 
     obj = bld.create_ns3_program('am-ohMam-star-p2p', ['csma', 'point-to-point', 'internet', 'applications'])
     obj.source = 'am-ohMam-star-p2p.cc'
+
+    obj = bld.create_ns3_program('am-ohMamEX-p2p', ['csma', 'point-to-point', 'internet', 'applications'])
+    obj.source = 'am-ohMamEX-p2p.cc'
+
+    obj = bld.create_ns3_program('am-ohMamEX-star-p2p', ['csma', 'point-to-point', 'internet', 'applications'])
+    obj.source = 'am-ohMamEX-star-p2p.cc'
     
     obj = bld.create_ns3_program('am-ohSam', ['csma', 'point-to-point', 'internet', 'applications'])
     obj.source = 'am-ohSam.cc'
@@ -99,3 +105,15 @@ def build(bld):
 
     obj = bld.create_ns3_program('am-semifast-star-cs', ['netanim', 'point-to-point', 'point-to-point-layout', 'internet', 'applications'])
     obj.source = 'am-semifast-star-cs.cc'
+
+    obj = bld.create_ns3_program('am-MwImp-p2p', ['csma', 'point-to-point', 'internet', 'applications'])
+    obj.source = 'am-MwImp-p2p.cc'
+
+    obj = bld.create_ns3_program('am-MwImp-star-p2p', ['csma', 'point-to-point', 'internet', 'applications'])
+    obj.source = 'am-MwImp-star-p2p.cc'
+
+    obj = bld.create_ns3_program('am-SwImp-p2p', ['csma', 'point-to-point', 'internet', 'applications'])
+    obj.source = 'am-SwImp-p2p.cc'
+
+    obj = bld.create_ns3_program('am-SwImp-star-p2p', ['csma', 'point-to-point', 'internet', 'applications'])
+    obj.source = 'am-SwImp-star-p2p.cc'
