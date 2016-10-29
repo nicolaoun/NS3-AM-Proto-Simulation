@@ -58,6 +58,7 @@ main (int argc, char *argv[])
 {
 	int numServers = 3;
 	int numReaders = 2;
+    int numWriters = 1;
 	int numFail = -1;
 	float readInterval = 2;	//read interval in seconds
 	float writeInterval = 3;	//read interval in seconds
@@ -82,6 +83,7 @@ main (int argc, char *argv[])
 	//cmd.AddValue ("useIpv6", "Use Ipv6", useV6);
 	cmd.AddValue ("servers", "Number of servers", numServers);
 	cmd.AddValue ("readers", "Number of readers", numReaders);
+    cmd.AddValue ("writers", "Number of writers", numWriters);
 	cmd.AddValue ("failures", "Number of server Failures", numFail);
 	cmd.AddValue ("rInterval", "Read interval in seconds", readInterval);
 	cmd.AddValue ("wInterval", "Write interval in seconds", writeInterval);
@@ -96,7 +98,7 @@ main (int argc, char *argv[])
 		numFail = (numServers-1)/2;
 	}
 
-	int numClients = numReaders + 1;
+	int numClients = numReaders + numWriters;
 
         /********************************************************************
                  ********************************************************************
