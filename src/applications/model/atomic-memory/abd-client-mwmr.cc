@@ -415,15 +415,19 @@ AbdClientMWMR::InvokeRead (void)
 	std::stringstream sstm;
 
 	m_opCount ++;
-	m_opStart = Now();
-    m_real_start = std::chrono::system_clock::now();
+	
 
 	//check if we still have operations to perfrom
 	if ( m_opCount <=  m_count )
 	{
+		m_opStart = Now();
+    	m_real_start = std::chrono::system_clock::now();
 		//Phase 1
 		m_opStatus = PHASE1;
 		m_msgType = READ_DISCOVER;
+		ts_values.clear();
+		ts_ids.clear();
+		ts_timestamps.clear();
 
 		//Send msg to all
 		m_replies = 0;		//reset replies
@@ -441,15 +445,19 @@ AbdClientMWMR::InvokeWrite (void)
 	std::stringstream sstm;
 
 	m_opCount ++;
-	m_opStart = Now();
-    //m_real_start = std::chrono::system_clock::now();
+	
 
 	//check if we still have operations to perfrom
 	if ( m_opCount <=  m_count )
 	{
 		//Phase 1
+		m_opStart = Now();
+   		m_real_start = std::chrono::system_clock::now();
 		m_opStatus = PHASE1;
 		m_msgType = DISCOVER;
+		ts_values.clear();
+		ts_ids.clear();
+		ts_timestamps.clear();
 
 		//increment the ts and generate a random value
 		//m_ts ++;
@@ -611,10 +619,14 @@ AbdClientMWMR::ProcessReply(uint32_t type, uint32_t ts, uint32_t id, uint32_t va
 			// Find the max Timestamp 
 			// We do not care about the id comparison since 
 			// we want to write and we will put ours. 
-			if( ts >= m_ts)
-			{
-				m_ts = ts;
-			}
+			// if( ts >= m_ts)
+			// {
+			// 	m_ts = ts;
+			// }
+
+			//Store it on a vector
+			ts_timestamps.push_back(ts);
+			std::sort (ts_timestamps.begin(), ts_timestamps.end());
 
 			if (m_verbose)
 	  		{
@@ -626,6 +638,11 @@ AbdClientMWMR::ProcessReply(uint32_t type, uint32_t ts, uint32_t id, uint32_t va
 			//if we received enough replies go to the next phase
 			if (m_replies >= (m_numServers - m_fail))
 			{	
+				//Now we have to sort the vector 
+				
+				//Find the maximum ts
+				m_ts = ts_timestamps.back();
+
 				//Phase 1
 				m_opStatus = PHASE2;
 				m_msgType = WRITE;
@@ -668,12 +685,32 @@ AbdClientMWMR::ProcessReply(uint32_t type, uint32_t ts, uint32_t id, uint32_t va
 		if(m_opStatus==PHASE1)
 		{
 			// Find the max Timestamp and value associated with that
-			if ((ts >= m_ts) || ((ts==m_ts)&& (id>=m_id)))
-			{
-				m_ts = ts;
-				m_id = id;
-				m_value = val;
+			// if ((ts >= m_ts) || ((ts==m_ts)&& (id>=m_id)))
+			// {
+			// 	m_ts = ts;
+			// 	m_id = id;
+			// 	m_value = val;
+			// }
+
+			ts_values.push_back(val);
+			ts_ids.push_back(id);
+			ts_timestamps.push_back(ts);
+
+			uint32_t found_max_value =0;
+			uint32_t found_max_index =0;
+			for (std::vector<int>::iterator it=ts_timestamps.begin(); it!=ts_timestamps.end(); ++it){
+				if (found_max_value <= *it){
+					found_max_index = std::distance(ts_timestamps.begin(), it );
+					found_max_value = *it;
+				}
 			}
+
+			// Find the max Timestamp index and value associated with that
+			//uint32_t max_ts_index = std::max_element( ts_timestamps.begin(), ts_timestamps.end())
+			//m_ts = *std::max_element( ts_timestamps.begin(), ts_timestamps.end());
+			m_ts = found_max_value;
+			m_id = ts_ids[found_max_index];
+			m_value = ts_values[found_max_index];
 
 			if (m_verbose)
 	  		{

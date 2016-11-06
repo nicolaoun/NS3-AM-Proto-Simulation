@@ -482,6 +482,7 @@ ohSamClient::InvokeRead (void)
 	std::stringstream sstm;
 	m_opStart = Now();
 	m_real_start = std::chrono::system_clock::now();
+	
 
 	//check if we still have operations to perfrom
 	if ( m_opCount <  m_count )
@@ -499,6 +500,7 @@ ohSamClient::InvokeRead (void)
 		AsmCommon::Reset(sstm);
 		sstm << "** READ INVOKED: " << m_personalID << " at "<< m_opStart.GetSeconds() <<"s";
 		LogInfo(sstm);
+
 		HandleSend();
 	}
 }

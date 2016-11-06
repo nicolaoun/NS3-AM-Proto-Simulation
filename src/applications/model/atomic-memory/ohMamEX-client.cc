@@ -479,8 +479,7 @@ OhMamEXClient::InvokeRead (void)
 {
 	NS_LOG_FUNCTION (this);
 	std::stringstream sstm;
-	m_opStart = Now();
-	m_real_start = std::chrono::system_clock::now();
+	
 
 	//check if we still have operations to perfrom
 	if ( m_opCount <  m_count )
@@ -508,6 +507,8 @@ OhMamEXClient::InvokeRead (void)
 		AsmCommon::Reset(sstm);
 		sstm << "** READ INVOKED: " << m_personalID << " at "<< m_opStart.GetSeconds() <<"s";
 		LogInfo(sstm);
+		m_opStart = Now();
+		m_real_start = std::chrono::system_clock::now();
 		HandleSend();
 	}
 }
@@ -519,8 +520,6 @@ OhMamEXClient::InvokeWrite (void)
 	std::stringstream sstm;
 
 	m_opCount ++;
-	m_opStart = Now();
-	m_real_start = std::chrono::system_clock::now();
 	
 
 	//check if we still have operations to perfrom
@@ -535,6 +534,8 @@ OhMamEXClient::InvokeWrite (void)
 		AsmCommon::Reset(sstm);
 		sstm << "** WRITE INVOKED: " << m_opCount << " at "<< m_opStart.GetSeconds() <<"s";
 		LogInfo(sstm);
+		m_opStart = Now();
+		m_real_start = std::chrono::system_clock::now();
 		HandleSend();
 	}
 }
@@ -790,8 +791,7 @@ OhMamEXClient::ProcessReply(uint32_t type, uint32_t ts, uint32_t id, uint32_t va
 			// If we are done
 			if (m_done==1)
 			{
-				// HERE WE WILL NEED AN IF STATEMENT TO COUNT THE SLOW 
-				// ONES IN THE NEXT ALGORITHM
+				
 				// Increase Fast ops and the number of complete ops
 				m_completeOps++;
 				m_fastOpCount++;
@@ -826,6 +826,7 @@ OhMamEXClient::ProcessReply(uint32_t type, uint32_t ts, uint32_t id, uint32_t va
 				// ONES IN THE NEXT ALGORITHM
 				m_completeOps++;
 				m_slowOpCount++;
+				m_done=1;
 
       			m_opEnd = Now();
       			m_opAve += m_opEnd - m_opStart;

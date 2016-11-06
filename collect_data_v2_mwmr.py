@@ -189,7 +189,7 @@ def execute():
 		if(t==1):
 			avg_results_directory = create_output_file_for_scenario("output/logs_for_fails_"+str(fail)+"/servers_equal_"+str(numServers)+"/"+str(alg)+"/readers_writers_"+str(numReaders)+"_"+str(numWriters)+"/version_"+str(Version)+"/read_interval_"+str(rInterval)+"_write_interval_"+str(wInterval)+"_/_AVERAGE.txt", 1)
 		else:
-			avg_results_directory = "output/logs_for_fails_"+str(fail)+"/servers_equal_"+str(numServers)+"/"+str(alg)+"/readers_writers"+str(numReaders)+"_"+str(numWriters)+"/version_"+str(Version)+"/read_interval_"+str(rInterval)+"_write_interval_"+str(wInterval)+"_/_AVERAGE.txt"
+			avg_results_directory = "output/logs_for_fails_"+str(fail)+"/servers_equal_"+str(numServers)+"/"+str(alg)+"/readers_writers_"+str(numReaders)+"_"+str(numWriters)+"/version_"+str(Version)+"/read_interval_"+str(rInterval)+"_write_interval_"+str(wInterval)+"_/_AVERAGE.txt"
 		
 		with open(avg_results_directory, "a") as avg_text_file:
 			# we have to write this: "Protocol Version #Servers #Readers #Writers rIntvl wIntvl fastOps slowOps readRatio readPrcnt readAvgT readCOmmTime readCompTime rdrMsgs wrtMsgs srvMsgs writeAvgT writeCOmmTime writeCompTime\n"
@@ -310,9 +310,10 @@ else:
 	wrts_start = 10 
 	wrts_stop=100
 	wrts_step=10 #No worries we will end up doing 10,20,40,80,100 in the MWMR
-	wInterval_start = 40 #(means 2.1)
+	wInterval_start = 40 #(means 4.0)
 	wInterval_stop = 40
 	wInterval_step = 10
+	rInterval_stop = 46
 	num_tests = 6000
 
 topologies = [ "p2p" , "star-p2p" ]

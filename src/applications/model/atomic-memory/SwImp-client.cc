@@ -250,8 +250,8 @@ SwImpClient::StopApplication ()
 	  LogInfo(sstm);
 	  break;
   case READER:
-      sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads="<<m_opCount<<", #CompletedReads=" << m_completeOps << ", #4EXCH_reads="<< m_completeOps <<", AveOpTime="<< (avg_time+real_avg_time) <<"s, AveCommTime="<<avg_time<<"s, AvgCompTime="<<real_avg_time<<"s **";
-      std::cout << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads="<<m_opCount<<", #CompletedReads=" << m_completeOps << ", #4EXCH_reads="<< m_completeOps <<", AveOpTime="<< (avg_time+real_avg_time) <<"s, AveCommTime="<<avg_time<<"s, AvgCompTime="<<real_avg_time<<"s **"<<std::endl;
+      sstm << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads="<<m_opCount<<", #CompletedReads=" << m_completeOps << ", #2EXCH_reads="<< m_completeOps <<", AveOpTime="<< (avg_time+real_avg_time) <<"s, AveCommTime="<<avg_time<<"s, AvgCompTime="<<real_avg_time<<"s **";
+      std::cout << "** READER_"<<m_personalID << " LOG: #sentMsgs="<<m_sent <<", #InvokedReads="<<m_opCount<<", #CompletedReads=" << m_completeOps << ", #2EXCH_reads="<< m_completeOps <<", AveOpTime="<< (avg_time+real_avg_time) <<"s, AveCommTime="<<avg_time<<"s, AvgCompTime="<<real_avg_time<<"s **"<<std::endl;
 	  LogInfo(sstm);
 	  break;
   }

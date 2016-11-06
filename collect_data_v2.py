@@ -189,7 +189,7 @@ def execute():
 		if(t==1):
 			avg_results_directory = create_output_file_for_scenario("output/logs_for_fails_"+str(fail)+"/servers_equal_"+str(numServers)+"/"+str(alg)+"/readers_writers_"+str(numReaders)+"_"+str(numWriters)+"/version_"+str(Version)+"/read_interval_"+str(rInterval)+"_write_interval_"+str(wInterval)+"_/_AVERAGE.txt", 1)
 		else:
-			avg_results_directory = "output/logs_for_fails_"+str(fail)+"/servers_equal_"+str(numServers)+"/"+str(alg)+"/readers_writers"+str(numReaders)+"_"+str(numWriters)+"/version_"+str(Version)+"/read_interval_"+str(rInterval)+"_write_interval_"+str(wInterval)+"_/_AVERAGE.txt"
+			avg_results_directory = "output/logs_for_fails_"+str(fail)+"/servers_equal_"+str(numServers)+"/"+str(alg)+"/readers_writers_"+str(numReaders)+"_"+str(numWriters)+"/version_"+str(Version)+"/read_interval_"+str(rInterval)+"_write_interval_"+str(wInterval)+"_/_AVERAGE.txt"
 		
 		with open(avg_results_directory, "a") as avg_text_file:
 			# we have to write this: "Protocol Version #Servers #Readers #Writers rIntvl wIntvl fastOps slowOps readRatio readPrcnt readAvgT readCOmmTime readCompTime rdrMsgs wrtMsgs srvMsgs writeAvgT writeCOmmTime writeCompTime\n"
@@ -251,7 +251,7 @@ def execute():
 
 
 ### Set this to false to run the Multiple Writer Algorithms
-Single_Writer_Algorithms = False #False #True
+Single_Writer_Algorithms = True #False #True
 executeFlag=1
 
 

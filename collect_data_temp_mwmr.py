@@ -189,11 +189,11 @@ def execute():
 		if(t==1):
 			avg_results_directory = create_output_file_for_scenario("output/logs_for_fails_"+str(fail)+"/servers_equal_"+str(numServers)+"/"+str(alg)+"/readers_writers_"+str(numReaders)+"_"+str(numWriters)+"/version_"+str(Version)+"/read_interval_"+str(rInterval)+"_write_interval_"+str(wInterval)+"_/_AVERAGE.txt", 1)
 		else:
-			avg_results_directory = "output/logs_for_fails_"+str(fail)+"/servers_equal_"+str(numServers)+"/"+str(alg)+"/readers_writers"+str(numReaders)+"_"+str(numWriters)+"/version_"+str(Version)+"/read_interval_"+str(rInterval)+"_write_interval_"+str(wInterval)+"_/_AVERAGE.txt"
+			avg_results_directory = "output/logs_for_fails_"+str(fail)+"/servers_equal_"+str(numServers)+"/"+str(alg)+"/readers_writers_"+str(numReaders)+"_"+str(numWriters)+"/version_"+str(Version)+"/read_interval_"+str(rInterval)+"_write_interval_"+str(wInterval)+"_/_AVERAGE.txt"
 		
 		with open(avg_results_directory, "a") as avg_text_file:
 			# we have to write this: "Protocol Version #Servers #Readers #Writers rIntvl wIntvl fastOps slowOps readRatio readPrcnt readAvgT readCOmmTime readCompTime rdrMsgs wrtMsgs srvMsgs writeAvgT writeCOmmTime writeCompTime\n"
-			output = str(alg) + " " + str(Version)+" "+ str(numServers)+" "+ str(numReaders)+" "+ str(numWriters)+" "+ str(rInterval)+" "+ str(wInterval)+" "+ str(avgs_list[0])+" " + str(avgs_list[1])+" "+ str(avgs_list[2])+" "+ str(avgs_list[3])+" "+ str(avgs_list[4])+" "+ str(avgs_list[5])+" "+ str(avgs_list[6])+" "+ str(avgs_list[7])+" "+ str(avgs_list[8])+" "+ str(avgs_list[9])+ str(avgs_list[10])+" "+ str(avgs_list[11])+" "+ str(avgs_list[12])+"\n"
+			output = str(alg) + " " + str(Version)+" "+ str(numServers)+" "+ str(numReaders)+" "+ str(numWriters)+" "+ str(rInterval)+" "+ str(wInterval)+" "+ str(avgs_list[0])+" " + str(avgs_list[1])+" "+ str(avgs_list[2])+" "+ str(avgs_list[3])+" "+ str(avgs_list[4])+" "+ str(avgs_list[5])+" "+ str(avgs_list[6])+" "+ str(avgs_list[7])+" "+ str(avgs_list[8])+" "+ str(avgs_list[9])+" "+ str(avgs_list[10])+" "+ str(avgs_list[11])+" "+ str(avgs_list[12])+"\n"
 			avg_text_file.write(output)
 		##################
 		#Average the values for the main file
@@ -239,7 +239,7 @@ def execute():
 	# Now write them to the main file
 	with open(main_directory, "a") as main_text_file:
 		# we have to write this: "Protocol Version #Servers #Readers rIntvl wIntvl fastOps slowOps readRatio readPrcnt readAvgT rdrAvgMsgs wrtAvgMsgs srvAvgMsgs\n"
-                output = str(alg) + " " + str(Version)+" "+ str(numServers)+" "+ str(numReaders)+" "+ str(numWriters)+" "+ str(rInterval)+" "+ str(wInterval)+" "+ str(main_avg_fastOps)+" " + str(main_avg_slowOps)+" "+ str(main_avg_readRatio)+" "+ str(main_avg_readPrcnt)+" "+ str(main_avg_readTime)+" "+ str(main_avg_readCommTime)+" "+ str(main_avg_readCompTime)+ " "+ str(main_avg_rdrMsgs)+" "+str(main_avg_Total_rdrMsgs)+" "+ str(main_avg_wrtMsgs)+" "+ str(main_avg_srvMsgs)+" "+str(main_avg_Total_srvMsgs)+" "+str((main_avg_fastOps + main_avg_slowOps))+" "+str(float((main_avg_fastOps + main_avg_slowOps)/numReaders))+str(main_avg_writeTime)+" "+ str(main_avg_writeCommTime)+" "+ str(main_avg_writeCompTime)+"\n"
+                output = str(alg) + " " + str(Version)+" "+ str(numServers)+" "+ str(numReaders)+" "+ str(numWriters)+" "+ str(rInterval)+" "+ str(wInterval)+" "+ str(main_avg_fastOps)+" " + str(main_avg_slowOps)+" "+ str(main_avg_readRatio)+" "+ str(main_avg_readPrcnt)+" "+ str(main_avg_readTime)+" "+ str(main_avg_readCommTime)+" "+ str(main_avg_readCompTime)+ " "+ str(main_avg_rdrMsgs)+" "+str(main_avg_Total_rdrMsgs)+" "+ str(main_avg_wrtMsgs)+" "+ str(main_avg_srvMsgs)+" "+str(main_avg_Total_srvMsgs)+" "+str((main_avg_fastOps + main_avg_slowOps))+" "+str(float((main_avg_fastOps + main_avg_slowOps)/numReaders))+" "+str(main_avg_writeTime)+" "+ str(main_avg_writeCommTime)+" "+ str(main_avg_writeCompTime)+"\n"
 		main_text_file.write(output)
 # WE ARE DONE
 
@@ -275,7 +275,7 @@ alg =""
 executable=""
 protocol = ""
 tests = 5
-Version="fixInt"# "randInt"
+Version="randInt"# "randInt"
 
 #############################################################################
 #############################################################################
@@ -301,21 +301,8 @@ vrsn_stop=1
 vrsn_step=1
 num_tests =0 #(the total number of tests for all executions for SW or MW)
 tests_counter=0
-
-if (Single_Writer_Algorithms == True):
-	protocols = [ ["abd", "am-abd"], ["oh-Sam", "am-ohSam"], ["oh-SamEX", "am-ohSamEX"],  ["SwImp", "am-SwImp"]]
-	num_tests = 1200
-else:
-	protocols = [ ["abd-mwmr", "am-abd-mwmr"], ["oh-Mam", "am-ohMam"], ["oh-MamEX", "am-ohMamEX"],  ["MwImp", "am-MwImp"]]
-	wrts_start = 10 
-	wrts_stop=100
-	wrts_step=10 #No worries we will end up doing 10,20,40,80,100 in the MWMR
-	wInterval_start = 40 #(means 2.1)
-	wInterval_stop = 40
-	wInterval_step = 10
-	num_tests = 6000
-
-topologies = [ "p2p" , "star-p2p" ]
+#topologies = [ "p2p" , "star-p2p" ]
+topologies = [ "p2p"]
 srvrs_start=10 #10
 srvrs_stop=30
 srvrs_step=5
@@ -323,6 +310,29 @@ fail_start=1
 fail_stop=1 
 fail_step=1
 bar=0
+
+if (Single_Writer_Algorithms == True):
+	protocols = [ ["abd", "am-abd"], ["oh-Sam", "am-ohSam"], ["oh-SamEX", "am-ohSamEX"],  ["SwImp", "am-SwImp"]]
+	num_tests = 1200
+else:
+	#protocols = [ ["abd-mwmr", "am-abd-mwmr"], ["oh-Mam", "am-ohMam"], ["oh-MamEX", "am-ohMamEX"],  ["MwImp", "am-MwImp"]]
+	protocols = [ ["oh-Mam", "am-ohMam"]]
+	wrts_start = 10 
+	wrts_stop=40
+	wrts_step=10 #No worries we will end up doing 10,20,40,80,100 in the MWMR
+	wInterval_start = 40 #(means 4.0)
+	wInterval_stop = 40
+	wInterval_step = 10
+	rInterval_stop = 46
+	rdrs_start = 20
+	rdrs_stop=40
+	srvrs_start=10
+	srvrs_stop=10
+	num_tests = 6000
+	vrsn_stop=0 #only rand int
+	vrsn_start=0
+
+
 #############################################################################
 #############################################################################
 ############# FOR THE MOMENT USE THE BELLOW #################################
@@ -447,13 +457,14 @@ for fail in range(fail_start,fail_stop+1,fail_step):
         								for writeInterval in range(wInterval_start, wInterval_stop+1, wInterval_step):
         									wInterval = float(writeInterval)/10
         									print "       For writeInterval="+str(wInterval)+":"
+        									#if (tests_counter>61):
         									execute()
         									tests_counter = tests_counter + 1
         									if (tests_counter % 100 == 0):
         										print "Completed Tests: ", tests_counter, " out of ", num_tests, " ."
 
 
-print "\n\nAll the work is done, Script Exiting..."
+print "\n\nAll the work is done, Script Exiting...",tests_counter
 
 
 

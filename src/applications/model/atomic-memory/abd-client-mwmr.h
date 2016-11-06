@@ -228,7 +228,13 @@ private:
 	std::chrono::duration<double> m_real_opAve;
 
 	/// Callbacks for tracing the packet Tx events
+	std::vector<int> ts_values; //timestamp actual value vector
+	std::vector<int> ts_ids; //timestamp actual Tracedvalue vector
+	std::vector<int> ts_timestamps; //timestamp actual value vector
+
 	TracedCallback<Ptr<const Packet> > m_txTrace;
+
+
 };
 
 } // namespace ns3
